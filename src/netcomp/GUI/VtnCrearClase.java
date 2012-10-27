@@ -63,6 +63,11 @@ public class VtnCrearClase extends javax.swing.JFrame {
         cancelarCrearClaseBoton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                accionCerrarVentana(evt);
+            }
+        });
 
         crearClaseTituloVentana.setFont(new java.awt.Font("Gentium", 1, 18)); // NOI18N
         crearClaseTituloVentana.setText("Crear Clase");
@@ -164,6 +169,10 @@ public class VtnCrearClase extends javax.swing.JFrame {
         setVisible(false);
         initComponents();
     }//GEN-LAST:event_cancelarCrearClaseBotonActionPerformed
+
+    private void accionCerrarVentana(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_accionCerrarVentana
+        this.dispose();
+    }//GEN-LAST:event_accionCerrarVentana
 
     /**
      * @param args the command line arguments

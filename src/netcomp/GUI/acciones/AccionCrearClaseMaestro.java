@@ -29,7 +29,7 @@ public class AccionCrearClaseMaestro extends AbstractAction {
 
     private void prepararDatos(){
         this.nombre = vtnCrearClase.getCrearNombreClase().getText();
-        this.contrasenia = vtnCrearClase.getCrearContraseniaClase().getPassword().toString();
+        this.contrasenia = new String(vtnCrearClase.getCrearContraseniaClase().getPassword());
         this.descripcion = vtnCrearClase.getCrearDescripcionClase().getText();
     }
     

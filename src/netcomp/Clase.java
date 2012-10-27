@@ -35,8 +35,9 @@ public class Clase {
         this.contrasenia = contrasenia;
         ip = averiguarIp();
         this.puerto = 5008;
+        System.out.println(contrasenia);
         Boolean pass = true;
-        if (contrasenia == null) {
+        if (contrasenia == null || "".equals(contrasenia)) {
             pass = false;
         }
         this.anunciador = new Anunciador(ip, puerto, nombre, pass, descripcion);
@@ -79,7 +80,7 @@ public class Clase {
         String laIp = null;
         try {
             //Averiguo mi dirección ip y la seteo
-            laIp = ObtenerIp.getIp(true, false).toString().substring(1);
+            laIp = GenTools.getIp(true, false).toString().substring(1);
         } catch (SocketException ex) {
             Logger.getLogger(VtnClaseMaestro.class.getName()).log(Level.SEVERE, null, ex);
         }

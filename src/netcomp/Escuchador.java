@@ -17,7 +17,7 @@ import java.util.Collection;
  * @author zerg
  */
 public class Escuchador implements Runnable {
-
+    
     Collection<InfoClase> clases;
     Boolean corriendo;
     //String a partir del cual construyo el paquete.
@@ -25,7 +25,7 @@ public class Escuchador implements Runnable {
     public Escuchador() {
         this.clases = null;
     }
-
+    
     public void escuchar() {
         DatagramSocket socket;
         try {
@@ -38,7 +38,7 @@ public class Escuchador implements Runnable {
             //Establezco el tipo de paquete
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             //Creo el bucle de operación
-            while (true) {
+            while (corriendo) {
                 try {
                     //Configuro la espera del bucle
                     Thread.sleep(2000);
@@ -46,6 +46,7 @@ public class Escuchador implements Runnable {
                     //Si me han interrumpido, corto el bucle
                     corriendo = false;
                     socket.close();
+                    break;
                 }
                 //Recibo un paquete
                 socket.receive(packet);
@@ -59,7 +60,7 @@ public class Escuchador implements Runnable {
         } catch (IOException e) {
         }
     }
-
+    
     @Override
     public void run() {
         //Restablezco condición de funcionamiento
@@ -67,15 +68,37 @@ public class Escuchador implements Runnable {
         //Ejecuto el método anunciar
         escuchar();
     }
-
-    private void manejarPaquete(String paquete){
-        InfoClase laClase = new InfoClase(paquete);
-        laClase.imprimeInfo();
-        
+    
+    private void manejarPaquete(String paquete) {
+        //Veo si es un paquete válido
+        if (validarPaquete(paquete)) {
+            //Si lo es, creo una nueva Clase con los datos del paquete.
+            InfoClase laClase = new InfoClase(paquete);
+            System.out.println("Recibi paquete. Creo clase.");
+        }
     }
+    
+    private boolean validarPaquete(String elPaquete) {
+        //Verifico que el paquete tenga la estructura adecuada.
+        //Estructura: [ip,puerto,nombre,tieneContrasenia,descripción]
+        //Verifico que sea un paquete de mensaje
+        if ((GenTools.XMLParser("msg", elPaquete)) != null) {
+        }
+        //Verifico que sea de tupo anuncio
+        if ("anuncio".equals(GenTools.XMLParser("tipo", elPaquete))) {
+            return true;
+        } else {
+            //Si no pasa la prueba, devuelvo falso.
+            return false;
+        }
+    }
+    
+    private void crearClase(String paquete) {
+    }
+    
     private void agregarClase(InfoClase laClase) {
     }
-
+    
     private void quitarClase(InfoClase laClase) {
     }
 }

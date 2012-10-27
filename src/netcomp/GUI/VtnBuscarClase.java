@@ -175,12 +175,11 @@ public class VtnBuscarClase extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscarClaseBotonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarClaseBotonCancelarActionPerformed
-        // TODO add your handling code here:
-        setVisible(false);
+        escuchadorThread.interrupt();
+        dispose();
     }//GEN-LAST:event_buscarClaseBotonCancelarActionPerformed
 
     private void vntBuscarClaseClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_vntBuscarClaseClosing
-        System.out.println("Maté el thread escuchador.");
         escuchadorThread.interrupt();
         this.dispose();
     }//GEN-LAST:event_vntBuscarClaseClosing

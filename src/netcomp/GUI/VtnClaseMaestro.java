@@ -67,6 +67,11 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                accionCerrarVentana(evt);
+            }
+        });
 
         jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Alumno1", "Alumno2", "Alumno3", "...", "AlumnoN" };
@@ -162,6 +167,11 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         dispose();
         dejarDeAnunciar();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void accionCerrarVentana(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_accionCerrarVentana
+        dispose();
+        dejarDeAnunciar();
+    }//GEN-LAST:event_accionCerrarVentana
 
     /**
      * @param args the command line arguments

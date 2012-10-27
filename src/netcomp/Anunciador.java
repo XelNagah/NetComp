@@ -22,7 +22,7 @@ public class Anunciador implements Runnable {
     private static int puerto;
     private String profesor;
     private static String nombreClase;
-    private Boolean tieneContrasenia;
+    private Boolean boolPass;
     private String descripcion;
     static Boolean corriendo;
     //String a partir del cual construyo el paquete.
@@ -33,7 +33,7 @@ public class Anunciador implements Runnable {
         this.ip = ip;
         Anunciador.puerto = puerto;
         Anunciador.nombreClase = nombreClase;
-        this.tieneContrasenia = tieneContrasenia;
+        this.boolPass = tieneContrasenia;
         this.descripcion = descripcion;
         this.dataString = generarString();
     }
@@ -69,8 +69,8 @@ public class Anunciador implements Runnable {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     //Si me han interrumpido, corto el bucle
-                            corriendo = false;
-                            socket.close();
+                    corriendo = false;
+                    socket.close();
                 }
             }
         } catch (SocketException e) {
@@ -78,7 +78,7 @@ public class Anunciador implements Runnable {
         } catch (IOException e) {
         }
     }
-    
+
     @Override
     public void run() {
         //Restablezco condición de funcionamiento
@@ -86,17 +86,23 @@ public class Anunciador implements Runnable {
         //Ejecuto el método anunciar
         anunciar();
     }
-    
-    private String generarString(){
-            //Configuro los datos
-            String tieneCont;
-            if (tieneContrasenia){
-                tieneCont = "True";
-            } else {
-                tieneCont = "False";
-            }
-            //Armo el string de anuncio
-            String paquete = ip + "," + puerto + "," + nombreClase + "," + tieneCont + "," + descripcion;
+
+    private String generarString() {
+        //Configuro los datos
+        String tieneCont;
+        if (boolPass) {
+            tieneCont = "True";
+        } else {
+            tieneCont = "False";
+        }
+        String paquete = GenTools.XMLGenerator("tipo", "anuncio");
+        paquete = GenTools.XMLAppend("ip", ip, paquete);
+        paquete = GenTools.XMLAppend("puerto", Integer.toString(puerto), paquete);
+        paquete = GenTools.XMLAppend("nombre", nombreClase, paquete);
+        paquete = GenTools.XMLAppend("boolpass", tieneCont, paquete);
+        paquete = GenTools.XMLAppend("descripcion", descripcion, paquete);
+        paquete = GenTools.XMLWrapper("msg", paquete);
+
         return paquete;
     }
 }

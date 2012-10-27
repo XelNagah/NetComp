@@ -15,8 +15,9 @@ import java.util.Enumeration;
  *
  * @author zerg
  */
-public class ObtenerIp {
+public class GenTools {
 
+    //Obtiene la primer dirección IP local que no sea loopback
     public static InetAddress getIp(boolean preferIpv4, boolean preferIPv6) throws SocketException {
         Enumeration en = NetworkInterface.getNetworkInterfaces();
         while (en.hasMoreElements()) {
@@ -40,5 +41,37 @@ public class ObtenerIp {
             }
         }
         return null;
+    }
+
+    //Verifica si una cadena representa una dirección IP.
+    public static boolean chequearIp(String sip) {
+        String[] parts = sip.split("\\.");
+        for (String s : parts) {
+            int i = Integer.parseInt(s);
+            if (i < 0 || i > 255) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static String XMLWrapper(String tag, String elMensaje){
+        return "<" + tag + ">" + "\n" + elMensaje + "\n" + "</" + tag + ">";
+    }
+    
+    public static String XMLGenerator(String tag, String valor) {
+        return "<" + tag + ">" + valor + "</" + tag + ">";
+    }
+    public static String XMLParser(String tag, String elString){
+        String[] vector=elString.split("<"+ tag +">|<\\/"+ tag +">");
+        if (vector.length < 2){
+        return null;
+        } else {
+            return vector[1];
+        }
+    }
+    public static String XMLAppend(String tag, String valor, String xmlStringOriginal){
+        String resultado = xmlStringOriginal + "\n" + XMLGenerator(tag, valor);        
+        return resultado;
     }
 }
