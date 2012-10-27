@@ -4,7 +4,11 @@
  */
 package netcomp;
 
+import java.net.SocketException;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import netcomp.GUI.VtnClaseMaestro;
 
 /**
  *
@@ -12,22 +16,25 @@ import java.util.Collection;
  */
 public class Clase {
 
-    String nombre;
-    String descripcion;
-    String contrasenia;
-    String ip;
-    int puerto;
-    Anunciador anunciador;
-    Thread anunciadorThread;
-    Collection<Alumno> alumnos;
-    Collection<Archivo> archivos;
+    //Atributos
+    private String nombre;
+    private String profesor;
+    private String descripcion;
+    private String contrasenia;
+    private String ip;
+    private int puerto;
+    private Anunciador anunciador;
+    private Thread anunciadorThread;
+    private Collection<Alumno> alumnos;
+    private Collection<Archivo> archivos;
 
-    public Clase(String nombre, String descripcion, String contrasenia, String ip, int puerto) {
+    //Constructor
+    public Clase(String nombre, String descripcion, String contrasenia) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.contrasenia = contrasenia;
-        this.ip = ip;
-        this.puerto = puerto;
+        ip = averiguarIp();
+        this.puerto = 5008;
         Boolean pass = true;
         if (contrasenia == null) {
             pass = false;
@@ -35,6 +42,7 @@ public class Clase {
         this.anunciador = new Anunciador(ip, puerto, nombre, pass, descripcion);
     }
 
+    //Métodos
     public String getNombre() {
         return nombre;
     }
@@ -67,13 +75,24 @@ public class Clase {
         return puerto;
     }
 
+    private String averiguarIp(){
+        String laIp = null;
+        try {
+            //Averiguo mi dirección ip y la seteo
+            laIp = ObtenerIp.getIp(true, false).toString().substring(1);
+        } catch (SocketException ex) {
+            Logger.getLogger(VtnClaseMaestro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return laIp;
+    }
+    
     public void anunciar() {
-       
-       if (anunciadorThread != null && !anunciadorThread.isInterrupted()) {
+
+        if (anunciadorThread != null && !anunciadorThread.isInterrupted()) {
             anunciadorThread.interrupt();
         }
-       anunciadorThread = new Thread(anunciador);
-       anunciadorThread.start();
+        anunciadorThread = new Thread(anunciador);
+        anunciadorThread.start();
     }
 
     public void dejarDeAnunciar() {

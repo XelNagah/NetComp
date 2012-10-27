@@ -4,6 +4,9 @@
  */
 package netcomp.GUI;
 
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import netcomp.GUI.acciones.AccionCrearClaseMaestro;
 
 /**
@@ -11,6 +14,18 @@ import netcomp.GUI.acciones.AccionCrearClaseMaestro;
  * @author zerg
  */
 public class VtnCrearClase extends javax.swing.JFrame {
+
+    public JPasswordField getCrearContraseniaClase() {
+        return crearContraseniaClase;
+    }
+
+    public JTextArea getCrearDescripcionClase() {
+        return crearDescripcionClase;
+    }
+
+    public JTextField getCrearNombreClase() {
+        return crearNombreClase;
+    }
 
     /**
      * Creates new form crearClase
@@ -73,7 +88,7 @@ public class VtnCrearClase extends javax.swing.JFrame {
         crearDescripcionClase.setText("Una descripción de su clase.");
         jScrollPane1.setViewportView(crearDescripcionClase);
 
-        crearClaseBoton.setAction(new AccionCrearClaseMaestro(this,crearNombreClase.getText(),crearContraseniaClase.getPassword().toString(),crearDescripcionClase.getText()));
+        crearClaseBoton.setAction(new AccionCrearClaseMaestro(this));
         crearClaseBoton.setText("Crear Clase");
 
         cancelarCrearClaseBoton.setText("Cancelar");

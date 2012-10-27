@@ -17,14 +17,15 @@ public class AccionVtnBuscarClase extends AbstractAction {
     static VtnBuscarClase vtnBuscarClase;
     
     public AccionVtnBuscarClase(){
-        vtnBuscarClase = new VtnBuscarClase();
     }
     
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if (vtnBuscarClase.isShowing() == false) {
+        vtnBuscarClase = new VtnBuscarClase();
+        if (!vtnBuscarClase.isShowing()) {
             vtnBuscarClase.setVisible(true);
             vtnBuscarClase.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+            vtnBuscarClase.escuchar();
         }
         else {
             vtnBuscarClase.toFront();

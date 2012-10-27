@@ -4,13 +4,18 @@
  */
 package netcomp.GUI;
 
+import javax.swing.JFrame;
+import netcomp.Escuchador;
 import netcomp.GUI.acciones.AccionCrearClaseAlumno;
 
 /**
  *
  * @author zerg
  */
-public class VtnBuscarClase extends javax.swing.JFrame {
+public class VtnBuscarClase extends JFrame {
+
+    private Escuchador escuchador;
+    private Thread escuchadorThread;
 
     /**
      * Creates new form buscarClaseVtn
@@ -18,12 +23,24 @@ public class VtnBuscarClase extends javax.swing.JFrame {
     public VtnBuscarClase() {
         initComponents();
         setTitle("Buscador de Clases");
+        escuchador = new Escuchador();
     }
 
+    public void escuchar() {
+        if (escuchadorThread != null && !escuchadorThread.isInterrupted()) {
+            escuchadorThread.interrupt();
+        }
+        escuchadorThread = new Thread(escuchador);
+        escuchadorThread.start();
+    }
+
+    public void dejarDeEscuchar() {
+        escuchadorThread.interrupt();
+    }
     //Creación de ventanas del programa
     //Ventana Crear Clase
     VtnClaseAlumno vtnClaseAlumno = new VtnClaseAlumno();
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,7 +57,12 @@ public class VtnBuscarClase extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         buscarClaseBotonCancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                vntBuscarClaseClosing(evt);
+            }
+        });
 
         buscarClasesTabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -156,6 +178,12 @@ public class VtnBuscarClase extends javax.swing.JFrame {
         // TODO add your handling code here:
         setVisible(false);
     }//GEN-LAST:event_buscarClaseBotonCancelarActionPerformed
+
+    private void vntBuscarClaseClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_vntBuscarClaseClosing
+        System.out.println("Maté el thread escuchador.");
+        escuchadorThread.interrupt();
+        this.dispose();
+    }//GEN-LAST:event_vntBuscarClaseClosing
 
     /**
      * @param args the command line arguments

@@ -18,12 +18,15 @@ import java.net.UnknownHostException;
 public class Anunciador implements Runnable {
 
     //Campos
-    String ip;
-    static int puerto;
-    static String nombreClase;
-    Boolean tieneContrasenia;
-    String descripcion;
+    private String ip;
+    private static int puerto;
+    private String profesor;
+    private static String nombreClase;
+    private Boolean tieneContrasenia;
+    private String descripcion;
     static Boolean corriendo;
+    //String a partir del cual construyo el paquete.
+    private String dataString;
 
     //Constructor
     public Anunciador(String ip, int puerto, String nombreClase, Boolean tieneContrasenia, String descripcion) {
@@ -32,6 +35,7 @@ public class Anunciador implements Runnable {
         Anunciador.nombreClase = nombreClase;
         this.tieneContrasenia = tieneContrasenia;
         this.descripcion = descripcion;
+        this.dataString = generarString();
     }
 
     //Método anunciar
@@ -45,27 +49,18 @@ public class Anunciador implements Runnable {
             socket.setBroadcast(true);
             //configuro tamaño del buffer
             byte[] buf = new byte[512];
-            //Creo el paquete
-            //DatagramPacket packet = new DatagramPacket(buf, buf.length);
-            //Creo el paquete
+            //Creo y establezco el tipo de paquete
             DatagramPacket sendPacket = new DatagramPacket(buf, buf.length);
             //Configuro la dirección de broadcast
             sendPacket.setAddress(InetAddress.getByName("255.255.255.255"));
             //Configuro el puerto
             sendPacket.setPort(puerto);
-            //Configuro los datos
-            String tieneCont;
-            if (tieneContrasenia){
-                tieneCont = "Si";
-            } else {
-                tieneCont = "No";
-            }
-            //Armo el string de anuncio
-            String paquete = ip + "," + puerto + "," + nombreClase + "," + tieneCont + "," + descripcion;
+            //Armo el paquete
+            String paquete = dataString;
             //configuro los datos en el paquete
             sendPacket.setData(paquete.getBytes());
 
-            //Creo el bucle
+            //Creo el bucle de operación
             while (corriendo) {
                 //Envío el paquete
                 socket.send(sendPacket);
@@ -84,10 +79,24 @@ public class Anunciador implements Runnable {
         }
     }
     
+    @Override
     public void run() {
         //Restablezco condición de funcionamiento
         corriendo = true;
         //Ejecuto el método anunciar
         anunciar();
+    }
+    
+    private String generarString(){
+            //Configuro los datos
+            String tieneCont;
+            if (tieneContrasenia){
+                tieneCont = "True";
+            } else {
+                tieneCont = "False";
+            }
+            //Armo el string de anuncio
+            String paquete = ip + "," + puerto + "," + nombreClase + "," + tieneCont + "," + descripcion;
+        return paquete;
     }
 }

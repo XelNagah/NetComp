@@ -148,7 +148,7 @@
     <Component class="javax.swing.JButton" name="crearClaseBoton">
       <Properties>
         <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new AccionCrearClaseMaestro(this,crearNombreClase.getText(),crearContraseniaClase.getPassword().toString(),crearDescripcionClase.getText())" type="code"/>
+          <Connection code="new AccionCrearClaseMaestro(this)" type="code"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Crear Clase"/>
       </Properties>

@@ -23,8 +23,6 @@ public class VtnPrincipal extends javax.swing.JFrame {
     }
 
     //Creación de ventanas del programa
-    //Ventana Buscar Clases
-    VtnBuscarClase buscarClase = new VtnBuscarClase();
     //Ventana Configuración de Clases
     VtnConfiguracion configuracion = new VtnConfiguracion();
     

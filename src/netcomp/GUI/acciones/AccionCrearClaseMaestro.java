@@ -5,14 +5,10 @@
 package netcomp.GUI.acciones;
 
 import java.awt.event.ActionEvent;
-import java.net.SocketException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import netcomp.Clase;
 import netcomp.GUI.VtnClaseMaestro;
 import netcomp.GUI.VtnCrearClase;
-import netcomp.ObtenerIp;
 
 /**
  *
@@ -22,31 +18,28 @@ public class AccionCrearClaseMaestro extends AbstractAction {
 
     static VtnClaseMaestro vtnClaseMaestro;
     VtnCrearClase vtnCrearClase;
-    private String miIp;
     private String nombre;
     private String contrasenia;
     private String descripcion;
 
-    public AccionCrearClaseMaestro(VtnCrearClase parent,String elNombre, String laContrasenia, String laDescripcion) {
+    public AccionCrearClaseMaestro(VtnCrearClase parent) {
         vtnClaseMaestro = new VtnClaseMaestro();
         vtnCrearClase = parent;
-        this.nombre = elNombre;
-        this.contrasenia = laContrasenia;
-        this.descripcion = laDescripcion;
     }
 
+    private void prepararDatos(){
+        this.nombre = vtnCrearClase.getCrearNombreClase().getText();
+        this.contrasenia = vtnCrearClase.getCrearContraseniaClase().getPassword().toString();
+        this.descripcion = vtnCrearClase.getCrearDescripcionClase().getText();
+    }
+    
     @Override
     public void actionPerformed(ActionEvent ae) {
         //Cierro la ventana "Crear Clase"
         vtnCrearClase.dispose();
-        try {
-            //Averiguo mi dirección ip
-            miIp = ObtenerIp.getIp(true, false).toString().substring(1);
-        } catch (SocketException ex) {
-            Logger.getLogger(VtnClaseMaestro.class.getName()).log(Level.SEVERE, null, ex);
-        }
         //Instancio el objeto "Clase"
-        Clase clase = new Clase(nombre, descripcion, contrasenia, miIp, 5008);
+        prepararDatos();
+        Clase clase = new Clase(nombre, descripcion, contrasenia);
         //Paso el objeto Clase a la ventana "Clase Maestro"
         vtnClaseMaestro.setClase(clase);
         //Muestro la ventana "Clase Maestro"
