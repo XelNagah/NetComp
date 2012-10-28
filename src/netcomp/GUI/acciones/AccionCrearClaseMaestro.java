@@ -37,8 +37,9 @@ public class AccionCrearClaseMaestro extends AbstractAction {
     public void actionPerformed(ActionEvent ae) {
         //Cierro la ventana "Crear Clase"
         vtnCrearClase.dispose();
-        //Instancio el objeto "Clase"
+        //Preparo los datos para instanciar el objeto
         prepararDatos();
+        //Instancio el objeto "Clase"
         Clase clase = new Clase(nombre, descripcion, contrasenia);
         //Paso el objeto Clase a la ventana "Clase Maestro"
         vtnClaseMaestro.setClase(clase);

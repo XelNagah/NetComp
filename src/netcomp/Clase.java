@@ -35,7 +35,6 @@ public class Clase {
         this.contrasenia = contrasenia;
         ip = averiguarIp();
         this.puerto = 5008;
-        System.out.println(contrasenia);
         Boolean pass = true;
         if (contrasenia == null || "".equals(contrasenia)) {
             pass = false;
