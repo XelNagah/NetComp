@@ -4,10 +4,12 @@
  */
 package netcomp;
 
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Enumeration;
 
@@ -54,24 +56,35 @@ public class GenTools {
         }
         return true;
     }
-    
-    public static String XMLWrapper(String tag, String elMensaje){
+
+    public static String XMLWrapper(String tag, String elMensaje) {
         return "<" + tag + ">" + "\n" + elMensaje + "\n" + "</" + tag + ">";
     }
-    
+
     public static String XMLGenerator(String tag, String valor) {
         return "<" + tag + ">" + valor + "</" + tag + ">";
     }
-    public static String XMLParser(String tag, String elString){
-        String[] vector=elString.split("<"+ tag +">|<\\/"+ tag +">");
-        if (vector.length < 2){
-        return null;
+
+    public static String XMLParser(String tag, String elString) {
+        String[] vector = elString.split("<" + tag + ">|<\\/" + tag + ">");
+        if (vector.length < 2) {
+            return null;
         } else {
             return vector[1];
         }
     }
-    public static String XMLAppend(String tag, String valor, String xmlStringOriginal){
-        String resultado = xmlStringOriginal + "\n" + XMLGenerator(tag, valor);        
+
+    public static String XMLAppend(String tag, String valor, String xmlStringOriginal) {
+        String resultado = xmlStringOriginal + "\n" + XMLGenerator(tag, valor);
         return resultado;
+    }
+
+    //Encuentra un puerto libre en la interfaz
+    public static int findFreePort()
+            throws IOException {
+        ServerSocket server = new ServerSocket(0);
+        int port = server.getLocalPort();
+        server.close();
+        return port;
     }
 }

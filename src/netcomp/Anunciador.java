@@ -44,7 +44,7 @@ public class Anunciador implements Runnable {
         DatagramSocket socket;
         try {
             //Creo el socket
-            socket = new DatagramSocket(puerto, InetAddress.getByName("0.0.0.0"));
+            socket = new DatagramSocket(GenTools.findFreePort(), InetAddress.getByName("0.0.0.0"));
             //Establezco la capacidad de enviar broadcasts
             socket.setBroadcast(true);
             //configuro tamaño del buffer
