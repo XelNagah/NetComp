@@ -65,6 +65,11 @@ public class VtnPrincipal extends javax.swing.JFrame {
 
         mainBotonBuscarClase.setAction(new AccionVtnBuscarClase());
         mainBotonBuscarClase.setText("Buscar");
+        mainBotonBuscarClase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mainBotonBuscarClaseActionPerformed(evt);
+            }
+        });
 
         archivoMenu.setMnemonic('f');
         archivoMenu.setText("Archivo");
@@ -181,6 +186,10 @@ public class VtnPrincipal extends javax.swing.JFrame {
     private void acercaDeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acercaDeMenuItemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_acercaDeMenuItemActionPerformed
+
+    private void mainBotonBuscarClaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainBotonBuscarClaseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mainBotonBuscarClaseActionPerformed
 
     /**
      * @param args the command line arguments

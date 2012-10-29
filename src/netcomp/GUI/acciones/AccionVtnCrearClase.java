@@ -7,6 +7,8 @@ package netcomp.GUI.acciones;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import netcomp.GUI.VtnCrearClase;
+import netcomp.GUI.VtnPrincipal;
+import netcomp.NetComp;
 
 /**
  *
@@ -14,7 +16,7 @@ import netcomp.GUI.VtnCrearClase;
  */
 public class AccionVtnCrearClase extends AbstractAction {
 
-    static VtnCrearClase vtnCrearClase;
+    VtnCrearClase vtnCrearClase;
     
     public AccionVtnCrearClase() {
         vtnCrearClase = new VtnCrearClase();
@@ -22,6 +24,7 @@ public class AccionVtnCrearClase extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent ae) {
+        NetComp.vtnPrincipal.setVisible(false);
         if (vtnCrearClase.isShowing() == false) {
             vtnCrearClase.setVisible(true);
             vtnCrearClase.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);

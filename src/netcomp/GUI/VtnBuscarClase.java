@@ -7,6 +7,7 @@ package netcomp.GUI;
 import javax.swing.JFrame;
 import netcomp.Escuchador;
 import netcomp.GUI.acciones.AccionCrearClaseAlumno;
+import netcomp.NetComp;
 
 /**
  *
@@ -177,11 +178,13 @@ public class VtnBuscarClase extends JFrame {
     private void buscarClaseBotonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarClaseBotonCancelarActionPerformed
         escuchadorThread.interrupt();
         dispose();
+        NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_buscarClaseBotonCancelarActionPerformed
 
     private void vntBuscarClaseClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_vntBuscarClaseClosing
         escuchadorThread.interrupt();
         this.dispose();
+        NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_vntBuscarClaseClosing
 
     /**

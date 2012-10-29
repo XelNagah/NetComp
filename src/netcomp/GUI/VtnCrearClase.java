@@ -8,6 +8,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import netcomp.GUI.acciones.AccionCrearClaseMaestro;
+import netcomp.NetComp;
 
 /**
  *
@@ -167,6 +168,7 @@ public class VtnCrearClase extends javax.swing.JFrame {
     private void cancelarCrearClaseBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCrearClaseBotonActionPerformed
         // TODO add your handling code here:
         setVisible(false);
+        NetComp.vtnPrincipal.setVisible(true);
         initComponents();
     }//GEN-LAST:event_cancelarCrearClaseBotonActionPerformed
 

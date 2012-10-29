@@ -6,6 +6,7 @@ package netcomp.GUI;
 
 import netcomp.Clase;
 import netcomp.GUI.acciones.AccionAbout;
+import netcomp.NetComp;
 
 /**
  *
@@ -166,11 +167,13 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
         dejarDeAnunciar();
+        NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void accionCerrarVentana(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_accionCerrarVentana
         dispose();
         dejarDeAnunciar();
+        NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_accionCerrarVentana
 
     /**

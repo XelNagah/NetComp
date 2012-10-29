@@ -7,6 +7,7 @@ package netcomp.GUI.acciones;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import netcomp.GUI.VtnBuscarClase;
+import netcomp.NetComp;
 
 /**
  *
@@ -21,6 +22,7 @@ public class AccionVtnBuscarClase extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent ae) {
+        NetComp.vtnPrincipal.setVisible(false);
         vtnBuscarClase = new VtnBuscarClase();
         if (!vtnBuscarClase.isShowing()) {
             vtnBuscarClase.setVisible(true);
@@ -31,5 +33,4 @@ public class AccionVtnBuscarClase extends AbstractAction {
             vtnBuscarClase.toFront();
         }
     }
-    
 }

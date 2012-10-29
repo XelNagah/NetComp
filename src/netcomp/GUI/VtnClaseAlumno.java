@@ -5,6 +5,7 @@
 package netcomp.GUI;
 
 import netcomp.GUI.acciones.AccionAbout;
+import netcomp.NetComp;
 
 /**
  *
@@ -45,6 +46,11 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                accionCerrarVentanaClaseAlumno(evt);
+            }
+        });
 
         jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Alumno1", "Alumno2", "Alumno3", "...", "AlumnoN" };
@@ -57,6 +63,11 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem4.setText("Salir");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem4);
 
         menuBar.add(jMenu2);
@@ -123,6 +134,16 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void accionCerrarVentanaClaseAlumno(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_accionCerrarVentanaClaseAlumno
+        dispose();
+        NetComp.vtnPrincipal.setVisible(true);
+    }//GEN-LAST:event_accionCerrarVentanaClaseAlumno
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        dispose();
+        NetComp.vtnPrincipal.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -152,6 +173,7 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new VtnClaseAlumno().setVisible(true);
             }

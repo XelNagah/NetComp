@@ -12,13 +12,14 @@ import netcomp.GUI.VtnPrincipal;
  */
 public class NetComp {
 
+    static public VtnPrincipal vtnPrincipal;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
             // TODO code application logic here
             // Ventanas del programa
-            VtnPrincipal vtnPrincipal = new VtnPrincipal();
+            vtnPrincipal = new VtnPrincipal();
             vtnPrincipal.setVisible(true);
             vtnPrincipal.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         }
