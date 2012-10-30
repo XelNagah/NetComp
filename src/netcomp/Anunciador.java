@@ -10,6 +10,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.UUID;
 
 /**
  *
@@ -27,6 +28,7 @@ public class Anunciador implements Runnable {
     static Boolean corriendo;
     //String a partir del cual construyo el paquete.
     private String dataString;
+    final String hash = UUID.randomUUID().toString();
 
     //Constructor
     public Anunciador(String ip, int puerto, String nombreClase, Boolean tieneContrasenia, String descripcion) {
@@ -101,6 +103,7 @@ public class Anunciador implements Runnable {
         paquete = GenTools.XMLAppend("nombre", nombreClase, paquete);
         paquete = GenTools.XMLAppend("boolpass", tieneCont, paquete);
         paquete = GenTools.XMLAppend("descripcion", descripcion, paquete);
+        paquete = GenTools.XMLAppend("UUID", hash, paquete);
         paquete = GenTools.XMLWrapper("msg", paquete);
 
         return paquete;

@@ -12,6 +12,7 @@ import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.UUID;
 
 /**
  *
@@ -86,5 +87,10 @@ public class GenTools {
         int port = server.getLocalPort();
         server.close();
         return port;
+    }
+
+    public static UUID uniqueId(String[] args) {
+        UUID uniqueKey = UUID.randomUUID();
+        return uniqueKey;
     }
 }

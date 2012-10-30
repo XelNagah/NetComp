@@ -25,6 +25,7 @@ public class AccionCrearClaseAlumno extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent ae) {
+        vtnBuscarClase.dejarDeEscuchar();
         vtnBuscarClase.dispose();
         vtnClaseAlumno.setVisible(true);
         vtnClaseAlumno.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);

@@ -11,9 +11,10 @@ package netcomp;
 public class InfoClase {
 
     //Atributos
-    String nombre;
+    public String nombre;
     String descripcion;
     Boolean tieneContrasenia;
+    String hash;
     String ip;
     int puerto;
 
@@ -25,6 +26,8 @@ public class InfoClase {
         this.nombre = GenTools.XMLParser("nombre", stringInfoClase);
         this.tieneContrasenia = Boolean.parseBoolean(GenTools.XMLParser("boolpass", stringInfoClase));
         this.descripcion = GenTools.XMLParser("descripcion", stringInfoClase);
+        this.hash = GenTools.XMLParser("UUID", stringInfoClase);
+        //System.out.println("Nueva InfoClase.");
     }
 
     //Métodos
@@ -52,12 +55,6 @@ public class InfoClase {
         this.tieneContrasenia = tieneContrasenia;
     }
 
-    private boolean validarDatos(String elPaquete) {
-        Boolean validacion = false;
-
-        return validacion;
-    }
-
     public void imprimeInfo() {
         System.out.println("Ip: " + ip);
         System.out.println("Puerto: " + puerto);
@@ -68,5 +65,6 @@ public class InfoClase {
             System.out.println("Contraseña: No.");
         }
         System.out.println("Descripcion: " + descripcion);
+        System.out.println("UUID: " + hash.toString());
     }
 }

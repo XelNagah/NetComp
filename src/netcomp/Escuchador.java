@@ -10,23 +10,23 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Collection;
+import java.util.*;
 
 /**
  *
  * @author zerg
  */
 public class Escuchador implements Runnable {
-    
-    Collection<InfoClase> clases;
+
+    List<InfoClase> clases;
     Boolean corriendo;
     //String a partir del cual construyo el paquete.
 
     public Escuchador() {
-        this.clases = null;
     }
-    
+
     public void escuchar() {
+        clases = new ArrayList<InfoClase>();
         DatagramSocket socket;
         try {
             //Creo el socket
@@ -60,7 +60,7 @@ public class Escuchador implements Runnable {
         } catch (IOException e) {
         }
     }
-    
+
     @Override
     public void run() {
         //Restablezco condición de funcionamiento
@@ -68,16 +68,16 @@ public class Escuchador implements Runnable {
         //Ejecuto el método anunciar
         escuchar();
     }
-    
+
     private void manejarPaquete(String paquete) {
         //Veo si es un paquete válido
         if (validarPaquete(paquete)) {
             //Si lo es, creo una nueva Clase con los datos del paquete.
-            InfoClase laClase = new InfoClase(paquete);
-            System.out.println("Recibi paquete. Creo clase.");
+            agregarClase(paquete);
+            //System.out.println("Recibi paquete. Creo clase.");
         }
     }
-    
+
     private boolean validarPaquete(String elPaquete) {
         //Verifico que el paquete tenga la estructura adecuada.
         //Estructura: [ip,puerto,nombre,tieneContrasenia,descripción]
@@ -92,13 +92,37 @@ public class Escuchador implements Runnable {
             return false;
         }
     }
-    
-    private void crearClase(String paquete) {
+
+    private void imprimirClases() {
+        for (Iterator<InfoClase> it = clases.iterator(); it.hasNext();) {
+            it.next().imprimeInfo();
+        }
     }
-    
-    private void agregarClase(InfoClase laClase) {
-    }
-    
-    private void quitarClase(InfoClase laClase) {
+
+    private void agregarClase(String paquete) {
+        //Creo una bandera
+        Boolean flag = true;
+        //Obtengo el ID Único del paquete
+        String nuevoId = GenTools.XMLParser("UUID", paquete);
+        //Comparo el ID con las clases ya agregadas
+        for (Iterator<InfoClase> it = clases.iterator(); it.hasNext();) {
+            //Si alguna clase agregada tiene el mismo id
+            if (it.next().hash.equals(nuevoId)) {
+                //Configuro la bandera en falso
+                flag = false;
+                //Salgo del loop.
+                break;
+            }
+        }
+        //Si ninguna tenía el mismo ID
+        if (flag) {
+            //Creo la clase
+            InfoClase laClase = new InfoClase(paquete);
+            //Agrego la clase a la lista de clases
+            clases.add(laClase);
+        } else {
+            //Si no, imprimo un mensaje
+            //System.out.println("Clase ya agregada.");
+        }
     }
 }
