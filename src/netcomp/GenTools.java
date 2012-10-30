@@ -76,8 +76,7 @@ public class GenTools {
     }
 
     public static String XMLAppend(String tag, String valor, String xmlStringOriginal) {
-        String resultado = xmlStringOriginal + "\n" + XMLGenerator(tag, valor);
-        return resultado;
+        return xmlStringOriginal + "\n" + XMLGenerator(tag, valor);
     }
 
     //Encuentra un puerto libre en la interfaz
@@ -90,7 +89,6 @@ public class GenTools {
     }
 
     public static UUID uniqueId(String[] args) {
-        UUID uniqueKey = UUID.randomUUID();
-        return uniqueKey;
+        return UUID.randomUUID();
     }
 }
