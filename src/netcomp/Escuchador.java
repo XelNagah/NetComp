@@ -18,15 +18,18 @@ import java.util.*;
  */
 public class Escuchador implements Runnable {
 
-    List<InfoClase> clases;
+    ArrayList<InfoClase> clases = new ArrayList<InfoClase>();
     Boolean corriendo;
-    //String a partir del cual construyo el paquete.
+    public String[] columnas = {"Nombre de la Clase",
+        "Profesor",
+        "Descripción",
+        "Contraseña"};
 
     public Escuchador() {
     }
 
     public void escuchar() {
-        clases = new ArrayList<InfoClase>();
+        //clases = new ArrayList<InfoClase>();
         DatagramSocket socket;
         try {
             //Creo el socket
@@ -55,6 +58,7 @@ public class Escuchador implements Runnable {
                 //Hago Algo
                 manejarPaquete(paquete);
             }
+            clases = null;
         } catch (SocketException e) {
         } catch (UnknownHostException e) {
         } catch (IOException e) {
@@ -67,6 +71,25 @@ public class Escuchador implements Runnable {
         corriendo = true;
         //Ejecuto el método anunciar
         escuchar();
+    }
+
+    public ArrayList<InfoClase> getClases() {
+        return clases;
+    }
+
+    public Object[][] infoTabla() {
+        Object[][] laInfo;
+        laInfo = (Object[][]) new ArrayList<Object>().toArray();
+        int i = 0;
+        for (Iterator<InfoClase> it = clases.iterator(); it.hasNext();) {
+            System.out.println(it.next().nombre);
+            laInfo[i][0] = it.next().nombre;
+            laInfo[i][1] = "profe";
+            laInfo[i][2] = it.next().descripcion;
+            laInfo[i][3] = it.next().tieneContrasenia;
+            i++;
+        }
+        return laInfo;
     }
 
     private void manejarPaquete(String paquete) {
@@ -120,9 +143,10 @@ public class Escuchador implements Runnable {
             InfoClase laClase = new InfoClase(paquete);
             //Agrego la clase a la lista de clases
             clases.add(laClase);
+            imprimirClases();
         } else {
             //Si no, imprimo un mensaje
-            //System.out.println("Clase ya agregada.");
+            System.out.println("Clase ya agregada.");
         }
     }
 }

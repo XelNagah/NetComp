@@ -4,9 +4,15 @@
  */
 package netcomp.GUI;
 
+import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import netcomp.Escuchador;
 import netcomp.GUI.acciones.AccionCrearClaseAlumno;
+import netcomp.InfoClase;
 import netcomp.NetComp;
 
 /**
@@ -17,14 +23,23 @@ public class VtnBuscarClase extends JFrame {
 
     private Escuchador escuchador;
     private Thread escuchadorThread;
+    private CustomDataModel modeloDatos;
 
     /**
      * Creates new form buscarClaseVtn
      */
     public VtnBuscarClase() {
-        initComponents();
-        setTitle("Buscador de Clases");
+        //Creo un escuchador (Si creo primero los componentes, la tabla no sabe cuantas rondas debe tener)
         escuchador = new Escuchador();
+        modeloDatos = new CustomDataModel();
+        //Establezco los componentes de la ventana
+        initComponents();
+        //Establezco título.
+        setTitle("Buscador de Clases");
+    }
+
+    private void refreshTable() {
+        buscarClasesTabla.repaint();
     }
 
     public void escuchar() {
@@ -65,61 +80,10 @@ public class VtnBuscarClase extends JFrame {
             }
         });
 
-        buscarClasesTabla.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "", "Nombre", "Descripción", "Creador", "Contraseña"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        buscarClasesTabla.setModel(modeloDatos);
+        buscarClasesTabla.getModel().addTableModelListener(modeloDatos);
         buscarClasesTabla.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(buscarClasesTabla);
-        buscarClasesTabla.getColumnModel().getColumn(0).setResizable(false);
-        buscarClasesTabla.getColumnModel().getColumn(0).setHeaderValue("");
-        buscarClasesTabla.getColumnModel().getColumn(1).setHeaderValue("Nombre");
-        buscarClasesTabla.getColumnModel().getColumn(2).setHeaderValue("Descripción");
-        buscarClasesTabla.getColumnModel().getColumn(3).setHeaderValue("Creador");
-        buscarClasesTabla.getColumnModel().getColumn(4).setHeaderValue("Contraseña");
 
         jLabel1.setFont(new java.awt.Font("Gentium", 1, 18)); // NOI18N
         jLabel1.setText("Buscar Clases");
@@ -216,6 +180,7 @@ public class VtnBuscarClase extends JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new VtnBuscarClase().setVisible(true);
             }
@@ -229,4 +194,74 @@ public class VtnBuscarClase extends JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+    class CustomDataModel extends DefaultTableModel implements TableModelListener {
+
+        private String[] columnNames;
+        private ArrayList<InfoClase> data;
+
+        public CustomDataModel() {
+            columnNames = escuchador.columnas;
+            data = escuchador.getClases();
+        }
+
+        @Override
+        public String getColumnName(int col) {
+            return columnNames[col];
+        }
+
+        @Override
+        public int getRowCount() {
+            if (escuchador.getClases() != null) {
+                return escuchador.getClases().size();
+            } else {
+                return 0;
+            }
+        }
+
+        @Override
+        public int getColumnCount() {
+            return columnNames.length;
+        }
+
+        @Override
+        public boolean isCellEditable(int row, int col) {
+            return false;
+        }
+
+        @Override
+        public Object getValueAt(int row, int col) {
+            InfoClase laClase = data.get(row);
+            switch (col) {
+                case 0:
+                    return laClase.getNombre();
+                case 1:
+                    return "El Profe";
+                case 2:
+                    return laClase.getDescripcion();
+                case 3:
+                    return laClase.getTieneContrasenia();
+                default:
+                    return "";
+            }
+        }
+
+        @Override
+        public Class getColumnClass(int c) {
+            return getValueAt(0, c).getClass();
+        }
+
+        @Override
+        public void tableChanged(TableModelEvent tme) {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    fireTableDataChanged();
+                    fireTableStructureChanged();
+                    buscarClasesTabla.revalidate();
+                    buscarClasesTabla.repaint();
+                    jScrollPane1.repaint();
+                }
+            });
+        }
+    }
 }

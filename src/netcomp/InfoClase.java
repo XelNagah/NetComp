@@ -11,12 +11,12 @@ package netcomp;
 public class InfoClase {
 
     //Atributos
-    public String nombre;
-    String descripcion;
-    Boolean tieneContrasenia;
-    String hash;
     String ip;
     int puerto;
+    String nombre;
+    Boolean tieneContrasenia;
+    String descripcion;
+    String hash;
 
     //Constructor
     
@@ -55,6 +55,18 @@ public class InfoClase {
         this.tieneContrasenia = tieneContrasenia;
     }
 
+    public Object[] infoClaseArray(){
+        Object[] elArrayDeInfo = null;
+        elArrayDeInfo[0] = ip;
+        elArrayDeInfo[1] = puerto;
+        elArrayDeInfo[2] = nombre;
+        elArrayDeInfo[3] = tieneContrasenia;
+        elArrayDeInfo[4] = descripcion;
+        elArrayDeInfo[5] = hash;
+        
+        return elArrayDeInfo;
+    }
+    
     public void imprimeInfo() {
         System.out.println("Ip: " + ip);
         System.out.println("Puerto: " + puerto);
