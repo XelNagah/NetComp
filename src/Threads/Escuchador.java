@@ -70,7 +70,7 @@ public class Escuchador implements Runnable {
                 //Recibo un paquete
                 socket.receive(packet);
                 //Convierto el paquete a String.
-                String paquete = new String(packet.getData());
+                String paquete = new String(packet.getData(),"UTF-8");
                 //Hago Algo
                 manejarPaquete(paquete);
             }

@@ -61,7 +61,7 @@ public class Anunciador implements Runnable {
             //Armo el paquete
             String paquete = dataString;
             //configuro los datos en el paquete
-            sendPacket.setData(paquete.getBytes());
+            sendPacket.setData(paquete.getBytes("UTF8"));
 
             //Creo el bucle de operación
             while (corriendo) {
