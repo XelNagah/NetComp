@@ -4,13 +4,12 @@
  */
 package netcomp.GUI;
 
+import Threads.Escuchador;
 import java.util.ArrayList;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import netcomp.Escuchador;
 import netcomp.GUI.acciones.AccionCrearClaseAlumno;
 import netcomp.InfoClase;
 import netcomp.NetComp;
@@ -203,6 +202,7 @@ public class VtnBuscarClase extends JFrame {
         public CustomDataModel() {
             columnNames = escuchador.columnas;
             data = escuchador.getClases();
+            escuchador.setCustomDataModel(this);
         }
 
         @Override
@@ -250,18 +250,9 @@ public class VtnBuscarClase extends JFrame {
         public Class getColumnClass(int c) {
             return getValueAt(0, c).getClass();
         }
-
+        
         @Override
-        public void tableChanged(TableModelEvent tme) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    fireTableDataChanged();
-                    fireTableStructureChanged();
-                    buscarClasesTabla.revalidate();
-                    buscarClasesTabla.repaint();
-                    jScrollPane1.repaint();
-                }
-            });
+        public void tableChanged(TableModelEvent e) {
         }
     }
 }

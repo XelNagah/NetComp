@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package netcomp;
+package Threads;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -11,6 +11,9 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.*;
+import javax.swing.table.DefaultTableModel;
+import netcomp.GenTools;
+import netcomp.InfoClase;
 
 /**
  *
@@ -24,11 +27,20 @@ public class Escuchador implements Runnable {
         "Profesor",
         "Descripción",
         "Contraseña"};
+    DefaultTableModel customDataModel;
+    ManejadorDeClases elManejador = new ManejadorDeClases();
+    Thread elManejadorThread = new Thread(elManejador);
 
-    public Escuchador() {
+    public void setCustomDataModel(DefaultTableModel elObjeto) {
+        elManejador.setCustomDataModel(elObjeto);
+        customDataModel = elObjeto;
     }
 
-    public void escuchar() {
+    public Escuchador() {
+        elManejador.setLasClases(clases);
+    }
+
+    synchronized public void escuchar() {
         //clases = new ArrayList<InfoClase>();
         DatagramSocket socket;
         try {
@@ -40,11 +52,13 @@ public class Escuchador implements Runnable {
             byte[] buf = new byte[512];
             //Establezco el tipo de paquete
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
+            //Comiendo el Manejador de Clases
+            elManejadorThread.start();
             //Creo el bucle de operación
             while (corriendo) {
                 try {
                     //Configuro la espera del bucle
-                    Thread.sleep(2000);
+                    Thread.sleep(300);
                 } catch (InterruptedException e) {
                     //Si me han interrumpido, corto el bucle
                     corriendo = false;
@@ -59,6 +73,7 @@ public class Escuchador implements Runnable {
                 manejarPaquete(paquete);
             }
             clases = null;
+            elManejadorThread.interrupt();
         } catch (SocketException e) {
         } catch (UnknownHostException e) {
         } catch (IOException e) {
@@ -69,7 +84,7 @@ public class Escuchador implements Runnable {
     public void run() {
         //Restablezco condición de funcionamiento
         corriendo = true;
-        //Ejecuto el método anunciar
+        //Ejecuto el método escuchar
         escuchar();
     }
 
@@ -77,27 +92,11 @@ public class Escuchador implements Runnable {
         return clases;
     }
 
-    public Object[][] infoTabla() {
-        Object[][] laInfo;
-        laInfo = (Object[][]) new ArrayList<Object>().toArray();
-        int i = 0;
-        for (Iterator<InfoClase> it = clases.iterator(); it.hasNext();) {
-            System.out.println(it.next().nombre);
-            laInfo[i][0] = it.next().nombre;
-            laInfo[i][1] = "profe";
-            laInfo[i][2] = it.next().descripcion;
-            laInfo[i][3] = it.next().tieneContrasenia;
-            i++;
-        }
-        return laInfo;
-    }
-
     private void manejarPaquete(String paquete) {
         //Veo si es un paquete válido
         if (validarPaquete(paquete)) {
             //Si lo es, creo una nueva Clase con los datos del paquete.
-            agregarClase(paquete);
-            //System.out.println("Recibi paquete. Creo clase.");
+            manejarClase(paquete);
         }
     }
 
@@ -116,37 +115,46 @@ public class Escuchador implements Runnable {
         }
     }
 
-    private void imprimirClases() {
-        for (Iterator<InfoClase> it = clases.iterator(); it.hasNext();) {
-            it.next().imprimeInfo();
-        }
-    }
-
-    private void agregarClase(String paquete) {
+    private void manejarClase(String paquete) {
         //Creo una bandera
         Boolean flag = true;
         //Obtengo el ID Único del paquete
         String nuevoId = GenTools.XMLParser("UUID", paquete);
         //Comparo el ID con las clases ya agregadas
         for (Iterator<InfoClase> it = clases.iterator(); it.hasNext();) {
+            InfoClase laClase = it.next();
             //Si alguna clase agregada tiene el mismo id
-            if (it.next().hash.equals(nuevoId)) {
+            if (laClase.getHash().equals(nuevoId)) {
                 //Configuro la bandera en falso
                 flag = false;
-                //Salgo del loop.
-                break;
+                laClase.resetTimeOut();
+            } else {
             }
         }
-        //Si ninguna tenía el mismo ID
+        //Si ninguna tenía el mismo ID (La bandera está en true)
         if (flag) {
             //Creo la clase
             InfoClase laClase = new InfoClase(paquete);
-            //Agrego la clase a la lista de clases
-            clases.add(laClase);
-            imprimirClases();
+            agregarClase(laClase);
         } else {
             //Si no, imprimo un mensaje
-            System.out.println("Clase ya agregada.");
+            //System.out.println("Clase ya agregada.");
+        }
+
+    }
+
+    private void agregarClase(InfoClase laClase) {
+        //Agrego la clase a la lista de clases
+        clases.add(laClase);
+        //Refresco la tabla
+        customDataModel.fireTableDataChanged();
+        //Muestro información de clases para Debug
+        //imprimirClases();
+    }
+
+    private void imprimirClases() {
+        for (Iterator<InfoClase> it = clases.iterator(); it.hasNext();) {
+            it.next().imprimeInfo();
         }
     }
 }

@@ -4,6 +4,7 @@
  */
 package netcomp;
 
+import Threads.Anunciador;
 import java.net.SocketException;
 import java.util.Collection;
 import java.util.logging.Level;

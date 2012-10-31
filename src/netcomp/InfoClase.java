@@ -17,17 +17,19 @@ public class InfoClase {
     Boolean tieneContrasenia;
     String descripcion;
     String hash;
+    private int timeOut;
+    final int period = 6;
 
     //Constructor
     
     public InfoClase(String stringInfoClase) {
-        this.ip = GenTools.XMLParser("ip", stringInfoClase);
-        this.puerto = Integer.parseInt(GenTools.XMLParser("puerto", stringInfoClase));
-        this.nombre = GenTools.XMLParser("nombre", stringInfoClase);
-        this.tieneContrasenia = Boolean.parseBoolean(GenTools.XMLParser("boolpass", stringInfoClase));
-        this.descripcion = GenTools.XMLParser("descripcion", stringInfoClase);
-        this.hash = GenTools.XMLParser("UUID", stringInfoClase);
-        //System.out.println("Nueva InfoClase.");
+        ip = GenTools.XMLParser("ip", stringInfoClase);
+        puerto = Integer.parseInt(GenTools.XMLParser("puerto", stringInfoClase));
+        nombre = GenTools.XMLParser("nombre", stringInfoClase);
+        tieneContrasenia = Boolean.parseBoolean(GenTools.XMLParser("boolpass", stringInfoClase));
+        descripcion = GenTools.XMLParser("descripcion", stringInfoClase);
+        hash = GenTools.XMLParser("UUID", stringInfoClase);
+        timeOut  = period;
     }
 
     //Métodos
@@ -55,16 +57,20 @@ public class InfoClase {
         this.tieneContrasenia = tieneContrasenia;
     }
 
-    public Object[] infoClaseArray(){
-        Object[] elArrayDeInfo = null;
-        elArrayDeInfo[0] = ip;
-        elArrayDeInfo[1] = puerto;
-        elArrayDeInfo[2] = nombre;
-        elArrayDeInfo[3] = tieneContrasenia;
-        elArrayDeInfo[4] = descripcion;
-        elArrayDeInfo[5] = hash;
-        
-        return elArrayDeInfo;
+    public String getHash() {
+        return hash;
+    }
+    
+    public int getTimeOut() {
+        return timeOut;
+    }
+    
+    public void updateTimeOut(int i) {
+        timeOut -= i;
+    }
+    
+    public void resetTimeOut(){
+        timeOut = period;
     }
     
     public void imprimeInfo() {
