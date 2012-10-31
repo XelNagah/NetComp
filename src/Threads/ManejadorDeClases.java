@@ -18,6 +18,8 @@ public class ManejadorDeClases implements Runnable {
     ArrayList<InfoClase> clases;
     Boolean corriendo;
     DefaultTableModel customDataModel;
+    //Periodo de espera (se multiplica por 1000 para obtener milisegundos en el sleep) 
+    //Velocidad de timeout
     final int period = 2;
 
     public ManejadorDeClases() {
@@ -25,17 +27,25 @@ public class ManejadorDeClases implements Runnable {
     
     synchronized void manejarClases() {
         while(corriendo){
+            //Itero por las clases
             for(Iterator<InfoClase> it = clases.iterator(); it.hasNext(); ){
+                //Guardo la clase en una variable
                 InfoClase laClase = it.next();
+                //Si la clase superó el timeout
                 if (laClase.getTimeOut() <= 0) {
+                    //Remover
                     it.remove();
+                    //Y actualizar Tabla
                     customDataModel.fireTableDataChanged();
                 }
+                //Si no superó el timeout, restarle el periodo al timeout de la clase.
                 laClase.updateTimeOut(period);
             }
             try {
+                //Repetir casa period segundos
                 Thread.sleep(period*1000);
             } catch (InterruptedException ex) {
+                //Si me interrumpen, salir del bucle.
                 corriendo = false;
             }
         }
@@ -43,7 +53,9 @@ public class ManejadorDeClases implements Runnable {
 
     @Override
     public void run() {
+        //Establezco la bandera para ejecutar.
         corriendo = true;
+        //Comienzo a manejar clases
         manejarClases();
     }
 

@@ -201,7 +201,10 @@ public class VtnBuscarClase extends JFrame {
 
         public CustomDataModel() {
             columnNames = escuchador.columnas;
+            //Obtengo una referencia a las clases del escuchador
             data = escuchador.getClases();
+            //Paso el modelo de datos al escuchador para que pueda
+            //actualizar la tabla
             escuchador.setCustomDataModel(this);
         }
 
@@ -226,6 +229,8 @@ public class VtnBuscarClase extends JFrame {
 
         @Override
         public boolean isCellEditable(int row, int col) {
+            //Configuro las celdas como no editables, sea cual sea.
+            //Devuelvo siempre falso.
             return false;
         }
 

@@ -60,9 +60,11 @@ public class Escuchador implements Runnable {
                     //Configuro la espera del bucle
                     Thread.sleep(300);
                 } catch (InterruptedException e) {
-                    //Si me han interrumpido, corto el bucle
+                    //Si me han interrumpido, dejo de correr
                     corriendo = false;
+                    //cierro el socket
                     socket.close();
+                    //e interrumpo el bucle
                     break;
                 }
                 //Recibo un paquete
@@ -72,7 +74,9 @@ public class Escuchador implements Runnable {
                 //Hago Algo
                 manejarPaquete(paquete);
             }
+            //Al salir del bucle - reinicio la colección de clases
             clases = null;
+            //e interrumpo el manejador de clases.
             elManejadorThread.interrupt();
         } catch (SocketException e) {
         } catch (UnknownHostException e) {
@@ -127,6 +131,8 @@ public class Escuchador implements Runnable {
             if (laClase.getHash().equals(nuevoId)) {
                 //Configuro la bandera en falso
                 flag = false;
+                //y reinicio el contador de timeout de la clase
+                //ya que aún se está anunciando
                 laClase.resetTimeOut();
             } else {
             }
@@ -135,6 +141,7 @@ public class Escuchador implements Runnable {
         if (flag) {
             //Creo la clase
             InfoClase laClase = new InfoClase(paquete);
+            //Agrego la clase a la lista
             agregarClase(laClase);
         } else {
             //Si no, imprimo un mensaje
@@ -153,7 +160,9 @@ public class Escuchador implements Runnable {
     }
 
     private void imprimirClases() {
+        //Itero a través de las clases
         for (Iterator<InfoClase> it = clases.iterator(); it.hasNext();) {
+            //e imprimo la información de la misma.
             it.next().imprimeInfo();
         }
     }
