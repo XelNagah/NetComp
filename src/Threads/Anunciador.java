@@ -32,11 +32,12 @@ public class Anunciador implements Runnable {
     final String hash = UUID.randomUUID().toString();
 
     //Constructor
-    public Anunciador(String ip, int puerto, String nombreClase, Boolean tieneContrasenia, String descripcion) {
+    public Anunciador(String ip, int puerto, String nombreClase, Boolean tieneContrasenia, String profesor, String descripcion) {
         this.ip = ip;
         Anunciador.puerto = puerto;
         Anunciador.nombreClase = nombreClase;
         this.boolPass = tieneContrasenia;
+        this.profesor = profesor;
         this.descripcion = descripcion;
         this.dataString = generarString();
     }
@@ -103,6 +104,7 @@ public class Anunciador implements Runnable {
         paquete = GenTools.XMLAppend("puerto", Integer.toString(puerto), paquete);
         paquete = GenTools.XMLAppend("nombre", nombreClase, paquete);
         paquete = GenTools.XMLAppend("boolpass", tieneCont, paquete);
+        paquete = GenTools.XMLAppend("profesor", profesor, paquete);
         paquete = GenTools.XMLAppend("descripcion", descripcion, paquete);
         paquete = GenTools.XMLAppend("UUID", hash, paquete);
         paquete = GenTools.XMLWrapper("msg", paquete);

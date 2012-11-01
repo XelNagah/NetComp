@@ -15,21 +15,22 @@ public class InfoClase {
     int puerto;
     String nombre;
     Boolean tieneContrasenia;
+    String profesor;
     String descripcion;
     String hash;
     private int timeOut;
     final int period = 6;
 
     //Constructor
-    
     public InfoClase(String stringInfoClase) {
         ip = GenTools.XMLParser("ip", stringInfoClase);
         puerto = Integer.parseInt(GenTools.XMLParser("puerto", stringInfoClase));
         nombre = GenTools.XMLParser("nombre", stringInfoClase);
         tieneContrasenia = Boolean.parseBoolean(GenTools.XMLParser("boolpass", stringInfoClase));
+        profesor = GenTools.XMLParser("profesor", stringInfoClase);
         descripcion = GenTools.XMLParser("descripcion", stringInfoClase);
         hash = GenTools.XMLParser("UUID", stringInfoClase);
-        timeOut  = period;
+        timeOut = period;
     }
 
     //Métodos
@@ -41,14 +42,6 @@ public class InfoClase {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
     public Boolean getTieneContrasenia() {
         return tieneContrasenia;
     }
@@ -57,22 +50,38 @@ public class InfoClase {
         this.tieneContrasenia = tieneContrasenia;
     }
 
+    public String getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(String profesor) {
+        this.profesor = profesor;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     public String getHash() {
         return hash;
     }
-    
+
     public int getTimeOut() {
         return timeOut;
     }
-    
+
     public void updateTimeOut(int i) {
         timeOut -= i;
     }
-    
-    public void resetTimeOut(){
+
+    public void resetTimeOut() {
         timeOut = period;
     }
-    
+
     public void imprimeInfo() {
         System.out.println("Ip: " + ip);
         System.out.println("Puerto: " + puerto);

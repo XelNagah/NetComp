@@ -4,6 +4,7 @@
  */
 package netcomp.GUI;
 
+import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -16,17 +17,21 @@ import netcomp.NetComp;
  */
 public class VtnCrearClase extends javax.swing.JFrame {
 
-    public JPasswordField getCrearContraseniaClase() {
-        return crearContraseniaClase;
+    public JPasswordField getCrearClaseContrasenia() {
+        return crearClaseContrasenia;
     }
 
-    public JTextArea getCrearDescripcionClase() {
-        return crearDescripcionClase;
+    public JTextArea getCrearClaseDescripcion() {
+        return crearClaseDescripcion;
     }
 
-    public JTextField getCrearNombreClase() {
-        return crearNombreClase;
+    public JTextField getCrearClaseNombre() {
+        return crearClaseNombre;
     }
+
+    public JTextField getCrearClaseProfesor() {
+        return crearClaseProfesor;
+    }    
 
     /**
      * Creates new form crearClase
@@ -54,14 +59,16 @@ public class VtnCrearClase extends javax.swing.JFrame {
         crearClaseTituloVentana = new javax.swing.JLabel();
         crearClaseSeparadorVentana = new javax.swing.JSeparator();
         crearClaseLabelNombre = new javax.swing.JLabel();
-        crearNombreClase = new javax.swing.JTextField();
+        crearClaseNombre = new javax.swing.JTextField();
         crearClaseLabelDescripcion = new javax.swing.JLabel();
-        crearClaseNombreContrasenia = new javax.swing.JLabel();
+        crearClaseLabelContrasenia = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        crearDescripcionClase = new javax.swing.JTextArea();
+        crearClaseDescripcion = new javax.swing.JTextArea();
         crearClaseBoton = new javax.swing.JButton();
-        crearContraseniaClase = new javax.swing.JPasswordField();
+        crearClaseContrasenia = new javax.swing.JPasswordField();
         cancelarCrearClaseBoton = new javax.swing.JButton();
+        crearClaseLabelProfesor = new javax.swing.JLabel();
+        crearClaseProfesor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -76,23 +83,23 @@ public class VtnCrearClase extends javax.swing.JFrame {
         crearClaseLabelNombre.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         crearClaseLabelNombre.setText("Nombre");
 
-        crearNombreClase.setText("Nombre de su clase");
-        crearNombreClase.addActionListener(new java.awt.event.ActionListener() {
+        crearClaseNombre.setText("Nombre de su clase");
+        crearClaseNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                crearNombreClaseActionPerformed(evt);
+                crearClaseNombreActionPerformed(evt);
             }
         });
 
         crearClaseLabelDescripcion.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         crearClaseLabelDescripcion.setText("Descripción");
 
-        crearClaseNombreContrasenia.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        crearClaseNombreContrasenia.setText("Contraseña");
+        crearClaseLabelContrasenia.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        crearClaseLabelContrasenia.setText("Contraseña");
 
-        crearDescripcionClase.setColumns(20);
-        crearDescripcionClase.setRows(5);
-        crearDescripcionClase.setText("Una descripción de su clase.");
-        jScrollPane1.setViewportView(crearDescripcionClase);
+        crearClaseDescripcion.setColumns(20);
+        crearClaseDescripcion.setRows(5);
+        crearClaseDescripcion.setText("Una descripción de su clase.");
+        jScrollPane1.setViewportView(crearClaseDescripcion);
 
         crearClaseBoton.setAction(new AccionCrearClaseMaestro(this));
         crearClaseBoton.setText("Crear Clase");
@@ -101,6 +108,16 @@ public class VtnCrearClase extends javax.swing.JFrame {
         cancelarCrearClaseBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelarCrearClaseBotonActionPerformed(evt);
+            }
+        });
+
+        crearClaseLabelProfesor.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        crearClaseLabelProfesor.setText("Profesor");
+
+        crearClaseProfesor.setText("Su nombre");
+        crearClaseProfesor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crearClaseProfesorActionPerformed(evt);
             }
         });
 
@@ -117,19 +134,23 @@ public class VtnCrearClase extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(crearClaseSeparadorVentana)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(crearClaseLabelDescripcion)
-                            .addComponent(crearClaseNombreContrasenia)
-                            .addComponent(crearClaseLabelNombre))
+                        .addComponent(crearClaseLabelDescripcion)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(crearNombreClase)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
-                            .addComponent(crearContraseniaClase)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cancelarCrearClaseBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(crearClaseBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(crearClaseBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(crearClaseLabelContrasenia)
+                            .addComponent(crearClaseLabelNombre)
+                            .addComponent(crearClaseLabelProfesor))
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(crearClaseNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                            .addComponent(crearClaseContrasenia)
+                            .addComponent(crearClaseProfesor))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -142,28 +163,32 @@ public class VtnCrearClase extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(crearClaseLabelNombre)
-                    .addComponent(crearNombreClase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(crearClaseNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(crearClaseNombreContrasenia)
-                    .addComponent(crearContraseniaClase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(crearClaseLabelContrasenia)
+                    .addComponent(crearClaseContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(crearClaseLabelProfesor)
+                    .addComponent(crearClaseProfesor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(crearClaseLabelDescripcion)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cancelarCrearClaseBoton)
                     .addComponent(crearClaseBoton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void crearNombreClaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearNombreClaseActionPerformed
+    private void crearClaseNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearClaseNombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_crearNombreClaseActionPerformed
+    }//GEN-LAST:event_crearClaseNombreActionPerformed
 
     private void cancelarCrearClaseBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCrearClaseBotonActionPerformed
         // TODO add your handling code here:
@@ -175,6 +200,10 @@ public class VtnCrearClase extends javax.swing.JFrame {
     private void accionCerrarVentana(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_accionCerrarVentana
         this.dispose();
     }//GEN-LAST:event_accionCerrarVentana
+
+    private void crearClaseProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearClaseProfesorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_crearClaseProfesorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -213,14 +242,16 @@ public class VtnCrearClase extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelarCrearClaseBoton;
     private javax.swing.JButton crearClaseBoton;
+    private javax.swing.JPasswordField crearClaseContrasenia;
+    private javax.swing.JTextArea crearClaseDescripcion;
+    private javax.swing.JLabel crearClaseLabelContrasenia;
     private javax.swing.JLabel crearClaseLabelDescripcion;
     private javax.swing.JLabel crearClaseLabelNombre;
-    private javax.swing.JLabel crearClaseNombreContrasenia;
+    private javax.swing.JLabel crearClaseLabelProfesor;
+    private javax.swing.JTextField crearClaseNombre;
+    private javax.swing.JTextField crearClaseProfesor;
     private javax.swing.JSeparator crearClaseSeparadorVentana;
     private javax.swing.JLabel crearClaseTituloVentana;
-    private javax.swing.JPasswordField crearContraseniaClase;
-    private javax.swing.JTextArea crearDescripcionClase;
-    private javax.swing.JTextField crearNombreClase;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

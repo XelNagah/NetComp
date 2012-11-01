@@ -30,17 +30,18 @@ public class Clase {
     private Collection<Archivo> archivos;
 
     //Constructor
-    public Clase(String nombre, String descripcion, String contrasenia) {
+    public Clase(String nombre, String contrasenia, String profesor , String descripcion) {
         this.nombre = nombre;
-        this.descripcion = descripcion;
         this.contrasenia = contrasenia;
+        this.profesor = profesor;
+        this.descripcion = descripcion;
         ip = averiguarIp();
         this.puerto = 5008;
         Boolean pass = true;
         if (contrasenia == null || "".equals(contrasenia)) {
             pass = false;
         }
-        this.anunciador = new Anunciador(ip, puerto, nombre, pass, descripcion);
+        this.anunciador = new Anunciador(ip, puerto, nombre, pass, profesor, descripcion);
     }
 
     //Métodos
@@ -76,6 +77,14 @@ public class Clase {
         return puerto;
     }
 
+    public String getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(String profesor) {
+        this.profesor = profesor;
+    }
+    
     private String averiguarIp(){
         String laIp = null;
         try {

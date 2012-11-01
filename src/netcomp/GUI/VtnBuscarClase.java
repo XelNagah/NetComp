@@ -241,7 +241,7 @@ public class VtnBuscarClase extends JFrame {
                 case 0:
                     return laClase.getNombre();
                 case 1:
-                    return "El Profe";
+                    return laClase.getProfesor();
                 case 2:
                     return laClase.getDescripcion();
                 case 3:

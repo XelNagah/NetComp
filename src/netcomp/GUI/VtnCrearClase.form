@@ -35,22 +35,27 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="crearClaseSeparadorVentana" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="crearClaseLabelDescripcion" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="crearClaseNombreContrasenia" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="crearClaseLabelNombre" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="crearClaseLabelDescripcion" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="crearNombreClase" max="32767" attributes="0"/>
-                          <Component id="jScrollPane1" pref="274" max="32767" attributes="0"/>
-                          <Component id="crearContraseniaClase" alignment="0" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="jScrollPane1" pref="274" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="cancelarCrearClaseBoton" min="-2" pref="165" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="crearClaseBoton" min="-2" pref="165" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="crearClaseLabelContrasenia" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="crearClaseLabelNombre" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="crearClaseLabelProfesor" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="crearClaseNombre" pref="274" max="32767" attributes="0"/>
+                          <Component id="crearClaseContrasenia" alignment="0" max="32767" attributes="0"/>
+                          <Component id="crearClaseProfesor" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -67,24 +72,29 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="crearClaseLabelNombre" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="crearNombreClase" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="crearClaseNombre" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="crearClaseNombreContrasenia" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="crearContraseniaClase" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="crearClaseLabelContrasenia" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="crearClaseContrasenia" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="crearClaseLabelProfesor" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="crearClaseProfesor" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="12" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="crearClaseLabelDescripcion" min="-2" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="139" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="cancelarCrearClaseBoton" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="crearClaseBoton" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -108,12 +118,12 @@
         <Property name="text" type="java.lang.String" value="Nombre"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="crearNombreClase">
+    <Component class="javax.swing.JTextField" name="crearClaseNombre">
       <Properties>
         <Property name="text" type="java.lang.String" value="Nombre de su clase"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="crearNombreClaseActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="crearClaseNombreActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="crearClaseLabelDescripcion">
@@ -124,7 +134,7 @@
         <Property name="text" type="java.lang.String" value="Descripci&#xf3;n"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="crearClaseNombreContrasenia">
+    <Component class="javax.swing.JLabel" name="crearClaseLabelContrasenia">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dialog" size="14" style="1"/>
@@ -139,7 +149,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="crearDescripcionClase">
+        <Component class="javax.swing.JTextArea" name="crearClaseDescripcion">
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
@@ -156,7 +166,7 @@
         <Property name="text" type="java.lang.String" value="Crear Clase"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JPasswordField" name="crearContraseniaClase">
+    <Component class="javax.swing.JPasswordField" name="crearClaseContrasenia">
     </Component>
     <Component class="javax.swing.JButton" name="cancelarCrearClaseBoton">
       <Properties>
@@ -164,6 +174,22 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelarCrearClaseBotonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="crearClaseLabelProfesor">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Dialog" size="14" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Profesor"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="crearClaseProfesor">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Su nombre"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="crearClaseProfesorActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -21,6 +21,7 @@ public class AccionCrearClaseMaestro extends AbstractAction {
     private String nombre;
     private String contrasenia;
     private String descripcion;
+    private String profesor;
 
     public AccionCrearClaseMaestro(VtnCrearClase parent) {
         vtnClaseMaestro = new VtnClaseMaestro();
@@ -28,9 +29,10 @@ public class AccionCrearClaseMaestro extends AbstractAction {
     }
 
     private void prepararDatos(){
-        this.nombre = vtnCrearClase.getCrearNombreClase().getText();
-        this.contrasenia = new String(vtnCrearClase.getCrearContraseniaClase().getPassword());
-        this.descripcion = vtnCrearClase.getCrearDescripcionClase().getText();
+        this.nombre = vtnCrearClase.getCrearClaseNombre().getText();
+        this.contrasenia = new String(vtnCrearClase.getCrearClaseContrasenia().getPassword());
+        this.descripcion = vtnCrearClase.getCrearClaseDescripcion().getText();
+        this.profesor = vtnCrearClase.getCrearClaseProfesor().getText();
     }
     
     @Override
@@ -40,7 +42,7 @@ public class AccionCrearClaseMaestro extends AbstractAction {
         //Preparo los datos para instanciar el objeto
         prepararDatos();
         //Instancio el objeto "Clase"
-        Clase clase = new Clase(nombre, descripcion, contrasenia);
+        Clase clase = new Clase(nombre, contrasenia, profesor, descripcion);
         //Paso el objeto Clase a la ventana "Clase Maestro"
         vtnClaseMaestro.setClase(clase);
         //Muestro la ventana "Clase Maestro"
