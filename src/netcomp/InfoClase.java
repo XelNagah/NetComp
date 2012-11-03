@@ -82,6 +82,16 @@ public class InfoClase {
         timeOut = period;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public int getPuerto() {
+        return puerto;
+    }
+    
+    
+
     public void imprimeInfo() {
         System.out.println("Ip: " + ip);
         System.out.println("Puerto: " + puerto);

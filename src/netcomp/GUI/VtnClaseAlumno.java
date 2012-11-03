@@ -4,6 +4,14 @@
  */
 package netcomp.GUI;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import netcomp.Alumno;
 import netcomp.GUI.acciones.AccionAbout;
 import netcomp.NetComp;
 
@@ -13,11 +21,36 @@ import netcomp.NetComp;
  */
 public class VtnClaseAlumno extends javax.swing.JFrame {
 
+    private Alumno alumno;
+
     /**
      * Creates new form VtnClase
      */
     public VtnClaseAlumno() {
         initComponents();
+    }
+
+    public Alumno getAlumno() {
+        return alumno;
+    }
+
+    public void setAlumno(Alumno alumno) {
+        this.alumno = alumno;
+    }
+
+    public void conectar() {
+        try {
+            Socket elSocket = alumno.getSocket();
+            System.out.println("Intento conectarme a: " + elSocket);
+            BufferedReader in = new BufferedReader(new InputStreamReader(elSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(elSocket.getOutputStream(),true);
+            out.println("Soy el alumno " + alumno.getNombre() + " " + alumno.getApellido());
+            out.println("bye.");
+            elSocket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(VtnClaseAlumno.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+        }
     }
 
     /**

@@ -5,6 +5,9 @@
 package netcomp;
 
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,14 +17,16 @@ public class Alumno {
     String nombre;
     String apellido;
     String ip;
-    int puerto;
     Socket socket;
 
-    public Alumno(String nombre, String apellido, String ip, int puerto) {
+    public Alumno(String nombre, String apellido) {
         this.nombre = nombre;
         this.apellido = apellido;
-        this.ip = ip;
-        this.puerto = puerto;
+        try {
+            this.ip = GenTools.getIp(true, false).toString();
+        } catch (SocketException ex) {
+            Logger.getLogger(Alumno.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String getNombre() {
@@ -40,19 +45,13 @@ public class Alumno {
         this.apellido = apellido;
     }
 
-    public String getIp() {
-        return ip;
+    public Socket getSocket() {
+        return socket;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+        System.out.println("Me setearon el socket: " + socket);
     }
-
-    public int getPuerto() {
-        return puerto;
-    }
-
-    public void setPuerto(int puerto) {
-        this.puerto = puerto;
-    }
+    
 }

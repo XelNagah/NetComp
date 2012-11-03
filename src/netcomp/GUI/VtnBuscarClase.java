@@ -162,7 +162,7 @@ public class VtnBuscarClase extends JFrame {
 
     private void vntBuscarClaseClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_vntBuscarClaseClosing
         escuchadorThread.interrupt();
-        this.dispose();
+        dispose();
         NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_vntBuscarClaseClosing
 
