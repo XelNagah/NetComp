@@ -58,7 +58,7 @@ public class Anunciador implements Runnable {
             //Configuro la dirección de broadcast
             sendPacket.setAddress(InetAddress.getByName("255.255.255.255"));
             //Configuro el puerto
-            sendPacket.setPort(puerto);
+            sendPacket.setPort(5008);
             //Armo el paquete
             String paquete = dataString;
             //configuro los datos en el paquete

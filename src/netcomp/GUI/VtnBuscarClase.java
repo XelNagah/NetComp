@@ -7,6 +7,7 @@ package netcomp.GUI;
 import Threads.Escuchador;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -23,6 +24,7 @@ public class VtnBuscarClase extends JFrame {
     private Escuchador escuchador;
     private Thread escuchadorThread;
     private CustomDataModel modeloDatos;
+    private ArrayList<InfoClase> clases;
 
     /**
      * Creates new form buscarClaseVtn
@@ -31,12 +33,21 @@ public class VtnBuscarClase extends JFrame {
         //Creo un escuchador (Si creo primero los componentes, la tabla no sabe cuantas rondas debe tener)
         escuchador = new Escuchador();
         modeloDatos = new CustomDataModel();
+        clases = escuchador.getClases();
         //Establezco los componentes de la ventana
         initComponents();
         //Establezco título.
         setTitle("Buscador de Clases");
     }
 
+    public ArrayList<InfoClase> getClases() {
+        return clases;
+    }
+
+    public JTable getTabla() {
+        return buscarClasesTabla;
+    }
+    
     private void refreshTable() {
         buscarClasesTabla.repaint();
     }
@@ -82,6 +93,11 @@ public class VtnBuscarClase extends JFrame {
         buscarClasesTabla.setModel(modeloDatos);
         buscarClasesTabla.getModel().addTableModelListener(modeloDatos);
         buscarClasesTabla.getTableHeader().setReorderingAllowed(false);
+        buscarClasesTabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buscarClasesTablaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(buscarClasesTabla);
 
         jLabel1.setFont(new java.awt.Font("Gentium", 1, 18)); // NOI18N
@@ -150,6 +166,10 @@ public class VtnBuscarClase extends JFrame {
         NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_vntBuscarClaseClosing
 
+    private void buscarClasesTablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buscarClasesTablaMouseClicked
+        //System.out.println(buscarClasesTabla.getSelectedRow());
+    }//GEN-LAST:event_buscarClasesTablaMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -212,7 +232,7 @@ public class VtnBuscarClase extends JFrame {
         public String getColumnName(int col) {
             return columnNames[col];
         }
-
+        
         @Override
         public int getRowCount() {
             if (escuchador.getClases() != null) {

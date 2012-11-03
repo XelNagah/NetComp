@@ -5,8 +5,10 @@
 package netcomp;
 
 import Threads.Anunciador;
+import Threads.ManejadorDeConexiones;
+import java.io.IOException;
 import java.net.SocketException;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.GUI.VtnClaseMaestro;
@@ -26,22 +28,24 @@ public class Clase {
     private int puerto;
     private Anunciador anunciador;
     private Thread anunciadorThread;
-    private Collection<Alumno> alumnos;
-    private Collection<Archivo> archivos;
+    private ManejadorDeConexiones manejadorDeConexiones;
+    private ArrayList<Alumno> alumnos;
+    private ArrayList<Archivo> archivos;
 
     //Constructor
-    public Clase(String nombre, String contrasenia, String profesor , String descripcion) {
+    public Clase(String nombre, String contrasenia, String profesor, String descripcion) {
         this.nombre = nombre;
         this.contrasenia = contrasenia;
         this.profesor = profesor;
         this.descripcion = descripcion;
         ip = averiguarIp();
-        this.puerto = 5008;
+        this.puerto = encontrarPuerto();
         Boolean pass = true;
         if (contrasenia == null || "".equals(contrasenia)) {
             pass = false;
         }
         this.anunciador = new Anunciador(ip, puerto, nombre, pass, profesor, descripcion);
+        this.manejadorDeConexiones = new ManejadorDeConexiones(puerto, alumnos);
     }
 
     //Métodos
@@ -84,8 +88,17 @@ public class Clase {
     public void setProfesor(String profesor) {
         this.profesor = profesor;
     }
-    
-    private String averiguarIp(){
+
+    private int encontrarPuerto() {
+        try {
+            return GenTools.findFreePort();
+        } catch (IOException ex) {
+            Logger.getLogger(Clase.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+
+    private String averiguarIp() {
         String laIp = null;
         try {
             //Averiguo mi dirección ip y la seteo
@@ -95,7 +108,7 @@ public class Clase {
         }
         return laIp;
     }
-    
+
     public void anunciar() {
 
         if (anunciadorThread != null && !anunciadorThread.isInterrupted()) {
@@ -103,6 +116,7 @@ public class Clase {
         }
         anunciadorThread = new Thread(anunciador);
         anunciadorThread.start();
+        new Thread(manejadorDeConexiones).start();
     }
 
     public void dejarDeAnunciar() {

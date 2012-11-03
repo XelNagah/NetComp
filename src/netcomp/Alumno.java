@@ -4,6 +4,8 @@
  */
 package netcomp;
 
+import java.net.Socket;
+
 /**
  *
  * @author zerg
@@ -13,6 +15,7 @@ public class Alumno {
     String apellido;
     String ip;
     int puerto;
+    Socket socket;
 
     public Alumno(String nombre, String apellido, String ip, int puerto) {
         this.nombre = nombre;

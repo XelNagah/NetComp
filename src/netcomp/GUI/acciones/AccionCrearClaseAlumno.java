@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import netcomp.GUI.VtnBuscarClase;
 import netcomp.GUI.VtnClaseAlumno;
+import netcomp.InfoClase;
 
 /**
  *
@@ -17,6 +18,7 @@ public class AccionCrearClaseAlumno extends AbstractAction {
 
     static VtnClaseAlumno vtnClaseAlumno;
     VtnBuscarClase vtnBuscarClase;
+    InfoClase clase;
     
     public AccionCrearClaseAlumno(VtnBuscarClase parent) {
         vtnClaseAlumno = new VtnClaseAlumno();
@@ -29,7 +31,7 @@ public class AccionCrearClaseAlumno extends AbstractAction {
         vtnBuscarClase.dispose();
         vtnClaseAlumno.setVisible(true);
         vtnClaseAlumno.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
+        (vtnBuscarClase.getClases().get(vtnBuscarClase.getTabla().getSelectedRow())).imprimeInfo();
     }
     
 }
