@@ -43,8 +43,11 @@ public class AccionCrearClaseMaestro extends AbstractAction {
         prepararDatos();
         //Instancio el objeto "Clase"
         Clase clase = new Clase(nombre, contrasenia, profesor, descripcion);
+        System.out.println("Puero de escucha: " + clase.getPuerto());
         //Paso el objeto Clase a la ventana "Clase Maestro"
         vtnClaseMaestro.setClase(clase);
+        //Configuro el título de la ventana
+        vtnClaseMaestro.setTitle("Clase - " + clase.getNombre());
         //Muestro la ventana "Clase Maestro"
         vtnClaseMaestro.setVisible(true);
         //Inicio el anunciador de la clase

@@ -4,7 +4,6 @@
  */
 package netcomp.GUI;
 
-import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -31,7 +30,7 @@ public class VtnCrearClase extends javax.swing.JFrame {
 
     public JTextField getCrearClaseProfesor() {
         return crearClaseProfesor;
-    }    
+    }
 
     /**
      * Creates new form crearClase
@@ -41,12 +40,10 @@ public class VtnCrearClase extends javax.swing.JFrame {
         setTitle("Crear una clase - Parámetros");
         setResizable(false);
     }
-    
     //Creación de ventanas del programa
     //Ventana Clase Maestro
     VtnClaseMaestro vtnClaseMaestro = new VtnClaseMaestro();
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -191,14 +188,17 @@ public class VtnCrearClase extends javax.swing.JFrame {
     }//GEN-LAST:event_crearClaseNombreActionPerformed
 
     private void cancelarCrearClaseBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCrearClaseBotonActionPerformed
-        // TODO add your handling code here:
         setVisible(false);
+        this.dispose();
         NetComp.vtnPrincipal.setVisible(true);
         initComponents();
     }//GEN-LAST:event_cancelarCrearClaseBotonActionPerformed
 
     private void accionCerrarVentana(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_accionCerrarVentana
+        setVisible(false);
         this.dispose();
+        NetComp.vtnPrincipal.setVisible(true);
+        //initComponents();
     }//GEN-LAST:event_accionCerrarVentana
 
     private void crearClaseProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearClaseProfesorActionPerformed
