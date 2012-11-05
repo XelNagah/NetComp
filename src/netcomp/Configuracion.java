@@ -16,63 +16,84 @@ import org.ini4j.Wini;
  */
 public class Configuracion {
 
-    private String nombre;
-    private String apellido;
-    private String curso;
+    private static String nombre;
+    private static String apellido;
+    private static String curso;
     private final static String FILENAME = "config.ini";
     private final static String SECCION = "configuracion";
 
     public Configuracion() {
         try {
-            nombre = leer(FILENAME,SECCION,"nombre");
-            apellido = leer(FILENAME,SECCION,"apellido");
-            curso = leer(FILENAME,SECCION,"curso");
+            nombre = leer(FILENAME, SECCION, "nombre");
+            apellido = leer(FILENAME, SECCION, "apellido");
+            curso = leer(FILENAME, SECCION, "curso");
         } catch (IOException ex) {
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public static void inicializar() {
+        try {
+            nombre = leer(FILENAME, SECCION, "nombre");
+            apellido = leer(FILENAME, SECCION, "apellido");
+            curso = leer(FILENAME, SECCION, "curso");
+        } catch (IOException ex) {
+            Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+
+    public static void setNombre(String nombre) {
+        Configuracion.nombre = nombre;
     }
-    public void setCurso(String curso) {
-        this.curso = curso;
+
+    public static void setApellido(String apellido) {
+        Configuracion.apellido = apellido;
     }
-        
-    public String getNombre() {
+
+    public static void setCurso(String curso) {
+        Configuracion.curso = curso;
+    }
+
+    public static String getNombre() {
         return nombre;
     }
-    public String getApellido() {
+
+    public static String getApellido() {
         return apellido;
     }
-    public String getCurso() {
+
+    public static String getCurso() {
         return curso;
     }
-    
-    public void guardar() throws IOException {
+
+    public static String primeraVez() {
+        try {
+            return leer(FILENAME, SECCION, "primeraVez");
+        } catch (IOException ex) {
+            Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public static void guardar() throws IOException {
         Wini ini = new Wini(new File(FILENAME));
-        
-        ini.put(SECCION,"nombre",nombre);
-        ini.put(SECCION,"apellido",apellido);
-        ini.put(SECCION,"curso",curso);
+
+        ini.put(SECCION, "primeraVez", "0");
+        ini.put(SECCION, "nombre", nombre);
+        ini.put(SECCION, "apellido", apellido);
+        ini.put(SECCION, "curso", curso);
         ini.store();
     }
-    
-    static String leer(String filename, String seccion, String campo) throws IOException
-    {
+
+    static String leer(String filename, String seccion, String campo) throws IOException {
         Wini ini = new Wini(new File(filename));
         return ini.get(seccion, campo, String.class);
     }
-    
-    static void guardar(String filename, String seccion, String campo, String valor) throws IOException 
-    {
+
+    static void guardar(String filename, String seccion, String campo, String valor) throws IOException {
         Wini ini = new Wini(new File(filename));
 
-        ini.put(seccion,campo,valor);
+        ini.put(seccion, campo, valor);
         ini.store();
     }
-    
 }

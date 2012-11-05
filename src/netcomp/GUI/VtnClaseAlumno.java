@@ -40,12 +40,16 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
 
     public void conectar() {
         try {
+            //Obtengo el socket del alumno
             Socket elSocket = alumno.getSocket();
-            System.out.println("Intento conectarme a: " + elSocket);
+            //System.out.println("Intento conectarme a: " + elSocket);
+            //Creo un input strem reader
             BufferedReader in = new BufferedReader(new InputStreamReader(elSocket.getInputStream()));
+            //Creo un output stream writer
             PrintWriter out = new PrintWriter(elSocket.getOutputStream(),true);
             out.println("Soy el alumno " + alumno.getNombre() + " " + alumno.getApellido());
             out.println("bye.");
+            //Ciero el socket.
             elSocket.close();
         } catch (IOException ex) {
             Logger.getLogger(VtnClaseAlumno.class.getName()).log(Level.SEVERE, null, ex);

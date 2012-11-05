@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import netcomp.Alumno;
+import netcomp.Configuracion;
 import netcomp.GUI.VtnBuscarClase;
 import netcomp.GUI.VtnClaseAlumno;
 import netcomp.InfoClase;
@@ -33,24 +34,41 @@ public class AccionCrearClaseAlumno extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+        //Averiguo que clase está seleccionada en la tabla
         int index = vtnBuscarClase.getTabla().getSelectedRow();
         if (index >= 0) {
+            //Creo la clase
             InfoClase laClase = vtnBuscarClase.getClases().get(index);
+            //Le digo a la ventana de buscar clases que deje de escuchar
             vtnBuscarClase.dejarDeEscuchar();
+            //Escondo el buscador de clases
             vtnBuscarClase.dispose();
-            Alumno elAlumno = new Alumno("Juan", "Perez");
+            //Creo un alumno con los datos de la configuración de NetComp
+            Alumno elAlumno = crearAlumno();
+            //Me conecto a la clase y encuentro un socket.
             Socket unSocket = conectar(laClase);
             System.out.println(unSocket);
+            //Configuro el socket en el alumno
             elAlumno.setSocket(unSocket);
-            System.out.println("Seteo el Socket al alumo en: " + laClase.getNombre() + " en el puerto " + laClase.getPuerto());
+            System.out.println("Seteo el Socket al alumno en: " + laClase.getNombre() + " en el puerto " + laClase.getPuerto());
+            //Configuro el alumno a la ventana de clase de alumno
             vtnClaseAlumno.setAlumno(elAlumno);
+            //Le digo a la ventana de clase de alumno que se conecte a la clase.
             vtnClaseAlumno.conectar();
             vtnClaseAlumno.setVisible(true);
             vtnClaseAlumno.setTitle("Clase NetComp - " + laClase.getNombre());
             vtnClaseAlumno.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
             //laClase.imprimeInfo();
         } else {
+            //Si no hay nada seleccionado en la tabla de clases, no hago nada.
         }
+    }
+    
+    private Alumno crearAlumno(){
+        String nombre;
+        nombre = Configuracion.getNombre();
+        String apellido = Configuracion.getApellido();
+        return new Alumno(nombre,apellido);
     }
     
     private Socket conectar(InfoClase laClase){
@@ -58,7 +76,7 @@ public class AccionCrearClaseAlumno extends AbstractAction {
         int puerto = laClase.getPuerto();
         Socket elSocket;
         try {
-            System.out.println("Intento conectarme a " + ip + ":" + puerto);
+            //System.out.println("Intento conectarme a " + ip + ":" + puerto);
             elSocket = new Socket(ip, puerto);
             return elSocket;
         } catch (UnknownHostException ex) {

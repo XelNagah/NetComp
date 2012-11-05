@@ -15,7 +15,7 @@ import netcomp.Configuracion;
  */
 public class VtnConfiguracion extends javax.swing.JFrame {
 
-    public Configuracion config = new Configuracion();
+    //public Configuracion config = new Configuracion();
     
     /**
      * Creates new form VntConfiguracion
@@ -160,11 +160,11 @@ public class VtnConfiguracion extends javax.swing.JFrame {
     }//GEN-LAST:event_configuracionBotonCancelarActionPerformed
 
     private void configuracionBotonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionBotonGuardarActionPerformed
-        config.setNombre(configNombre.getText());
-        config.setApellido(configApellido.getText());
-        config.setCurso(configCurso.getText());
+        Configuracion.setNombre(configNombre.getText());
+        Configuracion.setApellido(configApellido.getText());
+        Configuracion.setCurso(configCurso.getText());
         try {
-            config.guardar();
+            Configuracion.guardar();
         } catch (IOException ex) {
             Logger.getLogger(VtnConfiguracion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -220,8 +220,9 @@ public class VtnConfiguracion extends javax.swing.JFrame {
 
 
     final public void init(){
-        configNombre.setText(config.getNombre());
-        configApellido.setText(config.getApellido());
-        configCurso.setText(config.getCurso());
+        Configuracion.inicializar();
+        configNombre.setText(Configuracion.getNombre());
+        configApellido.setText(Configuracion.getApellido());
+        configCurso.setText(Configuracion.getCurso());
     }
 }

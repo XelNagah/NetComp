@@ -4,6 +4,7 @@
  */
 package netcomp.GUI;
 
+import netcomp.Configuracion;
 import netcomp.GUI.acciones.AccionAbout;
 import netcomp.GUI.acciones.AccionConfiguracion;
 import netcomp.GUI.acciones.AccionVtnBuscarClase;
@@ -21,11 +22,10 @@ public class VtnPrincipal extends javax.swing.JFrame {
         initComponents();
         setTitle("NetComp");
     }
-
     //Creación de ventanas del programa
     //Ventana Configuración de Clases
-    VtnConfiguracion configuracion = new VtnConfiguracion();
-    
+//    VtnConfiguracion configuracion = new VtnConfiguracion();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

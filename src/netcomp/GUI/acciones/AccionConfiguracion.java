@@ -14,7 +14,7 @@ import netcomp.GUI.VtnConfiguracion;
  */
 public class AccionConfiguracion extends AbstractAction {
 
-    static VtnConfiguracion vtnConfiguracion;
+    public static VtnConfiguracion vtnConfiguracion;
     
     public AccionConfiguracion(){
         vtnConfiguracion = new VtnConfiguracion();
