@@ -68,8 +68,8 @@ public class GenTools {
 
     public static String XMLParser(String tag, String elString) {
         String[] vector = elString.split("<" + tag + ">|<\\/" + tag + ">");
-        System.out.println(vector[0]);
-        System.out.println(vector[1]);
+        //System.out.println(vector[0]);
+        //System.out.println(vector[1]);
         //System.out.println(vector[2]);
         if (vector.length < 2) {
             return null;
