@@ -65,8 +65,8 @@ public class AccionCrearClaseAlumno extends AbstractAction {
     }
     
     private Alumno crearAlumno(){
-        String nombre;
-        nombre = Configuracion.getNombre();
+        Configuracion.inicializar();
+        String nombre = Configuracion.getNombre();
         String apellido = Configuracion.getApellido();
         return new Alumno(nombre,apellido);
     }
@@ -76,7 +76,6 @@ public class AccionCrearClaseAlumno extends AbstractAction {
         int puerto = laClase.getPuerto();
         Socket elSocket;
         try {
-            //System.out.println("Intento conectarme a " + ip + ":" + puerto);
             elSocket = new Socket(ip, puerto);
             return elSocket;
         } catch (UnknownHostException ex) {

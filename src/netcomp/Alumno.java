@@ -4,6 +4,7 @@
  */
 package netcomp;
 
+import java.io.Serializable;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.logging.Level;
@@ -13,11 +14,11 @@ import java.util.logging.Logger;
  *
  * @author zerg
  */
-public class Alumno {
+public class Alumno implements Serializable {
     String nombre;
     String apellido;
     String ip;
-    Socket socket;
+    transient Socket socket;
 
     public Alumno(String nombre, String apellido) {
         this.nombre = nombre;
@@ -51,7 +52,6 @@ public class Alumno {
 
     public void setSocket(Socket socket) {
         this.socket = socket;
-        System.out.println("Me setearon el socket: " + socket);
     }
     
 }

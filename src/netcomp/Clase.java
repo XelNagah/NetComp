@@ -4,8 +4,8 @@
  */
 package netcomp;
 
-import Threads.Anunciador;
-import Threads.ManejadorDeConexiones;
+import Threads.ClaseMaestro.Anunciador;
+import Threads.ClaseMaestro.ManejadorDeConexiones;
 import java.io.IOException;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -44,6 +44,7 @@ public class Clase {
         if (contrasenia == null || "".equals(contrasenia)) {
             pass = false;
         }
+        this.alumnos = new ArrayList<Alumno>();
         this.anunciador = new Anunciador(ip, puerto, nombre, pass, profesor, descripcion);
         this.manejadorDeConexiones = new ManejadorDeConexiones(puerto, alumnos);
     }

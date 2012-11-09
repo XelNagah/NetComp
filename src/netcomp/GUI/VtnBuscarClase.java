@@ -4,7 +4,7 @@
  */
 package netcomp.GUI;
 
-import Threads.Escuchador;
+import Threads.BuscadorDeClases.Escuchador;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JTable;
