@@ -42,7 +42,7 @@ public class ManejadorDeClases implements Runnable {
                 laClase.updateTimeOut(period);
             }
             try {
-                //Repetir casa period segundos
+                //Repetir cada 'period' segundos
                 Thread.sleep(period*1000);
             } catch (InterruptedException ex) {
                 //Si me interrumpen, salir del bucle.

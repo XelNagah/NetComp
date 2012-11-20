@@ -4,6 +4,9 @@
  */
 package netcomp.GUI;
 
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import netcomp.Clase;
 import netcomp.GUI.acciones.AccionAbout;
 import netcomp.NetComp;
@@ -17,8 +20,8 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     /**
      * Creates new form VtnClase
      */
-    
     Clase clase;
+    AbstractListModel listModel;
 
     public Clase getClase() {
         return clase;
@@ -27,19 +30,27 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     public void setClase(Clase clase) {
         this.clase = clase;
     }
-    
+
+    public JList getjList() {
+        return jList1;
+    }
+
     public VtnClaseMaestro() {
         initComponents();
     }
 
-    public void anunciar(){
+    public void anunciar() {
         clase.anunciar();
     }
-    
-    public void dejarDeAnunciar(){
+
+    public AbstractListModel getListModel() {
+        return listModel;
+    }
+
+    public void dejarDeAnunciar() {
         clase.dejarDeAnunciar();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -74,11 +85,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
             }
         });
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Alumno1", "Alumno2", "Alumno3", "...", "AlumnoN" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        jList1.setModel(listModel = new CustomListModel());
         jScrollPane1.setViewportView(jList1);
 
         jMenu2.setText("Archivo");
@@ -148,8 +155,8 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(564, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(560, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -229,4 +236,29 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables
+
+    class CustomListModel extends DefaultListModel {
+
+        @Override
+        public int getSize() {
+            if (clase == null) {
+                return 0;
+            }
+            if (clase.getAlumnos() != null) {
+                return clase.getAlumnos().size();
+            } else {
+                return 0;
+            }
+        }
+
+        @Override
+        public Object getElementAt(int i) {
+            return clase.getAlumnos(i).getNombre() + ' ' + clase.getAlumnos(i).getApellido();
+        }
+
+        @Override
+        protected void fireContentsChanged(Object source, int index0, int index1) {
+            super.fireContentsChanged(source, index0, index1);
+        }
+    }
 }

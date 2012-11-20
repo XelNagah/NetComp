@@ -41,7 +41,6 @@ public class Escuchador implements Runnable {
     }
 
     synchronized public void escuchar() {
-        //clases = new ArrayList<InfoClase>();
         DatagramSocket socket;
         try {
             //Creo el socket
@@ -71,7 +70,7 @@ public class Escuchador implements Runnable {
                 socket.receive(packet);
                 //Convierto el paquete a String.
                 String paquete = new String(packet.getData(),"UTF-8");
-                //Hago Algo
+                //Hago algo con el paquete
                 manejarPaquete(paquete);
             }
             //Al salir del bucle - reinicio la colección de clases

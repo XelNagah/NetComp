@@ -4,7 +4,7 @@
  */
 package netcomp.GUI;
 
-import Threads.ClaseAlumno.ManejadorDeClase;
+import Threads.ClaseAlumno.ManejadorAlumnoRS;
 import netcomp.Alumno;
 import netcomp.GUI.acciones.AccionAbout;
 import netcomp.NetComp;
@@ -16,7 +16,8 @@ import netcomp.NetComp;
 public class VtnClaseAlumno extends javax.swing.JFrame {
 
     private Alumno alumno;
-    private Thread ManejadorDeClaseThread;
+    private ManejadorAlumnoRS manejadorAlumnoRS;
+    private Thread manejadorAlumnoRSThread;
 
     /**
      * Creates new form VtnClase
@@ -33,9 +34,10 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
         this.alumno = alumno;
     }
 
-    public void conectar() {      
-            ManejadorDeClaseThread = new Thread(new ManejadorDeClase(this,alumno));
-            ManejadorDeClaseThread.start();
+    public void conectar() {
+        manejadorAlumnoRS = new ManejadorAlumnoRS(this, alumno);
+        manejadorAlumnoRSThread = new Thread(manejadorAlumnoRS);
+        manejadorAlumnoRSThread.start();
     }
 
     /**

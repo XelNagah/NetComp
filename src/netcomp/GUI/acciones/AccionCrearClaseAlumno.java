@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import netcomp.Alumno;
+import netcomp.ConexionAlumno;
 import netcomp.Configuracion;
 import netcomp.GUI.VtnBuscarClase;
 import netcomp.GUI.VtnClaseAlumno;
@@ -23,9 +24,10 @@ import netcomp.InfoClase;
  */
 public class AccionCrearClaseAlumno extends AbstractAction {
 
-    static VtnClaseAlumno vtnClaseAlumno;
+    public static VtnClaseAlumno vtnClaseAlumno;
     VtnBuscarClase vtnBuscarClase;
     InfoClase clase;
+    ConexionAlumno conexion;
 
     public AccionCrearClaseAlumno(VtnBuscarClase parent) {
         vtnClaseAlumno = new VtnClaseAlumno();
@@ -45,6 +47,7 @@ public class AccionCrearClaseAlumno extends AbstractAction {
             vtnBuscarClase.dispose();
             //Creo un alumno con los datos de la configuración de NetComp
             Alumno elAlumno = crearAlumno();
+            conexion = new ConexionAlumno(elAlumno,laClase);
             //Me conecto a la clase y encuentro un socket.
             Socket unSocket = conectar(laClase);
             System.out.println(unSocket);

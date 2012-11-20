@@ -19,7 +19,7 @@ import netcomp.GenTools;
  *
  * @author zerg
  */
-public class ManejadorDeClase implements Runnable {
+public class ManejadorAlumnoRS implements Runnable {
 
     boolean corriendo = true;
     long periodo = 300;
@@ -27,7 +27,7 @@ public class ManejadorDeClase implements Runnable {
     Alumno alumno;
     Socket socket;
 
-    public ManejadorDeClase(VtnClaseAlumno laVentana, Alumno elAlumno) {
+    public ManejadorAlumnoRS(VtnClaseAlumno laVentana, Alumno elAlumno) {
         ventana = laVentana;
         alumno = elAlumno;
         socket = elAlumno.getSocket();
@@ -47,7 +47,7 @@ public class ManejadorDeClase implements Runnable {
                 oos.flush();
                 out.println("bye.");
             } catch (IOException ex) {
-                Logger.getLogger(ManejadorDeClase.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
                 corriendo = false;
                 break;
@@ -55,10 +55,9 @@ public class ManejadorDeClase implements Runnable {
                 try {
                     oos.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(ManejadorDeClase.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            //Hacer algo
         }
     }
 

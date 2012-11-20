@@ -122,9 +122,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Nombre de su clase"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="crearClaseNombreActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="crearClaseLabelDescripcion">
       <Properties>
@@ -188,9 +185,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Su nombre"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="crearClaseProfesorActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

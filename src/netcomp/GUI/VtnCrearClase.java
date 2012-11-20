@@ -81,11 +81,6 @@ public class VtnCrearClase extends javax.swing.JFrame {
         crearClaseLabelNombre.setText("Nombre");
 
         crearClaseNombre.setText("Nombre de su clase");
-        crearClaseNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                crearClaseNombreActionPerformed(evt);
-            }
-        });
 
         crearClaseLabelDescripcion.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         crearClaseLabelDescripcion.setText("Descripción");
@@ -112,11 +107,6 @@ public class VtnCrearClase extends javax.swing.JFrame {
         crearClaseLabelProfesor.setText("Profesor");
 
         crearClaseProfesor.setText("Su nombre");
-        crearClaseProfesor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                crearClaseProfesorActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -183,10 +173,6 @@ public class VtnCrearClase extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void crearClaseNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearClaseNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_crearClaseNombreActionPerformed
-
     private void cancelarCrearClaseBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCrearClaseBotonActionPerformed
         setVisible(false);
         this.dispose();
@@ -200,10 +186,6 @@ public class VtnCrearClase extends javax.swing.JFrame {
         NetComp.vtnPrincipal.setVisible(true);
         //initComponents();
     }//GEN-LAST:event_accionCerrarVentana
-
-    private void crearClaseProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearClaseProfesorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_crearClaseProfesorActionPerformed
 
     /**
      * @param args the command line arguments

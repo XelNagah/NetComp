@@ -5,7 +5,7 @@
 package netcomp;
 
 import Threads.ClaseMaestro.Anunciador;
-import Threads.ClaseMaestro.ManejadorDeConexiones;
+import Threads.ClaseMaestro.ManejadorConexiones;
 import java.io.IOException;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -26,9 +26,11 @@ public class Clase {
     private String contrasenia;
     private String ip;
     private int puerto;
+    private VtnClaseMaestro ventana;
     private Anunciador anunciador;
     private Thread anunciadorThread;
-    private ManejadorDeConexiones manejadorDeConexiones;
+    private ManejadorConexiones manejadorDeConexiones;
+    private Thread manejadorConexionesThread;
     private ArrayList<Alumno> alumnos;
     private ArrayList<Archivo> archivos;
 
@@ -46,50 +48,70 @@ public class Clase {
         }
         this.alumnos = new ArrayList<Alumno>();
         this.anunciador = new Anunciador(ip, puerto, nombre, pass, profesor, descripcion);
-        this.manejadorDeConexiones = new ManejadorDeConexiones(puerto, alumnos);
+        this.manejadorDeConexiones = new ManejadorConexiones(puerto, this);
     }
 
     //Métodos
     public String getNombre() {
         return nombre;
     }
-
+    
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    
     public String getDescripcion() {
         return descripcion;
     }
-
+    
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
+    
     public String getContrasenia() {
         return contrasenia;
     }
-
+    
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
-
+    
     public String getIp() {
         return ip;
     }
-
+    
     public int getPuerto() {
         return puerto;
     }
-
+    
     public String getProfesor() {
         return profesor;
     }
-
+    
     public void setProfesor(String profesor) {
         this.profesor = profesor;
     }
+    
+    public void addAlumno(Alumno elAlumno){
+        this.alumnos.add(elAlumno);
+    }
+    
+    public ArrayList<Alumno> getAlumnos() {
+        return alumnos;
+    }
+    
+    public Alumno getAlumnos(int i) {
+        return alumnos.get(i);
+    }
 
+    public VtnClaseMaestro getVentana() {
+        return ventana;
+    }
+
+    public void setVentana(VtnClaseMaestro ventana) {
+        this.ventana = ventana;
+    }
+    
     private int encontrarPuerto() {
         try {
             return GenTools.findFreePort();
@@ -98,7 +120,7 @@ public class Clase {
             return 0;
         }
     }
-
+    
     private String averiguarIp() {
         String laIp = null;
         try {
@@ -109,18 +131,20 @@ public class Clase {
         }
         return laIp;
     }
-
+    
     public void anunciar() {
-
+        
         if (anunciadorThread != null && !anunciadorThread.isInterrupted()) {
             anunciadorThread.interrupt();
         }
         anunciadorThread = new Thread(anunciador);
         anunciadorThread.start();
-        new Thread(manejadorDeConexiones).start();
+        manejadorConexionesThread = new Thread(manejadorDeConexiones);
+        manejadorConexionesThread.start();
     }
-
+    
     public void dejarDeAnunciar() {
         anunciadorThread.interrupt();
+        manejadorConexionesThread.interrupt();
     }
 }

@@ -16,7 +16,7 @@ import netcomp.GUI.VtnCrearClase;
  */
 public class AccionCrearClaseMaestro extends AbstractAction {
 
-    static VtnClaseMaestro vtnClaseMaestro;
+    public static VtnClaseMaestro vtnClaseMaestro;
     VtnCrearClase vtnCrearClase;
     private String nombre;
     private String contrasenia;
