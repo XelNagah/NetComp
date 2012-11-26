@@ -4,14 +4,18 @@
  */
 package Threads.ClaseAlumno;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.Alumno;
+import netcomp.ConexionAlumno;
 import netcomp.GUI.VtnClaseAlumno;
 import netcomp.GenTools;
 
@@ -25,38 +29,46 @@ public class ManejadorAlumnoRS implements Runnable {
     long periodo = 300;
     VtnClaseAlumno ventana;
     Alumno alumno;
-    Socket socket;
+    ServerSocket socketEscucha;
+    Socket socketRS;
+    int puerto;
+    ConexionAlumno conexion;
 
-    public ManejadorAlumnoRS(VtnClaseAlumno laVentana, Alumno elAlumno) {
-        ventana = laVentana;
+    public ManejadorAlumnoRS(Alumno elAlumno, int elPuerto, ConexionAlumno laConexion) {
         alumno = elAlumno;
-        socket = elAlumno.getSocket();
+        puerto = elPuerto;
+        conexion = laConexion;
+        System.out.println("ManejadorAlumnoRS Creado");
     }
 
     private void manejar() {
+        try {
+            System.out.println("ManejadorRS alumno Corriendo");
+            socketEscucha = new ServerSocket(puerto);
+            System.out.println("puertoRS = " + puerto);
+            socketRS = socketEscucha.accept();
+            System.out.println(socketRS);
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
+        }
         while (corriendo) {
-            ObjectOutputStream oos = null;
+            
             try {
                 Thread.sleep(periodo);
-                //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                //Creo un output stream writer
-                PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"), true);
-                out.println(GenTools.XMLGenerator("tipo", "conexion"));
-                oos = new ObjectOutputStream(socket.getOutputStream());
-                oos.writeObject(alumno);
-                oos.flush();
-                out.println("bye.");
+                BufferedReader in = new BufferedReader(new InputStreamReader(socketRS.getInputStream()));
+                PrintWriter out = new PrintWriter(new OutputStreamWriter(socketRS.getOutputStream(),"UTF-8"), true);
+                String mensaje;
+                mensaje = in.readLine();
+                System.out.println(mensaje);
+                puerto = Integer.parseInt(in.readLine());
+                System.out.println(mensaje);
+
+                
             } catch (IOException ex) {
                 Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
                 corriendo = false;
                 break;
-            } finally {
-                try {
-                    oos.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
         }
     }

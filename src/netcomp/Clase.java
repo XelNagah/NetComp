@@ -30,24 +30,33 @@ public class Clase {
     private Anunciador anunciador;
     private Thread anunciadorThread;
     private ManejadorConexiones manejadorDeConexiones;
-    private Thread manejadorConexionesThread;
+    private Thread manejadorDeConexionesThread;
     private ArrayList<Alumno> alumnos;
     private ArrayList<Archivo> archivos;
 
     //Constructor
     public Clase(String nombre, String contrasenia, String profesor, String descripcion) {
+        //Seteo nombre
         this.nombre = nombre;
+        //Seteo contraseña
         this.contrasenia = contrasenia;
+        //Seteo profesor
         this.profesor = profesor;
+        //Seteo descripcion
         this.descripcion = descripcion;
+        //seteo mi ip
         ip = averiguarIp();
+        //seteo mi puerto
         this.puerto = encontrarPuerto();
         Boolean pass = true;
         if (contrasenia == null || "".equals(contrasenia)) {
             pass = false;
         }
+        //Creo lista de alumnos
         this.alumnos = new ArrayList<Alumno>();
+        //Seteo el anunciador de clase
         this.anunciador = new Anunciador(ip, puerto, nombre, pass, profesor, descripcion);
+        //Seteo el manejador de conexiones
         this.manejadorDeConexiones = new ManejadorConexiones(puerto, this);
     }
 
@@ -132,19 +141,19 @@ public class Clase {
         return laIp;
     }
     
-    public void anunciar() {
+    public void iniciar() {
         
         if (anunciadorThread != null && !anunciadorThread.isInterrupted()) {
             anunciadorThread.interrupt();
         }
         anunciadorThread = new Thread(anunciador);
         anunciadorThread.start();
-        manejadorConexionesThread = new Thread(manejadorDeConexiones);
-        manejadorConexionesThread.start();
+        manejadorDeConexionesThread = new Thread(manejadorDeConexiones);
+        manejadorDeConexionesThread.start();
     }
     
-    public void dejarDeAnunciar() {
+    public void detener() {
         anunciadorThread.interrupt();
-        manejadorConexionesThread.interrupt();
+        manejadorDeConexionesThread.interrupt();
     }
 }

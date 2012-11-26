@@ -43,7 +43,7 @@ public class AccionCrearClaseMaestro extends AbstractAction {
         prepararDatos();
         //Instancio el objeto "Clase"
         Clase clase = new Clase(nombre, contrasenia, profesor, descripcion);
-        System.out.println("Puero de escucha: " + clase.getPuerto());
+        System.out.println("Puerto de escucha: " + clase.getPuerto());
         //Paso el objeto Clase a la ventana "Clase Maestro"
         vtnClaseMaestro.setClase(clase);
         //Configuro el título de la ventana
@@ -51,7 +51,7 @@ public class AccionCrearClaseMaestro extends AbstractAction {
         //Muestro la ventana "Clase Maestro"
         vtnClaseMaestro.setVisible(true);
         //Inicio el anunciador de la clase
-        vtnClaseMaestro.anunciar();
+        vtnClaseMaestro.iniciar();
         //Configuro la operación por defecto al cerrar la ventana "Clase Maestro"
         vtnClaseMaestro.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }

@@ -48,16 +48,9 @@ public class AccionCrearClaseAlumno extends AbstractAction {
             //Creo un alumno con los datos de la configuración de NetComp
             Alumno elAlumno = crearAlumno();
             conexion = new ConexionAlumno(elAlumno,laClase);
-            //Me conecto a la clase y encuentro un socket.
-            Socket unSocket = conectar(laClase);
-            System.out.println(unSocket);
-            //Configuro el socket en el alumno
-            elAlumno.setSocket(unSocket);
-            System.out.println("Seteo el Socket al alumno en: " + laClase.getNombre() + " en el puerto " + laClase.getPuerto());
             //Configuro el alumno a la ventana de clase de alumno
             vtnClaseAlumno.setAlumno(elAlumno);
-            //Le digo a la ventana de clase de alumno que se conecte a la clase.
-            vtnClaseAlumno.conectar();
+            vtnClaseAlumno.setConexionAlumno(conexion);
             vtnClaseAlumno.setVisible(true);
             vtnClaseAlumno.setTitle("Clase NetComp - " + laClase.getNombre());
             vtnClaseAlumno.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);

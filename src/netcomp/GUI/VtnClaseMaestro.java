@@ -39,16 +39,16 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         initComponents();
     }
 
-    public void anunciar() {
-        clase.anunciar();
+    public void iniciar() {
+        clase.iniciar();
     }
 
     public AbstractListModel getListModel() {
         return listModel;
     }
 
-    public void dejarDeAnunciar() {
-        clase.dejarDeAnunciar();
+    public void detener() {
+        clase.detener();
     }
 
     /**
@@ -173,13 +173,13 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
         dispose();
-        dejarDeAnunciar();
+        detener();
         NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void accionCerrarVentana(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_accionCerrarVentana
         dispose();
-        dejarDeAnunciar();
+        detener();
         NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_accionCerrarVentana
 

@@ -9,11 +9,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.Alumno;
 import netcomp.Clase;
+import netcomp.ConexionClase;
 import netcomp.GUI.VtnClaseMaestro;
 import netcomp.GUI.acciones.AccionCrearClaseMaestro;
 import netcomp.GenTools;
@@ -29,11 +32,18 @@ public class ManejadorClaseRS implements Runnable {
     long periodo = 300;
     Clase clase;
     VtnClaseMaestro ventana = AccionCrearClaseMaestro.vtnClaseMaestro;
+    ConexionClase conexion;
     private Socket socketRS;
+    private int puertoSR;
 
-    public ManejadorClaseRS(Socket elSocketRS, Clase laClase) {
+    public ManejadorClaseRS(Socket elSocketRS, Clase laClase, ConexionClase laConexion) {
         clase = laClase;
         socketRS = elSocketRS;
+        conexion = laConexion;
+    }
+
+    public int getPuertoSR() {
+        return puertoSR;
     }
 
     private void manejar() {
@@ -43,8 +53,15 @@ public class ManejadorClaseRS implements Runnable {
                 //Hacer algo
                 BufferedReader in = new BufferedReader(new InputStreamReader(socketRS.getInputStream(), "UTF-8"));
                 String linea;
+                linea = in.readLine();
+                System.out.println(linea);
+                linea = in.readLine();
+                puertoSR = Integer.parseInt(linea);
+                System.out.println(puertoSR);
+                conexion.conectarSR(puertoSR);
                 while (!"bye.".equals(linea = in.readLine())) {
-                    manejarMensaje(linea);
+                    //manejarMensaje(linea);
+                    System.out.println(linea);
                 }
                 socketRS.close();
                 corriendo = false;
@@ -71,7 +88,7 @@ public class ManejadorClaseRS implements Runnable {
         String tipo = GenTools.XMLParser("tipo", elMensaje);
         if ("conexion".equals(tipo)) {
             try {
-                manejarConexion();
+                manejarConexion(elMensaje);
             } catch (IOException ex) {
                 Logger.getLogger(ManejadorConexiones.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -84,27 +101,12 @@ public class ManejadorClaseRS implements Runnable {
         }
     }
 
-    private void manejarConexion() throws IOException {
-        InputStream is = socketRS.getInputStream();
-        ObjectInputStream ois = new ObjectInputStream(is);
-        Alumno unAlumno;
-        try {
-            unAlumno = (Alumno) ois.readObject();
-            System.out.println("Leí un Alumno");
-            unAlumno.setSocket(socketRS);
-
-            System.out.println(unAlumno.getNombre());
-            System.out.println(unAlumno.getApellido());
-            System.out.println(unAlumno.getSocket());
-            clase.addAlumno(unAlumno);
-
-
-            System.out.println("Agregué el alumno " + unAlumno.getNombre() + " "
-                    + unAlumno.getApellido() + " a la lista de alumnos");
-
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ManejadorConexiones.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void manejarConexion(String elMensaje) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(socketRS.getInputStream(), "UTF-8"));
+        PrintWriter out = new PrintWriter(new OutputStreamWriter(socketRS.getOutputStream(), "UTF-8"), true);
+        
+        GenTools.XMLParser("", elMensaje);
+        
     }
 
     private void manejarPedidoArchivo() {

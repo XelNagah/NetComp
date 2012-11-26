@@ -6,11 +6,7 @@ package netcomp;
 
 import Threads.ClaseAlumno.ManejadorAlumnoRS;
 import Threads.ClaseAlumno.ManejadorAlumnoSR;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -25,6 +21,7 @@ public class ConexionAlumno {
     Alumno alumno;
     InfoClase clase;
     Socket socketRS;
+    int puertoRS;
     ManejadorAlumnoRS manejadorRS;
     Thread manejadorRSThread;
     Socket socketSR;
@@ -37,21 +34,22 @@ public class ConexionAlumno {
         conectar();
     }
 
-    private void conectar() {
-        try {
-            String ip = clase.getIp();
-            int puerto = clase.getPuerto();
-            socketSR = new Socket(ip, puerto);
-            manejadorSR = new ManejadorAlumnoSR(socketSR, this);
-            manejadorSRThread = new Thread(manejadorSR);
-            manejadorSRThread.start();
-            manejadorSR.conectar();
-            
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(ConexionAlumno.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ConexionAlumno.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public Alumno getAlumno() {
+        return alumno;
+    }
 
+    public void setManejadorRS(ManejadorAlumnoRS manejadorRS) {
+        System.out.println("Configure ManejadorRS");
+        this.manejadorRS = manejadorRS;
+        System.out.println("Creo thread de manejadorRS");
+        manejadorRSThread = new Thread(manejadorRS);
+        System.out.println("Empiezo thread de manejadorRS");
+        manejadorRSThread.start();
+    }
+
+    private void conectar() {
+        manejadorSR = new ManejadorAlumnoSR(clase, this);
+        manejadorSRThread = new Thread(manejadorSR);
+        manejadorSRThread.start();
     }
 }
