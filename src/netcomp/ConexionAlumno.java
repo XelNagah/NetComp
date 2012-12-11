@@ -6,11 +6,7 @@ package netcomp;
 
 import Threads.ClaseAlumno.ManejadorAlumnoRS;
 import Threads.ClaseAlumno.ManejadorAlumnoSR;
-import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -51,5 +47,9 @@ public class ConexionAlumno {
         manejadorSR = new ManejadorAlumnoSR(clase, this);
         manejadorSRThread = new Thread(manejadorSR);
         manejadorSRThread.start();
+    }
+    
+    public void desconectar(){
+        manejadorSR.desconectar();
     }
 }

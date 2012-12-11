@@ -79,7 +79,7 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="buscarClasesTabla">
           <Properties>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="buscarClasesTabla.getModel().addTableModelListener(modeloDatos);">
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="buscarClasesTabla.getModel().addTableModelListener(modeloDatos);&#xa;buscarClasesTabla.addMouseListener(new MouseAdapter() {&#xa;   public void mouseClicked(MouseEvent e) {&#xa;      if (e.getClickCount() == 2) {&#xa;         JTable target = (JTable)e.getSource();&#xa;         int row = target.getSelectedRow();&#xa;         crearVentana(row);&#xa;         }&#xa;   }&#xa;});">
               <Connection code="modeloDatos" type="code"/>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

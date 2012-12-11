@@ -4,10 +4,12 @@
  */
 package netcomp.GUI;
 
-import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import netcomp.Alumno;
 import netcomp.Clase;
+import netcomp.ConexionAlumno;
+import netcomp.ConexionClase;
 import netcomp.GUI.acciones.AccionAbout;
 import netcomp.NetComp;
 
@@ -21,7 +23,11 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
      * Creates new form VtnClase
      */
     Clase clase;
-    AbstractListModel listModel;
+    CustomListModel listModel;
+
+    public VtnClaseMaestro() {
+        initComponents();
+    }
 
     public Clase getClase() {
         return clase;
@@ -35,16 +41,16 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         return jList1;
     }
 
-    public VtnClaseMaestro() {
-        initComponents();
-    }
-
     public void iniciar() {
         clase.iniciar();
     }
 
-    public AbstractListModel getListModel() {
+    public CustomListModel getListModel() {
         return listModel;
+    }
+
+    public void actualizarVista(Alumno alumno, int index0, int index1) {
+        getListModel().fireContentsChanged(listModel, index0, index1);
     }
 
     public void detener() {
@@ -252,12 +258,12 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         }
 
         @Override
-        public Object getElementAt(int i) {
+            public Object getElementAt(int i) {
             return clase.getAlumnos(i).getNombre() + ' ' + clase.getAlumnos(i).getApellido();
         }
 
         @Override
-        protected void fireContentsChanged(Object source, int index0, int index1) {
+        public void fireContentsChanged(Object source, int index0, int index1) {
             super.fireContentsChanged(source, index0, index1);
         }
     }

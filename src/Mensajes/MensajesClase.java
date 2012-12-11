@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package netcomp;
+package Mensajes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import netcomp.GenTools;
 
 /**
  *
@@ -19,6 +20,21 @@ import java.util.logging.Logger;
  */
 public class MensajesClase {
 
+    public static String conectar() {
+        String mensaje;
+        mensaje = GenTools.XMLGenerator("tipo", "conexion");
+        mensaje = GenTools.XMLWrapper("msg", mensaje);
+        return mensaje;
+    }
+
+    public static String desconectar() {
+        String mensaje;
+        mensaje = GenTools.XMLGenerator("tipo", "desconexion");
+        mensaje = GenTools.XMLWrapper("msg", mensaje);
+        return mensaje;
+    }
+
+    @Deprecated
     public static Socket pedirSocketSR(Socket elSocket) {
         //Pide el puerto del socketSR al alumno y lo devuelve
         try {
@@ -53,6 +69,7 @@ public class MensajesClase {
         return null;
     }
 
+    @Deprecated
     public static void desconectar(Socket socketSR) {
         try {
             PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
@@ -62,7 +79,7 @@ public class MensajesClase {
             String msg = GenTools.XMLGenerator("tipo", "desconectar");
             msg = GenTools.XMLWrapper("msg", msg);
             out.println(msg);
-            
+
             //Cierro los flujos E/S
             out.close();
             in.close();
@@ -72,5 +89,4 @@ public class MensajesClase {
             Logger.getLogger(MensajesClase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 }

@@ -4,9 +4,8 @@
  */
 package Threads.ClaseMaestro;
 
-import java.io.BufferedReader;
+import Mensajes.MensajesClase;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -36,7 +35,7 @@ public class ManejadorClaseSR implements Runnable {
     public void setPuertoSR(int puertoSR) {
         this.puertoSR = puertoSR;
     }
-    
+
     private void manejar() {
         try {
             System.out.println(socketRS.getInetAddress().toString());
@@ -47,23 +46,30 @@ public class ManejadorClaseSR implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
         }
-        while (corriendo) {
-            BufferedReader in = null;
-            try {
-                Thread.sleep(periodo);
-                in = new BufferedReader(new InputStreamReader(socketSR.getInputStream(), "UTF-8"));
-                PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
-                String linea;
-                out.println("Soy la clase "+ clase.getNombre());
-                out.println(puertoSR);
-                
-                
-            } catch (IOException ex) {
-                Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
-                corriendo = false;
-                break;
-            }
+        conectarSR();
+    }
+
+    private void conectarSR() {
+        try {
+            PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
+            String mensaje;
+            mensaje = MensajesClase.conectar();
+            out.println(mensaje);
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void desconectar() {
+        try {
+            PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
+            String mensaje;
+            mensaje = MensajesClase.desconectar();
+            out.println(mensaje);
+            out.println("bye.");
+            socketSR.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

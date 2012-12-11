@@ -59,7 +59,8 @@ public class GenTools {
     }
 
     public static String XMLWrapper(String tag, String elMensaje) {
-        return "<" + tag + ">" + "\n" + elMensaje + "\n" + "</" + tag + ">";
+        //return "<" + tag + ">" + "\n" + elMensaje + "\n" + "</" + tag + ">";
+        return "<" + tag + ">" + "" + elMensaje + "" + "</" + tag + ">";
     }
 
     public static String XMLGenerator(String tag, String valor) {
@@ -68,9 +69,9 @@ public class GenTools {
 
     public static String XMLParser(String tag, String elString) {
         String[] vector = elString.split("<" + tag + ">|<\\/" + tag + ">");
-        //System.out.println(vector[0]);
-        //System.out.println(vector[1]);
-        //System.out.println(vector[2]);
+        System.out.println(vector[0]);
+        System.out.println(vector[1]);
+        System.out.println(vector[2]);
         if (vector.length < 2) {
             return null;
         } else {
@@ -79,7 +80,8 @@ public class GenTools {
     }
 
     public static String XMLAppend(String tag, String valor, String xmlStringOriginal) {
-        return xmlStringOriginal + "\n" + XMLGenerator(tag, valor);
+        //return xmlStringOriginal + "\n" + XMLGenerator(tag, valor);
+        return xmlStringOriginal + "" + XMLGenerator(tag, valor);
     }
 
     //Encuentra un puerto libre en la interfaz

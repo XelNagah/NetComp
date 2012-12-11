@@ -5,6 +5,8 @@
 package netcomp.GUI;
 
 import Threads.BuscadorDeClases.Escuchador;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -92,6 +94,15 @@ public class VtnBuscarClase extends JFrame {
 
         buscarClasesTabla.setModel(modeloDatos);
         buscarClasesTabla.getModel().addTableModelListener(modeloDatos);
+        buscarClasesTabla.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable target = (JTable)e.getSource();
+                    int row = target.getSelectedRow();
+                    crearVentana(row);
+                }
+            }
+        });
         buscarClasesTabla.getTableHeader().setReorderingAllowed(false);
         buscarClasesTabla.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -170,6 +181,11 @@ public class VtnBuscarClase extends JFrame {
         //System.out.println(buscarClasesTabla.getSelectedRow());
     }//GEN-LAST:event_buscarClasesTablaMouseClicked
 
+    private void crearVentana(int laFila){
+        AccionCrearClaseAlumno accionCrearClaseAlumno = new AccionCrearClaseAlumno(this, laFila);
+        accionCrearClaseAlumno.actionPerformed(null);
+    }
+    
     /**
      * @param args the command line arguments
      */

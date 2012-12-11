@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package netcomp;
+package Mensajes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,12 +13,31 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import netcomp.Alumno;
+import netcomp.GenTools;
 
 /**
  *
  * @author zerg
  */
 public class MensajesAlumno {
+
+    public static String conectar(Alumno elAlumno, int elPuerto) {
+        String mensaje;
+        mensaje = GenTools.XMLGenerator("tipo", "conexion");
+        mensaje = GenTools.XMLAppend("nombre", elAlumno.getNombre(), mensaje);
+        mensaje = GenTools.XMLAppend("apellido", elAlumno.getApellido(), mensaje);
+        mensaje = GenTools.XMLAppend("puertoRS", Integer.toString(elPuerto), mensaje);
+        mensaje = GenTools.XMLWrapper("msg", mensaje);
+        return mensaje;
+    }
+
+    public static String desconectar() {
+        String mensaje;
+        mensaje = GenTools.XMLGenerator("tipo", "desconexion");
+        mensaje = GenTools.XMLWrapper("msg", mensaje);
+        return mensaje;
+    }
 
     public static Socket enviarSocketSR(Socket elSocket) {
         //Envía el puerto de escucha del manejador Send-Receive del alumno
@@ -46,6 +65,9 @@ public class MensajesAlumno {
         return null;
     }
 
+    public static void pedirArchivo() {
+    }
+
     public static void desconectar(Socket socketSR, Socket socketRS) {
         try {
             String msg;
@@ -54,7 +76,7 @@ public class MensajesAlumno {
             PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socketSR.getInputStream(), "UTF-8"));
             out.println(msg);
-            if ("desconectar".equals(GenTools.XMLParser("tipo", in.readLine())) ) {
+            if ("desconectar".equals(GenTools.XMLParser("tipo", in.readLine()))) {
                 out.println("bye.");
                 in.close();
                 out.close();

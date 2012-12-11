@@ -7,9 +7,6 @@ package Threads.ClaseAlumno;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -52,24 +49,27 @@ public class ManejadorAlumnoRS implements Runnable {
             Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
         }
         while (corriendo) {
-            
+
             try {
                 Thread.sleep(periodo);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socketRS.getInputStream()));
-                PrintWriter out = new PrintWriter(new OutputStreamWriter(socketRS.getOutputStream(),"UTF-8"), true);
-                String mensaje;
-                mensaje = in.readLine();
-                System.out.println(mensaje);
-                puerto = Integer.parseInt(in.readLine());
-                System.out.println(mensaje);
-
-                
+                BufferedReader in = new BufferedReader(new InputStreamReader(socketRS.getInputStream(), "UTF-8"));
+                String linea;
+                while (!"bye.".equals(linea = in.readLine())) {
+                    manejarMensaje(linea);
+                }
+                socketRS.close();
+                corriendo = false;
             } catch (IOException ex) {
                 Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
                 corriendo = false;
                 break;
             }
+        }
+        try {
+            socketRS.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -79,6 +79,28 @@ public class ManejadorAlumnoRS implements Runnable {
         manejar();
     }
 
-    private void conectar() {
+    private void manejarMensaje(String elMensaje) {
+        String tipo = GenTools.XMLParser("tipo", elMensaje);
+        if ("conexion".equals(tipo)) {
+            manejarConexion(elMensaje);
+        } else if ("desconexion".equals(tipo)) {
+            manejarDesconexion(elMensaje);
+        } else {
+            System.out.println(elMensaje);
+        }
+    }
+
+    private void manejarConexion(String elMensaje) {
+        //System.out.println("Recibí conexión RS");
+    }
+
+    private void manejarDesconexion(String elMensaje) {
+        try {
+            conexion.desconectar();
+            socketEscucha.close();
+            socketRS.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

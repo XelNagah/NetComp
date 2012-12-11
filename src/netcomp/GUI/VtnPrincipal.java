@@ -4,7 +4,6 @@
  */
 package netcomp.GUI;
 
-import netcomp.Configuracion;
 import netcomp.GUI.acciones.AccionAbout;
 import netcomp.GUI.acciones.AccionConfiguracion;
 import netcomp.GUI.acciones.AccionVtnBuscarClase;

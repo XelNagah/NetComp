@@ -19,17 +19,17 @@ import netcomp.ConexionClase;
  */
 public class ManejadorConexiones implements Runnable {
 
+    boolean corriendo;
     private long periodo = 300;
     private int puerto;
     private Clase clase;
     private ArrayList<ConexionClase> conexiones;
     private Socket socketAlumno;
-    boolean corriendo;
 
     public ManejadorConexiones(int elPuerto, Clase laClase) {
         this.puerto = elPuerto;
         //alumnos = listaAlumnos;
-        clase = laClase;        
+        clase = laClase;
         conexiones = new ArrayList<ConexionClase>();
     }
 
@@ -44,7 +44,7 @@ public class ManejadorConexiones implements Runnable {
                     //Espero una conexión y acepto las entrantes.
                     socketAlumno = serverSocket.accept();
                     //Al aceptarla, creo el thread que va a manejar ese alumno.
-                    conexiones.add(new ConexionClase(socketAlumno,clase));
+                    conexiones.add(new ConexionClase(socketAlumno, clase));
                     //Olvido el socket de este alumno, ya que se lo delegué al manejador 
                     //y vuelvo a escuchar conexiones entrantes.
                     socketAlumno = null;
@@ -63,6 +63,10 @@ public class ManejadorConexiones implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(ManejadorConexiones.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public ArrayList<ConexionClase> getConexiones() {
+        return conexiones;
     }
     
     @Override

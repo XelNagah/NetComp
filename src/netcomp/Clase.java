@@ -64,51 +64,58 @@ public class Clase {
     public String getNombre() {
         return nombre;
     }
-    
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     public String getDescripcion() {
         return descripcion;
     }
-    
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
     public String getContrasenia() {
         return contrasenia;
     }
-    
+
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
-    
+
     public String getIp() {
         return ip;
     }
-    
+
     public int getPuerto() {
         return puerto;
     }
-    
+
     public String getProfesor() {
         return profesor;
     }
-    
+
     public void setProfesor(String profesor) {
         this.profesor = profesor;
     }
-    
-    public void addAlumno(Alumno elAlumno){
+
+    public void addAlumno(Alumno elAlumno) {
         this.alumnos.add(elAlumno);
     }
-    
+
+    public void delAlumno(Alumno elAlumno) {
+        if (alumnos.contains(elAlumno)){
+            System.out.println("El alumno " + elAlumno.getNombre() + " está en la lista.");
+        }
+        this.alumnos.remove(elAlumno);
+    }
+
     public ArrayList<Alumno> getAlumnos() {
         return alumnos;
     }
-    
+
     public Alumno getAlumnos(int i) {
         return alumnos.get(i);
     }
@@ -120,7 +127,7 @@ public class Clase {
     public void setVentana(VtnClaseMaestro ventana) {
         this.ventana = ventana;
     }
-    
+
     private int encontrarPuerto() {
         try {
             return GenTools.findFreePort();
@@ -129,7 +136,7 @@ public class Clase {
             return 0;
         }
     }
-    
+
     private String averiguarIp() {
         String laIp = null;
         try {
@@ -140,9 +147,13 @@ public class Clase {
         }
         return laIp;
     }
-    
+
+    public ManejadorConexiones getManejadorDeConexiones() {
+        return manejadorDeConexiones;
+    }
+
     public void iniciar() {
-        
+
         if (anunciadorThread != null && !anunciadorThread.isInterrupted()) {
             anunciadorThread.interrupt();
         }
@@ -151,7 +162,7 @@ public class Clase {
         manejadorDeConexionesThread = new Thread(manejadorDeConexiones);
         manejadorDeConexionesThread.start();
     }
-    
+
     public void detener() {
         anunciadorThread.interrupt();
         manejadorDeConexionesThread.interrupt();

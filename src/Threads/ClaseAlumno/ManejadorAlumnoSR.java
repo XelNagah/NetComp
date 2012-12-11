@@ -4,11 +4,11 @@
  */
 package Threads.ClaseAlumno;
 
+import Mensajes.MensajesAlumno;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.Alumno;
@@ -42,6 +42,7 @@ public class ManejadorAlumnoSR implements Runnable {
             puertoRS = GenTools.findFreePort();
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("No pude conectar al socketSR - Alumno");
         }
     }
 
@@ -50,40 +51,38 @@ public class ManejadorAlumnoSR implements Runnable {
     }
 
     private void manejar() {
+        conectar();
+    }
 
-        System.out.println(socketSR);
-        PrintWriter out;
+    private void conectar() {
         try {
-            out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
-            System.out.println("ENVIO: Soy el alumno " + alumno.getNombre() + " " + alumno.getApellido());
-            out.println("Soy el alumno " + alumno.getNombre() + " " + alumno.getApellido());
-            System.out.println("Creo el manejador");
+            //Creo un PrintWriter
+            PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
+            //Genero el mensaje de conexión
+            String mensaje = MensajesAlumno.conectar(alumno, puertoRS);
+            System.out.println(mensaje);
+            //Creo el manejador RS de alumno, en el puerto que envío a la clase para que se conecte.
             ManejadorAlumnoRS unManejador = new ManejadorAlumnoRS(alumno, puertoRS, conexion);
+            //Asigno el manejador a la conexión alumno.
             conexion.setManejadorRS(unManejador);
-            System.out.println("ENVIO EL PUERTO RS: " + puertoRS);
-            out.println(puertoRS);
+            //Envío el mensaje de conexión a la clase.
+            out.println(mensaje);
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
 
-
-        //while (corriendo) {
-            //try {
-                //Thread.sleep(periodo);
-                //System.out.println(socketSR);
-                //PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
-                //System.out.println(alumno.getNombre());
-                //out.println("Soy el alumno " + alumno.getNombre() + " " + alumno.getApellido());
-                //conexion.setManejadorRS(new ManejadorAlumnoRS(alumno, puertoRS, conexion));
-                //out.println(puertoRS);
-
-            //} catch (IOException ex) {
-             //   Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
-            //} catch (InterruptedException ex) {
-             //   corriendo = false;
-             //   break;
-            //}
-        //}
+    public void desconectar() {
+        try {
+            PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
+            String mensaje;
+            mensaje = MensajesAlumno.desconectar();
+            out.println(mensaje);
+            out.println("bye.");
+            socketSR.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

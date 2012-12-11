@@ -32,30 +32,29 @@ public class ConexionClase {
         manejadorClaseRS = new ManejadorClaseRS(socketRS, clase, this);
         //Creo el hilo del manejador Receive-Send
         manejadorClaseRSThread = new Thread(manejadorClaseRS);
-        //Establezco mi socket Send-Receive pidiéndoselo al alumno
-        //socketSR = MensajesClase.pedirSocketSR(socketRS);
-        //Creo el manejador Send-Receive
-        //manejadorClaseSR = new ManejadorClaseSR(socketRS, clase);
-        //Creo el hilo del manejador Send-Receive
-        //manejadorClaseSRThread = new Thread(manejadorClaseSR);
-        //Inicio los hilos
         comenzarThreads();
+    }
+
+    public Alumno getAlumno() {
+        return alumno;
+    }
+
+    public void setAlumno(Alumno alumno) {
+        this.alumno = alumno;
     }
 
     private void comenzarThreads(){
         manejadorClaseRSThread.start();
-        //System.out.println("Seteo el puerto SR");
-        //int puerto = manejadorClaseRS.getPuertoSR();
-        //manejadorClaseSR.setPuertoSR(puerto);
-        //manejadorClaseSRThread.start();
     }
     
     public void conectarSR(int elPuerto){
         manejadorClaseSR = new ManejadorClaseSR(socketRS, clase);
         manejadorClaseSR.setPuertoSR(elPuerto);
-        System.out.println("Creo manejadorClaseSR");
         manejadorClaseSRThread = new Thread(manejadorClaseSR);
-        System.out.println("Empiezo Thread manejadorClaseSR");
         manejadorClaseSRThread.start();
+    }
+    
+    public void desconectar(){
+        manejadorClaseSR.desconectar();
     }
 }

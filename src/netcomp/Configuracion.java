@@ -23,6 +23,14 @@ public class Configuracion {
     private final static String SECCION = "configuracion";
 
     public Configuracion() {
+        File f = new File("./" + FILENAME);
+        if (!f.exists()) {
+            try {
+                f.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         try {
             nombre = leer(FILENAME, SECCION, "nombre");
             apellido = leer(FILENAME, SECCION, "apellido");
@@ -86,6 +94,15 @@ public class Configuracion {
     }
 
     static String leer(String filename, String seccion, String campo) throws IOException {
+        File f = new File("./" + FILENAME);
+        if (!f.exists()) {
+            try {
+                f.createNewFile();
+                return Integer.toString(1);
+            } catch (IOException ex) {
+                Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         Wini ini = new Wini(new File(filename));
         return ini.get(seccion, campo, String.class);
     }

@@ -28,16 +28,28 @@ public class AccionCrearClaseAlumno extends AbstractAction {
     VtnBuscarClase vtnBuscarClase;
     InfoClase clase;
     ConexionAlumno conexion;
+    int index;
 
     public AccionCrearClaseAlumno(VtnBuscarClase parent) {
         vtnClaseAlumno = new VtnClaseAlumno();
         vtnBuscarClase = parent;
+        this.index = -1;
+    }
+
+    public AccionCrearClaseAlumno(VtnBuscarClase parent, int row) {
+        vtnClaseAlumno = new VtnClaseAlumno();
+        vtnBuscarClase = parent;
+        this.index = row;
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        //Averiguo que clase está seleccionada en la tabla
-        int index = vtnBuscarClase.getTabla().getSelectedRow();
+        if (index != -1) {
+            //La clase seleccionada llega por doble click.
+        } else {
+            //Averiguo que clase está seleccionada en la tabla
+            index = vtnBuscarClase.getTabla().getSelectedRow();
+        }
         if (index >= 0) {
             //Creo la clase
             InfoClase laClase = vtnBuscarClase.getClases().get(index);
@@ -47,7 +59,7 @@ public class AccionCrearClaseAlumno extends AbstractAction {
             vtnBuscarClase.dispose();
             //Creo un alumno con los datos de la configuración de NetComp
             Alumno elAlumno = crearAlumno();
-            conexion = new ConexionAlumno(elAlumno,laClase);
+            conexion = new ConexionAlumno(elAlumno, laClase);
             //Configuro el alumno a la ventana de clase de alumno
             vtnClaseAlumno.setAlumno(elAlumno);
             vtnClaseAlumno.setConexionAlumno(conexion);
@@ -59,15 +71,16 @@ public class AccionCrearClaseAlumno extends AbstractAction {
             //Si no hay nada seleccionado en la tabla de clases, no hago nada.
         }
     }
-    
-    private Alumno crearAlumno(){
+
+    private Alumno crearAlumno() {
         Configuracion.inicializar();
         String nombre = Configuracion.getNombre();
         String apellido = Configuracion.getApellido();
-        return new Alumno(nombre,apellido);
+        return new Alumno(nombre, apellido);
     }
-    
-    private Socket conectar(InfoClase laClase){
+
+    @Deprecated
+    private Socket conectar(InfoClase laClase) {
         String ip = laClase.getIp();
         int puerto = laClase.getPuerto();
         Socket elSocket;

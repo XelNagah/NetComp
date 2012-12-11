@@ -162,11 +162,13 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void accionCerrarVentanaClaseAlumno(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_accionCerrarVentanaClaseAlumno
+        conexionAlumno.desconectar();
         dispose();
         NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_accionCerrarVentanaClaseAlumno
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        conexionAlumno.desconectar();
         dispose();
         NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
