@@ -35,11 +35,8 @@ public class ConexionAlumno {
     }
 
     public void setManejadorRS(ManejadorAlumnoRS manejadorRS) {
-        System.out.println("Configure ManejadorRS");
         this.manejadorRS = manejadorRS;
-        System.out.println("Creo thread de manejadorRS");
         manejadorRSThread = new Thread(manejadorRS);
-        System.out.println("Empiezo thread de manejadorRS");
         manejadorRSThread.start();
     }
 

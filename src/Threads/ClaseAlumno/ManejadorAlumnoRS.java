@@ -35,16 +35,12 @@ public class ManejadorAlumnoRS implements Runnable {
         alumno = elAlumno;
         puerto = elPuerto;
         conexion = laConexion;
-        System.out.println("ManejadorAlumnoRS Creado");
     }
 
     private void manejar() {
         try {
-            System.out.println("ManejadorRS alumno Corriendo");
             socketEscucha = new ServerSocket(puerto);
-            System.out.println("puertoRS = " + puerto);
             socketRS = socketEscucha.accept();
-            System.out.println(socketRS);
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
         }

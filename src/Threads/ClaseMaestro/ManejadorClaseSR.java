@@ -38,8 +38,6 @@ public class ManejadorClaseSR implements Runnable {
 
     private void manejar() {
         try {
-            System.out.println(socketRS.getInetAddress().toString());
-            System.out.println(puertoSR);
             socketSR = new Socket(socketRS.getInetAddress(), puertoSR);
         } catch (UnknownHostException ex) {
             Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);

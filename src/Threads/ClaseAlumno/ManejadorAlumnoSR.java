@@ -60,7 +60,6 @@ public class ManejadorAlumnoSR implements Runnable {
             PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
             //Genero el mensaje de conexión
             String mensaje = MensajesAlumno.conectar(alumno, puertoRS);
-            System.out.println(mensaje);
             //Creo el manejador RS de alumno, en el puerto que envío a la clase para que se conecte.
             ManejadorAlumnoRS unManejador = new ManejadorAlumnoRS(alumno, puertoRS, conexion);
             //Asigno el manejador a la conexión alumno.

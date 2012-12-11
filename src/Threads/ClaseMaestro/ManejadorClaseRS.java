@@ -51,7 +51,6 @@ public class ManejadorClaseRS implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socketRS.getInputStream(), "UTF-8"));
                 String linea;
                 while (!"bye.".equals(linea = in.readLine())) {
-                    System.out.println("Llegó mensaje: " + linea);
                     manejarMensaje(linea);
                 }
                 socketRS.close();
@@ -76,7 +75,6 @@ public class ManejadorClaseRS implements Runnable {
     }
 
     private void manejarMensaje(String elMensaje) {
-        System.out.println("Manejo el mensaje: " + elMensaje);
         String tipo = GenTools.XMLParser("tipo", elMensaje);
         if ("conexion".equals(tipo)) {
             try {
@@ -113,11 +111,9 @@ public class ManejadorClaseRS implements Runnable {
     }
 
     private void manejarDesconectar() {
-        System.out.println("manejoDesconectar");
         Alumno elAlumno = conexion.getAlumno();
         //Borro el alumno de la clase.
         clase.delAlumno(elAlumno);
-        System.out.println(clase.getAlumnos());
         ventana.actualizarVista(elAlumno, 0, clase.getAlumnos().size());
         clase.getManejadorDeConexiones().getConexiones().remove(conexion);
         try {
