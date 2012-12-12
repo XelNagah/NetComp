@@ -7,6 +7,7 @@ package netcomp;
 import Threads.ClaseMaestro.ManejadorClaseRS;
 import Threads.ClaseMaestro.ManejadorClaseSR;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  *
@@ -43,18 +44,22 @@ public class ConexionClase {
         this.alumno = alumno;
     }
 
-    private void comenzarThreads(){
+    private void comenzarThreads() {
         manejadorClaseRSThread.start();
     }
-    
-    public void conectarSR(int elPuerto){
-        manejadorClaseSR = new ManejadorClaseSR(socketRS, clase);
+
+    public void conectarSR(int elPuerto) {
+        manejadorClaseSR = new ManejadorClaseSR(socketRS, clase, this);
         manejadorClaseSR.setPuertoSR(elPuerto);
         manejadorClaseSRThread = new Thread(manejadorClaseSR);
         manejadorClaseSRThread.start();
     }
-    
-    public void desconectar(){
+
+    public void listUpdate(ArrayList<Alumno> losAlumnos) {
+            manejadorClaseSR.listUpdate(losAlumnos);
+    }
+
+    public void desconectar() {
         manejadorClaseSR.desconectar();
     }
 }

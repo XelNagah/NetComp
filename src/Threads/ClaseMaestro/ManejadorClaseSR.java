@@ -6,13 +6,18 @@ package Threads.ClaseMaestro;
 
 import Mensajes.MensajesClase;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import netcomp.Alumno;
 import netcomp.Clase;
+import netcomp.ConexionClase;
 
 /**
  *
@@ -26,10 +31,15 @@ public class ManejadorClaseSR implements Runnable {
     int puertoSR;
     private Socket socketRS;
     private Socket socketSR;
+    ConexionClase conexion;
+    ObjectInputStream ois;
+    ObjectOutputStream oos;
+    BlockingQueue<Integer> queue;
 
-    public ManejadorClaseSR(Socket elSocketRS, Clase laClase) {
+    public ManejadorClaseSR(Socket elSocketRS, Clase laClase, ConexionClase laConexion) {
         clase = laClase;
         socketRS = elSocketRS;
+        conexion = laConexion;
     }
 
     public void setPuertoSR(int puertoSR) {
@@ -38,21 +48,26 @@ public class ManejadorClaseSR implements Runnable {
 
     private void manejar() {
         try {
+            //BlockingQueue
             socketSR = new Socket(socketRS.getInetAddress(), puertoSR);
+            conectarSR();
+            ServerSocket unSocket = new ServerSocket(5467);
+            unSocket.accept();
         } catch (UnknownHostException ex) {
             Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
         }
-        conectarSR();
+        System.out.println("ManejadorClaseSR ha muerto.");
     }
 
     private void conectarSR() {
         try {
-            PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
+            oos = new ObjectOutputStream(socketSR.getOutputStream());
+            oos.flush();
             String mensaje;
             mensaje = MensajesClase.conectar();
-            out.println(mensaje);
+            oos.writeObject(mensaje);
         } catch (IOException ex) {
             Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,12 +75,22 @@ public class ManejadorClaseSR implements Runnable {
 
     public void desconectar() {
         try {
-            PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
             String mensaje;
             mensaje = MensajesClase.desconectar();
-            out.println(mensaje);
-            out.println("bye.");
+            oos.writeObject(mensaje);
+            oos.writeObject("bye.");
             socketSR.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void listUpdate(ArrayList<Alumno> losAlumnos) {
+        try {
+            String mensaje;
+            mensaje = MensajesClase.listUpdate();
+            oos.writeObject(mensaje);
+            oos.writeUnshared(losAlumnos);
         } catch (IOException ex) {
             Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
         }

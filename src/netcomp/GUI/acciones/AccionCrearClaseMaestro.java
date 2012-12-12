@@ -42,7 +42,7 @@ public class AccionCrearClaseMaestro extends AbstractAction {
         //Preparo los datos para instanciar el objeto
         prepararDatos();
         //Instancio el objeto "Clase"
-        Clase clase = new Clase(nombre, contrasenia, profesor, descripcion);
+        Clase clase = new Clase(nombre, contrasenia, profesor, descripcion,vtnClaseMaestro);
         System.out.println("Puerto de escucha: " + clase.getPuerto());
         //Paso el objeto Clase a la ventana "Clase Maestro"
         vtnClaseMaestro.setClase(clase);

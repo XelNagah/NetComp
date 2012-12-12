@@ -6,8 +6,8 @@ package Threads.ClaseAlumno;
 
 import Mensajes.MensajesAlumno;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +31,8 @@ public class ManejadorAlumnoSR implements Runnable {
     Socket socketSR;
     int puertoRS;
     ConexionAlumno conexion;
+    ObjectOutputStream oos;
+    ObjectInputStream ois;
 
     public ManejadorAlumnoSR(InfoClase laClase, ConexionAlumno laConexion) {
         try {
@@ -57,7 +59,9 @@ public class ManejadorAlumnoSR implements Runnable {
     private void conectar() {
         try {
             //Creo un PrintWriter
-            PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
+            //PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
+            oos = new ObjectOutputStream(socketSR.getOutputStream());
+            oos.flush();
             //Genero el mensaje de conexión
             String mensaje = MensajesAlumno.conectar(alumno, puertoRS);
             //Creo el manejador RS de alumno, en el puerto que envío a la clase para que se conecte.
@@ -65,19 +69,29 @@ public class ManejadorAlumnoSR implements Runnable {
             //Asigno el manejador a la conexión alumno.
             conexion.setManejadorRS(unManejador);
             //Envío el mensaje de conexión a la clase.
-            out.println(mensaje);
+            oos.writeObject(mensaje);
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    public void confirmarConexion() {
+        try {
+            oos.writeObject("Done");
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void desconectar() {
         try {
-            PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
+            //PrintWriter out = new PrintWriter(new OutputStreamWriter(socketSR.getOutputStream(), "UTF-8"), true);
             String mensaje;
             mensaje = MensajesAlumno.desconectar();
-            out.println(mensaje);
-            out.println("bye.");
+            oos.writeObject(mensaje);
+            oos.writeObject("bye.");
+            //out.println(mensaje);
+            //out.println("bye.");
             socketSR.close();
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);

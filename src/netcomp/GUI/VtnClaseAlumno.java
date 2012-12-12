@@ -4,6 +4,7 @@
  */
 package netcomp.GUI;
 
+import javax.swing.DefaultListModel;
 import netcomp.Alumno;
 import netcomp.ConexionAlumno;
 import netcomp.GUI.acciones.AccionAbout;
@@ -19,6 +20,7 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
     private Alumno alumno;
     private ConexionAlumno conexionAlumno;
     private InfoClase clase;
+    private CustomListModelAlumno listModel;
 
     /**
      * Creates new form VtnClase
@@ -41,6 +43,14 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
 
     public void setConexionAlumno(ConexionAlumno conexionAlumno) {
         this.conexionAlumno = conexionAlumno;
+    }
+
+    public CustomListModelAlumno getListModel() {
+        return listModel;
+    }
+
+    public void actualizarVista() {
+        listModel.fireContentsChanged(listModel, 0, conexionAlumno.getAlumnos().size());
     }
 
     public void conectar() {
@@ -79,11 +89,7 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
             }
         });
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Alumno1", "Alumno2", "Alumno3", "...", "AlumnoN" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        jList1.setModel(listModel = new CustomListModelAlumno());
         jScrollPane1.setViewportView(jList1);
 
         jMenu2.setText("Archivo");
@@ -173,6 +179,11 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
         NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    public void desconectar() {
+        dispose();
+        NetComp.vtnPrincipal.setVisible(true);
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -225,4 +236,29 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables
+
+    class CustomListModelAlumno extends DefaultListModel {
+
+        @Override
+        public int getSize() {
+            if (conexionAlumno == null) {
+                return 0;
+            }
+            if (conexionAlumno.getAlumnos() != null) {
+                return conexionAlumno.getAlumnos().size();
+            } else {
+                return 0;
+            }
+        }
+
+        @Override
+        public Object getElementAt(int i) {
+            return conexionAlumno.getAlumnos(i).getNombre() + ' ' + conexionAlumno.getAlumnos(i).getApellido();
+        }
+
+        @Override
+        public void fireContentsChanged(Object source, int index0, int index1) {
+            super.fireContentsChanged(source, index0, index1);
+        }
+    }
 }

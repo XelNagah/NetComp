@@ -64,7 +64,7 @@ public class AccionCrearClaseAlumno extends AbstractAction {
             vtnClaseAlumno.setAlumno(elAlumno);
             vtnClaseAlumno.setConexionAlumno(conexion);
             vtnClaseAlumno.setVisible(true);
-            vtnClaseAlumno.setTitle("Clase NetComp - " + laClase.getNombre());
+            vtnClaseAlumno.setTitle(elAlumno.getNombre() + " " +elAlumno.getApellido() + " @ " + laClase.getNombre());
             vtnClaseAlumno.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
             //laClase.imprimeInfo();
         } else {

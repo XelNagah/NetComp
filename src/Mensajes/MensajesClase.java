@@ -34,6 +34,13 @@ public class MensajesClase {
         return mensaje;
     }
 
+    public static String listUpdate() {
+        String mensaje;
+        mensaje = GenTools.XMLGenerator("tipo", "listUpdate");
+        mensaje = GenTools.XMLWrapper("msg", mensaje);
+        return mensaje;
+    }
+
     @Deprecated
     public static Socket pedirSocketSR(Socket elSocket) {
         //Pide el puerto del socketSR al alumno y lo devuelve

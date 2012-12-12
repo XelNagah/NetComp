@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import netcomp.Alumno;
 import netcomp.Clase;
 import netcomp.ConexionClase;
 
@@ -44,7 +46,7 @@ public class ManejadorConexiones implements Runnable {
                     //Espero una conexión y acepto las entrantes.
                     socketAlumno = serverSocket.accept();
                     //Al aceptarla, creo el thread que va a manejar ese alumno.
-                    conexiones.add(new ConexionClase(socketAlumno, clase));
+                    addConexion(new ConexionClase(socketAlumno, clase));
                     //Olvido el socket de este alumno, ya que se lo delegué al manejador 
                     //y vuelvo a escuchar conexiones entrantes.
                     socketAlumno = null;
@@ -68,7 +70,31 @@ public class ManejadorConexiones implements Runnable {
     public ArrayList<ConexionClase> getConexiones() {
         return conexiones;
     }
+
+    public void actualizarListaAlumnos() {
+        ArrayList<Alumno> losAlumnos = clase.getAlumnos();
+        for (Iterator<ConexionClase> it = conexiones.iterator(); it.hasNext();) {
+            ConexionClase laConexion = it.next();
+            laConexion.listUpdate(losAlumnos);
+        }
+    }
+
+    public void addConexion(ConexionClase laConexion) {
+        conexiones.add(laConexion);
+    }
+
+    public void delConexion(ConexionClase laConexion) {
+        conexiones.remove(laConexion);
+    }
     
+    public void cerrarConexiones(){
+        for ( Iterator<ConexionClase> it = conexiones.iterator(); it.hasNext(); ){
+            ConexionClase laConexion = it.next();
+            it.remove();
+            laConexion.desconectar();
+        }
+    }
+
     @Override
     public void run() {
         corriendo = true;

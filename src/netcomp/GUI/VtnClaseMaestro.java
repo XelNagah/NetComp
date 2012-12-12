@@ -6,10 +6,7 @@ package netcomp.GUI;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
-import netcomp.Alumno;
 import netcomp.Clase;
-import netcomp.ConexionAlumno;
-import netcomp.ConexionClase;
 import netcomp.GUI.acciones.AccionAbout;
 import netcomp.NetComp;
 
@@ -23,7 +20,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
      * Creates new form VtnClase
      */
     Clase clase;
-    CustomListModel listModel;
+    CustomListModelMaestro listModel;
 
     public VtnClaseMaestro() {
         initComponents();
@@ -45,12 +42,12 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         clase.iniciar();
     }
 
-    public CustomListModel getListModel() {
+    public CustomListModelMaestro getListModel() {
         return listModel;
     }
 
-    public void actualizarVista(Alumno alumno, int index0, int index1) {
-        getListModel().fireContentsChanged(listModel, index0, index1);
+    public void actualizarVista(int index0, int index1) {
+        listModel.fireContentsChanged(listModel, index0, index1);
     }
 
     public void detener() {
@@ -91,7 +88,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
             }
         });
 
-        jList1.setModel(listModel = new CustomListModel());
+        jList1.setModel(listModel = new CustomListModelMaestro());
         jScrollPane1.setViewportView(jList1);
 
         jMenu2.setText("Archivo");
@@ -161,7 +158,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(560, Short.MAX_VALUE)
+                .addContainerGap(575, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -243,7 +240,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables
 
-    class CustomListModel extends DefaultListModel {
+    class CustomListModelMaestro extends DefaultListModel {
 
         @Override
         public int getSize() {
@@ -258,7 +255,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         }
 
         @Override
-            public Object getElementAt(int i) {
+        public Object getElementAt(int i) {
             return clase.getAlumnos(i).getNombre() + ' ' + clase.getAlumnos(i).getApellido();
         }
 

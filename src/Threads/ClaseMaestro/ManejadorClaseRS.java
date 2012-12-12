@@ -4,11 +4,10 @@
  */
 package Threads.ClaseMaestro;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.Alumno;
@@ -31,6 +30,8 @@ public class ManejadorClaseRS implements Runnable {
     ConexionClase conexion;
     private Socket socketRS;
     private int puertoSR;
+    ObjectInputStream ois;
+    ObjectOutputStream oos;
 
     public ManejadorClaseRS(Socket elSocketRS, Clase laClase, ConexionClase laConexion) {
         clase = laClase;
@@ -43,19 +44,26 @@ public class ManejadorClaseRS implements Runnable {
     }
 
     private void manejar() {
+        try {
+            ois = new ObjectInputStream(socketRS.getInputStream());
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
+        }
         while (corriendo) {
             try {
                 Thread.sleep(periodo);
                 //Hacer algo
                 //conectarSR();
-                BufferedReader in = new BufferedReader(new InputStreamReader(socketRS.getInputStream(), "UTF-8"));
+                //BufferedReader in = new BufferedReader(new InputStreamReader(socketRS.getInputStream(), "UTF-8"));
                 String linea;
-                while (!"bye.".equals(linea = in.readLine())) {
+                while (!"bye.".equals(linea = ois.readObject().toString())) {
                     manejarMensaje(linea);
                 }
                 socketRS.close();
                 corriendo = false;
             } catch (IOException ex) {
+                Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
                 corriendo = false;
@@ -96,15 +104,24 @@ public class ManejadorClaseRS implements Runnable {
         String nombre = GenTools.XMLParser("nombre", elMensaje);
         String apellido = GenTools.XMLParser("apellido", elMensaje);
         puertoSR = Integer.parseInt(GenTools.XMLParser("puertoRS", elMensaje));
+        //Establezo la conexión Send-Receive con el alumno
+        conexion.conectarSR(puertoSR);
+        try {
+            //Espero confirmación de establecimiento de la conexión
+            String confirmacion = ois.readObject().toString();
+            if (!"Done".equals(confirmacion)) {
+                System.out.println("wtf");
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //Creo un alumno
         Alumno elAlumno = new Alumno(nombre, apellido);
         elAlumno.setConexionClase(conexion);
         conexion.setAlumno(elAlumno);
         //Agrego el alumno a la clase.
         clase.addAlumno(elAlumno);
-        ventana.actualizarVista(elAlumno, 0, clase.getAlumnos().size());
-        //Establezo la conexión Send-Receive con el alumno
-        conexion.conectarSR(puertoSR);
+        clase.actualizarListaAlumnos();
     }
 
     private void manejarPedidoArchivo() {
@@ -114,12 +131,7 @@ public class ManejadorClaseRS implements Runnable {
         Alumno elAlumno = conexion.getAlumno();
         //Borro el alumno de la clase.
         clase.delAlumno(elAlumno);
-        ventana.actualizarVista(elAlumno, 0, clase.getAlumnos().size());
-        clase.getManejadorDeConexiones().getConexiones().remove(conexion);
-        try {
-            socketRS.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        clase.delConexion(conexion);
+        clase.actualizarListaAlumnos();
     }
 }

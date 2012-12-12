@@ -4,16 +4,18 @@
  */
 package Threads.ClaseAlumno;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.Alumno;
 import netcomp.ConexionAlumno;
 import netcomp.GUI.VtnClaseAlumno;
+import netcomp.GUI.acciones.AccionCrearClaseAlumno;
 import netcomp.GenTools;
 
 /**
@@ -24,12 +26,14 @@ public class ManejadorAlumnoRS implements Runnable {
 
     boolean corriendo = true;
     long periodo = 300;
-    VtnClaseAlumno ventana;
+    VtnClaseAlumno ventana = AccionCrearClaseAlumno.vtnClaseAlumno;
     Alumno alumno;
     ServerSocket socketEscucha;
     Socket socketRS;
     int puerto;
     ConexionAlumno conexion;
+    ObjectInputStream ois;
+    ObjectOutputStream oos;
 
     public ManejadorAlumnoRS(Alumno elAlumno, int elPuerto, ConexionAlumno laConexion) {
         alumno = elAlumno;
@@ -44,17 +48,24 @@ public class ManejadorAlumnoRS implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
         }
+        try {
+            ois = new ObjectInputStream(socketRS.getInputStream());
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
+        }
         while (corriendo) {
 
             try {
                 Thread.sleep(periodo);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socketRS.getInputStream(), "UTF-8"));
                 String linea;
-                while (!"bye.".equals(linea = in.readLine())) {
+                while (!"bye.".equals(linea = ois.readObject().toString())) {
                     manejarMensaje(linea);
                 }
+                ois.close();
                 socketRS.close();
                 corriendo = false;
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
@@ -81,20 +92,37 @@ public class ManejadorAlumnoRS implements Runnable {
             manejarConexion(elMensaje);
         } else if ("desconexion".equals(tipo)) {
             manejarDesconexion(elMensaje);
+        } else if ("listUpdate".equals(tipo)) {
+            manejarListUpdate(elMensaje);
         } else {
             System.out.println(elMensaje);
         }
     }
 
     private void manejarConexion(String elMensaje) {
-        //System.out.println("Recibí conexión RS");
+        conexion.confirmarConexion();
+    }
+    
+    private void manejarListUpdate(String elMensaje){
+        try {
+            ArrayList<Alumno> losAlumnos;
+            try {
+                losAlumnos = (ArrayList<Alumno>) ois.readObject();
+                conexion.actualizarListaAlumnos(losAlumnos);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void manejarDesconexion(String elMensaje) {
         try {
             conexion.desconectar();
             socketEscucha.close();
-            socketRS.close();
+            System.out.println("La clase se ha cerrado.");
+            ventana.desconectar();
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
         }

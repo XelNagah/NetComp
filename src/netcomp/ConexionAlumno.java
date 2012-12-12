@@ -7,6 +7,10 @@ package netcomp;
 import Threads.ClaseAlumno.ManejadorAlumnoRS;
 import Threads.ClaseAlumno.ManejadorAlumnoSR;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
+import netcomp.GUI.VtnClaseAlumno;
+import netcomp.GUI.acciones.AccionCrearClaseAlumno;
 
 /**
  *
@@ -23,11 +27,23 @@ public class ConexionAlumno {
     Socket socketSR;
     ManejadorAlumnoSR manejadorSR;
     Thread manejadorSRThread;
+    VtnClaseAlumno ventana;
+    private ArrayList<Alumno> alumnos;
 
     public ConexionAlumno(Alumno elAlumno, InfoClase laClase) {
         alumno = elAlumno;
         clase = laClase;
+        ventana = AccionCrearClaseAlumno.vtnClaseAlumno;
+        alumnos = new ArrayList<Alumno>();
         conectar();
+    }
+
+    public ArrayList<Alumno> getAlumnos() {
+        return alumnos;
+    }
+
+    public Alumno getAlumnos(int i) {
+        return alumnos.get(i);
     }
 
     public Alumno getAlumno() {
@@ -40,13 +56,27 @@ public class ConexionAlumno {
         manejadorRSThread.start();
     }
 
+    public void actualizarListaAlumnos(ArrayList<Alumno> losAlumnos) {
+        alumnos.clear();
+        for (Iterator<Alumno> it = losAlumnos.iterator(); it.hasNext();) {
+            Alumno elAlumno = it.next();
+            alumnos.add(elAlumno);
+        }
+        ventana.actualizarVista();
+
+    }
+
     private void conectar() {
         manejadorSR = new ManejadorAlumnoSR(clase, this);
         manejadorSRThread = new Thread(manejadorSR);
         manejadorSRThread.start();
     }
-    
-    public void desconectar(){
+
+    public void confirmarConexion() {
+        manejadorSR.confirmarConexion();
+    }
+
+    public void desconectar() {
         manejadorSR.desconectar();
     }
 }

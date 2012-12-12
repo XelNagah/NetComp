@@ -4,6 +4,7 @@
  */
 package netcomp;
 
+import java.io.Serializable;
 import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,11 +13,11 @@ import java.util.logging.Logger;
  *
  * @author zerg
  */
-public class Alumno {
+public class Alumno implements Serializable {
     String nombre;
     String apellido;
-    String ip;
-    ConexionClase conexionClase;
+    transient String ip;
+    transient ConexionClase conexionClase;
 
     public Alumno(String nombre, String apellido) {
         this.nombre = nombre;

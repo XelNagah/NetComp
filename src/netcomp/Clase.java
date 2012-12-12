@@ -7,6 +7,7 @@ package netcomp;
 import Threads.ClaseMaestro.Anunciador;
 import Threads.ClaseMaestro.ManejadorConexiones;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -17,7 +18,7 @@ import netcomp.GUI.VtnClaseMaestro;
  *
  * @author zerg
  */
-public class Clase {
+public class Clase implements Serializable{
 
     //Atributos
     private String nombre;
@@ -35,7 +36,7 @@ public class Clase {
     private ArrayList<Archivo> archivos;
 
     //Constructor
-    public Clase(String nombre, String contrasenia, String profesor, String descripcion) {
+    public Clase(String nombre, String contrasenia, String profesor, String descripcion, VtnClaseMaestro laVentana) {
         //Seteo nombre
         this.nombre = nombre;
         //Seteo contraseña
@@ -58,6 +59,7 @@ public class Clase {
         this.anunciador = new Anunciador(ip, puerto, nombre, pass, profesor, descripcion);
         //Seteo el manejador de conexiones
         this.manejadorDeConexiones = new ManejadorConexiones(puerto, this);
+        ventana = laVentana;
     }
 
     //Métodos
@@ -106,10 +108,20 @@ public class Clase {
     }
 
     public void delAlumno(Alumno elAlumno) {
-        if (alumnos.contains(elAlumno)){
-            System.out.println("El alumno " + elAlumno.getNombre() + " está en la lista.");
-        }
         this.alumnos.remove(elAlumno);
+    }
+    
+    public void addConexion(ConexionClase laConexion){
+        manejadorDeConexiones.addConexion(laConexion);
+    }
+    
+    public void delConexion(ConexionClase laConexion){
+        manejadorDeConexiones.delConexion(laConexion);
+    }
+    
+    public void actualizarListaAlumnos(){
+        ventana.actualizarVista(0, alumnos.size());
+        manejadorDeConexiones.actualizarListaAlumnos();
     }
 
     public ArrayList<Alumno> getAlumnos() {
@@ -165,6 +177,7 @@ public class Clase {
 
     public void detener() {
         anunciadorThread.interrupt();
+        manejadorDeConexiones.cerrarConexiones();
         manejadorDeConexionesThread.interrupt();
     }
 }
