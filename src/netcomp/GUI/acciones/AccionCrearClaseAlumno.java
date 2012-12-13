@@ -5,18 +5,16 @@
 package netcomp.GUI.acciones;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import netcomp.Alumno;
 import netcomp.ConexionAlumno;
 import netcomp.Configuracion;
 import netcomp.GUI.VtnBuscarClase;
 import netcomp.GUI.VtnClaseAlumno;
 import netcomp.InfoClase;
+import netcomp.NetComp;
 
 /**
  *
@@ -57,16 +55,19 @@ public class AccionCrearClaseAlumno extends AbstractAction {
             vtnBuscarClase.dejarDeEscuchar();
             //Escondo el buscador de clases
             vtnBuscarClase.dispose();
-            //Creo un alumno con los datos de la configuración de NetComp
-            Alumno elAlumno = crearAlumno();
-            conexion = new ConexionAlumno(elAlumno, laClase);
-            //Configuro el alumno a la ventana de clase de alumno
-            vtnClaseAlumno.setAlumno(elAlumno);
-            vtnClaseAlumno.setConexionAlumno(conexion);
-            vtnClaseAlumno.setVisible(true);
-            vtnClaseAlumno.setTitle(elAlumno.getNombre() + " " +elAlumno.getApellido() + " @ " + laClase.getNombre());
-            vtnClaseAlumno.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-            //laClase.imprimeInfo();
+            if (laClase.getTieneContrasenia()) {
+                JPasswordField pf = new JPasswordField();
+                int okCxl = JOptionPane.showConfirmDialog(null, pf, "Ingresar contraseña", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if (okCxl == JOptionPane.OK_OPTION) {
+                    String password = new String(pf.getPassword());
+                    conectar(laClase, password);
+                } else {
+                    NetComp.vtnPrincipal.setVisible(true);
+                }
+            } else {
+                conectar(laClase);
+            }
         } else {
             //Si no hay nada seleccionado en la tabla de clases, no hago nada.
         }
@@ -79,22 +80,32 @@ public class AccionCrearClaseAlumno extends AbstractAction {
         return new Alumno(nombre, apellido);
     }
 
-    @Deprecated
-    private Socket conectar(InfoClase laClase) {
-        String ip = laClase.getIp();
-        int puerto = laClase.getPuerto();
-        Socket elSocket;
-        try {
-            elSocket = new Socket(ip, puerto);
-            return elSocket;
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(AccionCrearClaseAlumno.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("No me pude conectar.");
-            return null;
-        } catch (IOException ex) {
-            Logger.getLogger(AccionCrearClaseAlumno.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("No me pude conectar.");
-            return null;
+    private void conectar(InfoClase laClase) {
+        //Creo un alumno con los datos de la configuración de NetComp
+        Alumno elAlumno = crearAlumno();
+        conexion = new ConexionAlumno(elAlumno, laClase);
+        //Configuro el alumno a la ventana de clase de alumno
+        vtnClaseAlumno.setAlumno(elAlumno);
+        vtnClaseAlumno.setConexionAlumno(conexion);
+        vtnClaseAlumno.setVisible(true);
+        vtnClaseAlumno.setTitle(elAlumno.getNombre() + " " + elAlumno.getApellido() + " @ " + laClase.getNombre());
+        vtnClaseAlumno.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        //laClase.imprimeInfo();
+    }
+
+    private void conectar(InfoClase laClase, String elPassword) {
+        //Creo un alumno con los datos de la configuración de NetComp
+        Alumno elAlumno = crearAlumno();
+        conexion = new ConexionAlumno(elAlumno, laClase, elPassword);
+        //Configuro el alumno a la ventana de clase de alumno
+        if (conexion.getConectado()) {
+            vtnClaseAlumno.setAlumno(elAlumno);
+            vtnClaseAlumno.setConexionAlumno(conexion);
+            vtnClaseAlumno.setVisible(true);
+            vtnClaseAlumno.setTitle(elAlumno.getNombre() + " " + elAlumno.getApellido() + " @ " + laClase.getNombre());
+            vtnClaseAlumno.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        } else {
+            JOptionPane.showMessageDialog(null,"Contraseña incorrecta.","Inane error",JOptionPane.ERROR_MESSAGE);
         }
     }
 }

@@ -18,6 +18,7 @@ import netcomp.GUI.acciones.AccionCrearClaseAlumno;
  */
 public class ConexionAlumno {
 
+    Boolean conectado = false;
     Alumno alumno;
     InfoClase clase;
     Socket socketRS;
@@ -38,6 +39,14 @@ public class ConexionAlumno {
         conectar();
     }
 
+    public ConexionAlumno(Alumno elAlumno, InfoClase laClase, String elPassword) {
+        alumno = elAlumno;
+        clase = laClase;
+        ventana = AccionCrearClaseAlumno.vtnClaseAlumno;
+        alumnos = new ArrayList<Alumno>();
+        conectar(elPassword);
+    }
+
     public ArrayList<Alumno> getAlumnos() {
         return alumnos;
     }
@@ -48,6 +57,14 @@ public class ConexionAlumno {
 
     public Alumno getAlumno() {
         return alumno;
+    }
+
+    public Boolean getConectado() {
+        return conectado;
+    }
+
+    public void setConectado(Boolean conectado) {
+        this.conectado = conectado;
     }
 
     public void setManejadorRS(ManejadorAlumnoRS manejadorRS) {
@@ -72,11 +89,21 @@ public class ConexionAlumno {
         manejadorSRThread.start();
     }
 
+    private void conectar(String elPassword) {
+        manejadorSR = new ManejadorAlumnoSR(clase, this, elPassword);
+        manejadorSRThread = new Thread(manejadorSR);
+        manejadorSRThread.start();
+    }
+
     public void confirmarConexion() {
         manejadorSR.confirmarConexion();
     }
 
     public void desconectar() {
         manejadorSR.desconectar();
+    }
+
+    public void fallaContrasenia() {
+        ventana.desconectar();
     }
 }

@@ -115,6 +115,7 @@ public class ManejadorClaseSR implements Runnable {
             if (!socketSR.isClosed()) {
                 oos.writeObject(mensaje);
                 oos.writeObject("bye.");
+                oos.flush();
             }
             oos.close();
             socketSR.close();

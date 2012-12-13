@@ -64,7 +64,8 @@ public class ManejadorConexiones implements Runnable {
                     //y vuelvo a escuchar conexiones entrantes.
                     socketAlumno = null;
                 } catch (IOException ex) {
-                    Logger.getLogger(ManejadorConexiones.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(ManejadorConexiones.class.getName()).log(Level.SEVERE, null, ex);
+                    socketAlumno.close();
                 } catch (InterruptedException ex) {
                     corriendo = false;
                     try {

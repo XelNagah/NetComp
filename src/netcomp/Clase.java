@@ -13,6 +13,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -65,6 +66,7 @@ public class Clase implements Serializable {
         //Seteo el manejador de conexiones
         this.manejadorDeConexiones = new ManejadorConexiones(puerto, this);
         ventana = laVentana;
+        archivos = new ArrayList<Archivo>();
     }
 
     //Métodos
@@ -132,10 +134,26 @@ public class Clase implements Serializable {
         manejadorDeConexiones.actualizarListaAlumnos();
     }
 
+    public ArrayList<Archivo> getArchivos() {
+        return archivos;
+    }
+
+    public Archivo getArchivos(String nombreArchivo) {
+        Archivo elArchivo = null;
+        Archivo unArchivo;
+        for (Iterator it = archivos.iterator(); it.hasNext(); ){
+            unArchivo = (Archivo) it.next();
+            if (unArchivo.getNombreArchivo().equals(nombreArchivo)){
+                elArchivo = unArchivo;
+            }
+        }
+        return elArchivo;
+    }
+
     public ArrayList<Alumno> getAlumnos() {
         return new ArrayList<Alumno>(alumnos);
     }
-    
+
     public Alumno getAlumnos(int pos) {
         ArrayList<Alumno> a = new ArrayList<Alumno>(alumnos);
         return a.get(pos);

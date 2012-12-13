@@ -9,12 +9,17 @@ package netcomp;
  * @author zerg
  */
 public class Archivo {
+
     String path;
     String nombreArchivo;
 
     public Archivo(String path, String nombreArchivo) {
         this.path = path;
         this.nombreArchivo = nombreArchivo;
+    }
+
+    public Archivo() {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     public String getPath() {

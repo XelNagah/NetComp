@@ -46,6 +46,13 @@ public class GenTools {
         return null;
     }
 
+    public static boolean validarMensaje(String elMensaje,String tipo){
+        if (tipo.equals(XMLParser("tipo", elMensaje))){
+            return true;
+        }
+        return false;
+    }
+    
     //Verifica si una cadena representa una dirección IP.
     public static boolean chequearIp(String sip) {
         String[] parts = sip.split("\\.");

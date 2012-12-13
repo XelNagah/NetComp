@@ -20,6 +20,7 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
     private Alumno alumno;
     private ConexionAlumno conexionAlumno;
     private InfoClase clase;
+    private String password;
     private CustomListModelAlumno listModel;
 
     /**
@@ -51,6 +52,10 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
 
     public void actualizarVista() {
         listModel.fireContentsChanged(listModel, 0, conexionAlumno.getAlumnos().size());
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void conectar() {
