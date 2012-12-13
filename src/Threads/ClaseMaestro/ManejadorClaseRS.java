@@ -58,6 +58,7 @@ public class ManejadorClaseRS implements Runnable {
                 Thread.sleep(periodo);
                 String linea;
                 while (!"bye.".equals(linea = ois.readObject().toString())) {
+                    System.out.println(linea);
                     manejarMensaje(linea);
                 }
                 socketRS.close();

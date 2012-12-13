@@ -144,8 +144,8 @@ public class ManejadorAlumnoSR implements Runnable {
                 oos.writeObject(mensaje);
                 oos.writeObject("bye.");
                 oos.flush();
+                //socketSR.close();
             }
-            socketSR.close();
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -187,9 +187,9 @@ public class ManejadorAlumnoSR implements Runnable {
         ManejadorAlumnoRS unManejador = new ManejadorAlumnoRS(alumno, puertoRS, conexion);
         //Asigno el manejador a la conexión alumno.
         conexion.setManejadorRS(unManejador);
-        conexion.setConectado(true);
         //Envío el mensaje de conexión a la clase.
         oos.writeObject(mensaje);
         oos.flush();
+        conexion.setConectado(true);
     }
 }

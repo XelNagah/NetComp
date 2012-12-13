@@ -9,6 +9,8 @@ import Threads.ClaseAlumno.ManejadorAlumnoSR;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
+import javax.swing.JOptionPane;
 import netcomp.GUI.VtnClaseAlumno;
 import netcomp.GUI.acciones.AccionCrearClaseAlumno;
 
@@ -59,7 +61,7 @@ public class ConexionAlumno {
         return alumno;
     }
 
-    public Boolean getConectado() {
+    public synchronized Boolean getConectado() {
         return conectado;
     }
 
@@ -104,6 +106,7 @@ public class ConexionAlumno {
     }
 
     public void fallaContrasenia() {
+        JOptionPane.showMessageDialog(null,"Contraseña incorrecta.","Inane error",JOptionPane.ERROR_MESSAGE);
         ventana.desconectar();
     }
 }

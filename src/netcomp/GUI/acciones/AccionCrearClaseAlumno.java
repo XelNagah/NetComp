@@ -93,19 +93,19 @@ public class AccionCrearClaseAlumno extends AbstractAction {
         //laClase.imprimeInfo();
     }
 
-    private void conectar(InfoClase laClase, String elPassword) {
+    private synchronized void conectar(InfoClase laClase, String elPassword) {
         //Creo un alumno con los datos de la configuración de NetComp
         Alumno elAlumno = crearAlumno();
         conexion = new ConexionAlumno(elAlumno, laClase, elPassword);
         //Configuro el alumno a la ventana de clase de alumno
-        if (conexion.getConectado()) {
+        //if (conexion.getConectado()) {
             vtnClaseAlumno.setAlumno(elAlumno);
             vtnClaseAlumno.setConexionAlumno(conexion);
             vtnClaseAlumno.setVisible(true);
             vtnClaseAlumno.setTitle(elAlumno.getNombre() + " " + elAlumno.getApellido() + " @ " + laClase.getNombre());
             vtnClaseAlumno.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        } else {
-            JOptionPane.showMessageDialog(null,"Contraseña incorrecta.","Inane error",JOptionPane.ERROR_MESSAGE);
-        }
+        //} else {
+        //    JOptionPane.showMessageDialog(null,"Contraseña incorrecta.","Inane error",JOptionPane.ERROR_MESSAGE);
+        //}
     }
 }
