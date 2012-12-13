@@ -4,12 +4,17 @@
  */
 package netcomp;
 
+import Mensajes.TipoEventosGUI;
 import Threads.ClaseMaestro.Anunciador;
 import Threads.ClaseMaestro.ManejadorConexiones;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.GUI.VtnClaseMaestro;
@@ -18,7 +23,7 @@ import netcomp.GUI.VtnClaseMaestro;
  *
  * @author zerg
  */
-public class Clase implements Serializable{
+public class Clase implements Serializable {
 
     //Atributos
     private String nombre;
@@ -32,7 +37,7 @@ public class Clase implements Serializable{
     private Thread anunciadorThread;
     private ManejadorConexiones manejadorDeConexiones;
     private Thread manejadorDeConexionesThread;
-    private ArrayList<Alumno> alumnos;
+    private List<Alumno> alumnos;
     private ArrayList<Archivo> archivos;
 
     //Constructor
@@ -54,7 +59,7 @@ public class Clase implements Serializable{
             pass = false;
         }
         //Creo lista de alumnos
-        this.alumnos = new ArrayList<Alumno>();
+        this.alumnos = new LinkedList<Alumno>();
         //Seteo el anunciador de clase
         this.anunciador = new Anunciador(ip, puerto, nombre, pass, profesor, descripcion);
         //Seteo el manejador de conexiones
@@ -105,31 +110,35 @@ public class Clase implements Serializable{
 
     public void addAlumno(Alumno elAlumno) {
         this.alumnos.add(elAlumno);
+        sortAlumnos();
+
     }
 
     public void delAlumno(Alumno elAlumno) {
         this.alumnos.remove(elAlumno);
+        sortAlumnos();
     }
-    
-    public void addConexion(ConexionClase laConexion){
+
+    public void addConexion(ConexionClase laConexion) {
         manejadorDeConexiones.addConexion(laConexion);
     }
-    
-    public void delConexion(ConexionClase laConexion){
+
+    public void delConexion(ConexionClase laConexion) {
         manejadorDeConexiones.delConexion(laConexion);
     }
-    
-    public void actualizarListaAlumnos(){
+
+    public void actualizarListaAlumnos() {
         ventana.actualizarVista(0, alumnos.size());
         manejadorDeConexiones.actualizarListaAlumnos();
     }
 
     public ArrayList<Alumno> getAlumnos() {
-        return alumnos;
+        return new ArrayList<Alumno>(alumnos);
     }
-
-    public Alumno getAlumnos(int i) {
-        return alumnos.get(i);
+    
+    public Alumno getAlumnos(int pos) {
+        ArrayList<Alumno> a = new ArrayList<Alumno>(alumnos);
+        return a.get(pos);
     }
 
     public VtnClaseMaestro getVentana() {
@@ -177,7 +186,19 @@ public class Clase implements Serializable{
 
     public void detener() {
         anunciadorThread.interrupt();
-        manejadorDeConexiones.cerrarConexiones();
+        //manejadorDeConexiones.cerrarConexiones();
+        TipoEventosGUI elEvento = new TipoEventosGUI(TipoEventosGUI.desconectarse);
+        manejadorDeConexiones.agregarEventoGUI(elEvento);
         manejadorDeConexionesThread.interrupt();
+    }
+
+    private void sortAlumnos() {
+        Collections.sort(alumnos, new Comparator<Alumno>() {
+            @Override
+            public int compare(Alumno t, Alumno t1) {
+                return (t.getNombre() + t.getApellido()).compareToIgnoreCase(
+                        (t1.getNombre() + t1.getApellido()));
+            }
+        });
     }
 }

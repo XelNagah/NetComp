@@ -4,6 +4,7 @@
  */
 package netcomp;
 
+import Mensajes.TipoEventosGUI;
 import Threads.ClaseMaestro.ManejadorClaseRS;
 import Threads.ClaseMaestro.ManejadorClaseSR;
 import java.net.Socket;
@@ -59,6 +60,10 @@ public class ConexionClase {
             manejadorClaseSR.listUpdate(losAlumnos);
     }
 
+    public void agregarEventoGUI(TipoEventosGUI evt) {
+        manejadorClaseSR.getQueue().offer(evt);
+    }
+    
     public void desconectar() {
         manejadorClaseSR.desconectar();
     }

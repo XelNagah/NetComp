@@ -5,13 +5,14 @@
 package Threads.ClaseMaestro;
 
 import Mensajes.MensajesClase;
+import Mensajes.TipoEventosGUI;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,12 +35,13 @@ public class ManejadorClaseSR implements Runnable {
     ConexionClase conexion;
     ObjectInputStream ois;
     ObjectOutputStream oos;
-    BlockingQueue<Integer> queue;
+    BlockingQueue<TipoEventosGUI> queue;
 
     public ManejadorClaseSR(Socket elSocketRS, Clase laClase, ConexionClase laConexion) {
         clase = laClase;
         socketRS = elSocketRS;
         conexion = laConexion;
+        queue = new ArrayBlockingQueue<TipoEventosGUI>(50);
     }
 
     public void setPuertoSR(int puertoSR) {
@@ -48,17 +50,49 @@ public class ManejadorClaseSR implements Runnable {
 
     private void manejar() {
         try {
-            //BlockingQueue
             socketSR = new Socket(socketRS.getInetAddress(), puertoSR);
+
             conectarSR();
-            ServerSocket unSocket = new ServerSocket(5467);
-            unSocket.accept();
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
+            while (corriendo) {
+                try {
+                    //Recibir instruccion del GUI
+                    TipoEventosGUI elTipoEVento = queue.take();
+                    Integer tipoMsg = elTipoEVento.getEventId();
+
+                    switch (tipoMsg) {
+                        case TipoEventosGUI.actualizarListaArchivos:
+                            System.out.println("Actualizo list de archivos");
+                            //método
+                            break;
+                        case TipoEventosGUI.enviarArchivo:
+                            System.out.println("Envío archivo");
+                            //método
+                            enviarArchivo();
+                            break;
+                        case TipoEventosGUI.desconectarse:
+                            System.out.println("Me desconecto");
+                            //método
+                            desconectar();
+                            break;
+                        case TipoEventosGUI.listUpdate:
+                            System.out.println("Envío un listUpdate");
+                            //método
+                            listUpdate(clase.getAlumnos());
+                            break;
+                    }
+
+                } catch (InterruptedException ex) {
+                    corriendo = false;
+                    break;
+                }
+            }
         } catch (IOException ex) {
             Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("ManejadorClaseSR ha muerto.");
+    }
+
+    public BlockingQueue<TipoEventosGUI> getQueue() {
+        return queue;
     }
 
     private void conectarSR() {
@@ -68,6 +102,7 @@ public class ManejadorClaseSR implements Runnable {
             String mensaje;
             mensaje = MensajesClase.conectar();
             oos.writeObject(mensaje);
+            oos.flush();
         } catch (IOException ex) {
             Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -77,9 +112,13 @@ public class ManejadorClaseSR implements Runnable {
         try {
             String mensaje;
             mensaje = MensajesClase.desconectar();
-            oos.writeObject(mensaje);
-            oos.writeObject("bye.");
+            if (!socketSR.isClosed()) {
+                oos.writeObject(mensaje);
+                oos.writeObject("bye.");
+            }
+            oos.close();
             socketSR.close();
+            //clase.delConexion(conexion);
         } catch (IOException ex) {
             Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -89,8 +128,11 @@ public class ManejadorClaseSR implements Runnable {
         try {
             String mensaje;
             mensaje = MensajesClase.listUpdate();
-            oos.writeObject(mensaje);
-            oos.writeUnshared(losAlumnos);
+            if (!socketSR.isClosed()) {
+                oos.writeObject(mensaje);
+                oos.writeUnshared(losAlumnos);
+                oos.flush();
+            }
         } catch (IOException ex) {
             Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -100,5 +142,33 @@ public class ManejadorClaseSR implements Runnable {
     public void run() {
         corriendo = true;
         manejar();
+    }
+
+    private void enviarArchivo() {
+        try {
+            String mensaje;
+            mensaje = MensajesClase.listUpdate();
+            if (!socketSR.isClosed()) {
+                oos.writeObject(mensaje);
+                oos.writeUnshared(clase);
+                oos.flush();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void enviarArchivo(File unArchivo) {
+        try {
+            String mensaje;
+            mensaje = MensajesClase.listUpdate();
+            if (!socketSR.isClosed()) {
+                oos.writeObject(mensaje);
+                oos.writeUnshared(unArchivo);
+                oos.flush();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

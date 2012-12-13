@@ -4,11 +4,14 @@
  */
 package Threads.ClaseMaestro;
 
+import Mensajes.TipoEventosGUI;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.Alumno;
@@ -25,14 +28,23 @@ public class ManejadorConexiones implements Runnable {
     private long periodo = 300;
     private int puerto;
     private Clase clase;
-    private ArrayList<ConexionClase> conexiones;
+    private Set<ConexionClase> conexiones;
     private Socket socketAlumno;
 
     public ManejadorConexiones(int elPuerto, Clase laClase) {
         this.puerto = elPuerto;
         //alumnos = listaAlumnos;
         clase = laClase;
-        conexiones = new ArrayList<ConexionClase>();
+        conexiones = new ConcurrentSkipListSet<ConexionClase>(new Comparator<ConexionClase>() {
+            @Override
+            public int compare(ConexionClase t, ConexionClase t1) {
+                if (t.equals(t1)) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        });
     }
 
     private void manejarConexiones() {
@@ -46,7 +58,8 @@ public class ManejadorConexiones implements Runnable {
                     //Espero una conexión y acepto las entrantes.
                     socketAlumno = serverSocket.accept();
                     //Al aceptarla, creo el thread que va a manejar ese alumno.
-                    addConexion(new ConexionClase(socketAlumno, clase));
+                    //addConexion(new ConexionClase(socketAlumno, clase));
+                    new ConexionClase(socketAlumno, clase);
                     //Olvido el socket de este alumno, ya que se lo delegué al manejador 
                     //y vuelvo a escuchar conexiones entrantes.
                     socketAlumno = null;
@@ -67,16 +80,8 @@ public class ManejadorConexiones implements Runnable {
         }
     }
 
-    public ArrayList<ConexionClase> getConexiones() {
+    public Set<ConexionClase> getConexiones() {
         return conexiones;
-    }
-
-    public void actualizarListaAlumnos() {
-        ArrayList<Alumno> losAlumnos = clase.getAlumnos();
-        for (Iterator<ConexionClase> it = conexiones.iterator(); it.hasNext();) {
-            ConexionClase laConexion = it.next();
-            laConexion.listUpdate(losAlumnos);
-        }
     }
 
     public void addConexion(ConexionClase laConexion) {
@@ -86,12 +91,43 @@ public class ManejadorConexiones implements Runnable {
     public void delConexion(ConexionClase laConexion) {
         conexiones.remove(laConexion);
     }
-    
-    public void cerrarConexiones(){
-        for ( Iterator<ConexionClase> it = conexiones.iterator(); it.hasNext(); ){
+
+    public void actualizarListaAlumnos() {
+        for (Iterator<ConexionClase> it = this.conexiones.iterator(); it.hasNext();) {
+            ConexionClase laConexion = it.next();
+            TipoEventosGUI elEvento = new TipoEventosGUI(TipoEventosGUI.listUpdate);
+            laConexion.agregarEventoGUI(elEvento);
+        }
+    }
+
+    /**
+     * Utilizar agregarEventoGUI
+     *
+     */
+    @Deprecated
+    public void cerrarConexiones() {
+        for (Iterator<ConexionClase> it = conexiones.iterator(); it.hasNext();) {
             ConexionClase laConexion = it.next();
             it.remove();
             laConexion.desconectar();
+        }
+    }
+
+    public void agregarEventoGUI(TipoEventosGUI evt) {
+        //Broadcast -.-
+        for (Iterator<ConexionClase> it = conexiones.iterator(); it.hasNext();) {
+            ConexionClase laConexion = it.next();
+            laConexion.agregarEventoGUI(evt);
+        }
+    }
+
+    public void agregarEventoGUI(TipoEventosGUI evt, Alumno elAlumno) {
+        //Dirigido
+        for (Iterator<ConexionClase> it = conexiones.iterator(); it.hasNext();) {
+            ConexionClase laConexion = it.next();
+            if (laConexion.getAlumno().equals(elAlumno)) {
+                laConexion.agregarEventoGUI(evt);
+            }
         }
     }
 

@@ -121,7 +121,7 @@ public class ManejadorAlumnoRS implements Runnable {
         try {
             conexion.desconectar();
             socketEscucha.close();
-            System.out.println("La clase se ha cerrado.");
+            //System.out.println("La clase se ha cerrado.");
             ventana.desconectar();
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);

@@ -52,9 +52,6 @@ public class ManejadorClaseRS implements Runnable {
         while (corriendo) {
             try {
                 Thread.sleep(periodo);
-                //Hacer algo
-                //conectarSR();
-                //BufferedReader in = new BufferedReader(new InputStreamReader(socketRS.getInputStream(), "UTF-8"));
                 String linea;
                 while (!"bye.".equals(linea = ois.readObject().toString())) {
                     manejarMensaje(linea);
@@ -63,6 +60,8 @@ public class ManejadorClaseRS implements Runnable {
                 corriendo = false;
             } catch (IOException ex) {
                 Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
+                corriendo = false;
+                break;
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InterruptedException ex) {
@@ -110,7 +109,7 @@ public class ManejadorClaseRS implements Runnable {
             //Espero confirmación de establecimiento de la conexión
             String confirmacion = ois.readObject().toString();
             if (!"Done".equals(confirmacion)) {
-                System.out.println("wtf");
+                System.out.println("Recibo mensaje extraño.");
             }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
@@ -121,6 +120,7 @@ public class ManejadorClaseRS implements Runnable {
         conexion.setAlumno(elAlumno);
         //Agrego el alumno a la clase.
         clase.addAlumno(elAlumno);
+        clase.getManejadorDeConexiones().addConexion(conexion);
         clase.actualizarListaAlumnos();
     }
 
