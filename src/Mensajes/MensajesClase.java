@@ -26,9 +26,16 @@ public class MensajesClase {
         return mensaje;
     }
 
-    public static String listUpdate() {
+    public static String listaAlumnosUpdate() {
         String mensaje;
-        mensaje = GenTools.XMLGenerator("tipo", "listUpdate");
+        mensaje = GenTools.XMLGenerator("tipo", "listaAlumnosUpdate");
+        mensaje = GenTools.XMLWrapper("msg", mensaje);
+        return mensaje;
+    }
+    
+    public static String listaArchivosUpdate() {
+        String mensaje;
+        mensaje = GenTools.XMLGenerator("tipo", "listaArchivosUpdate");
         mensaje = GenTools.XMLWrapper("msg", mensaje);
         return mensaje;
     }

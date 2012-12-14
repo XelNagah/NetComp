@@ -93,7 +93,7 @@ public class AccionCrearClaseAlumno extends AbstractAction {
         //laClase.imprimeInfo();
     }
 
-    private synchronized void conectar(InfoClase laClase, String elPassword) {
+    private void conectar(InfoClase laClase, String elPassword) {
         //Creo un alumno con los datos de la configuración de NetComp
         Alumno elAlumno = crearAlumno();
         conexion = new ConexionAlumno(elAlumno, laClase, elPassword);

@@ -61,7 +61,7 @@ public class ManejadorClaseSR implements Runnable {
 
                     switch (tipoMsg) {
                         case TipoEventosGUI.actualizarListaArchivos:
-                            System.out.println("Actualizo list de archivos");
+                            System.out.println("Actualizo lista de archivos");
                             //método
                             break;
                         case TipoEventosGUI.enviarArchivo:
@@ -70,14 +70,19 @@ public class ManejadorClaseSR implements Runnable {
                             enviarArchivo();
                             break;
                         case TipoEventosGUI.desconectarse:
-                            System.out.println("Me desconecto");
+                            //System.out.println("Me desconecto");
                             //método
                             desconectar();
                             break;
-                        case TipoEventosGUI.listUpdate:
-                            System.out.println("Envío un listUpdate");
+                        case TipoEventosGUI.listaAlumnosUpdate:
+                            //System.out.println("Envío un listaAlumnosUpdate");
                             //método
-                            listUpdate(clase.getAlumnos());
+                            listaAlumnosUpdate(clase.getAlumnos());
+                            break;
+                        case TipoEventosGUI.listaArchivosUpdate:
+                            //System.out.println("Envío un listaAlumnosUpdate");
+                            //método
+                            listaArchivosUpdate(clase.getArchivos());
                             break;
                     }
 
@@ -125,10 +130,10 @@ public class ManejadorClaseSR implements Runnable {
         }
     }
 
-    public void listUpdate(ArrayList<Alumno> losAlumnos) {
+    public void listaAlumnosUpdate(ArrayList<Alumno> losAlumnos) {
         try {
             String mensaje;
-            mensaje = MensajesClase.listUpdate();
+            mensaje = MensajesClase.listaAlumnosUpdate();
             if (!socketSR.isClosed()) {
                 oos.writeObject(mensaje);
                 oos.writeUnshared(losAlumnos);
@@ -148,7 +153,7 @@ public class ManejadorClaseSR implements Runnable {
     private void enviarArchivo() {
         try {
             String mensaje;
-            mensaje = MensajesClase.listUpdate();
+            mensaje = MensajesClase.listaArchivosUpdate();
             if (!socketSR.isClosed()) {
                 oos.writeObject(mensaje);
                 oos.writeUnshared(clase);
@@ -162,10 +167,24 @@ public class ManejadorClaseSR implements Runnable {
     private void enviarArchivo(File unArchivo) {
         try {
             String mensaje;
-            mensaje = MensajesClase.listUpdate();
+            mensaje = MensajesClase.listaArchivosUpdate();
             if (!socketSR.isClosed()) {
                 oos.writeObject(mensaje);
                 oos.writeUnshared(unArchivo);
+                oos.flush();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void listaArchivosUpdate(ArrayList<File> losArchivos) {
+        try {
+            String mensaje;
+            mensaje = MensajesClase.listaArchivosUpdate();
+            if (!socketSR.isClosed()) {
+                oos.writeObject(mensaje);
+                oos.writeUnshared(losArchivos);
                 oos.flush();
             }
         } catch (IOException ex) {

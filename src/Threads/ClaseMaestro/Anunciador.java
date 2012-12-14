@@ -11,6 +11,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import netcomp.GenTools;
 
 /**
@@ -78,8 +80,11 @@ public class Anunciador implements Runnable {
                 }
             }
         } catch (SocketException e) {
+            Logger.getLogger(Anunciador.class.getName()).log(Level.SEVERE, null, e);
         } catch (UnknownHostException e) {
+            Logger.getLogger(Anunciador.class.getName()).log(Level.SEVERE, null, e);
         } catch (IOException e) {
+            Logger.getLogger(Anunciador.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 

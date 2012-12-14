@@ -6,6 +6,7 @@ package Threads.ClaseAlumno;
 
 import Mensajes.MensajesAlumno;
 import Mensajes.TipoEventosGUI;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,7 +16,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.Alumno;
-import netcomp.Archivo;
 import netcomp.ConexionAlumno;
 import netcomp.GUI.VtnClaseAlumno;
 import netcomp.GUI.acciones.AccionCrearClaseAlumno;
@@ -76,21 +76,21 @@ public class ManejadorAlumnoSR implements Runnable {
         return puertoRS;
     }
 
+    public BlockingQueue<TipoEventosGUI> getQueue() {
+        return queue;
+    }
+
     private void manejar() {
         conectar();
         while (corriendo) {
             try {
                 //Recibir instruccion del GUI
-                TipoEventosGUI elTipoEVento = queue.take();
-                Integer tipoMsg = elTipoEVento.getEventId();
+                TipoEventosGUI elEvento = queue.take();
+                Integer tipoMsg = elEvento.getEventId();
 
                 switch (tipoMsg) {
                     case TipoEventosGUI.pedirArchivo:
-                        System.out.println("Pido un archivo");
-                        //Obtengo el Archivo
-                        Archivo elArchivo = (Archivo) elTipoEVento.getParams().get(0);
-                        //Por ahora se usa el nombre del archivo para identificar
-                        pedirArchivo(elArchivo.getNombreArchivo());
+                        pedirArchivo((File) elEvento.getParams().get(0),(File) elEvento.getParams().get(1));
                         break;
                 }
             } catch (InterruptedException ex) {
@@ -104,9 +104,9 @@ public class ManejadorAlumnoSR implements Runnable {
             oos = new ObjectOutputStream(socketSR.getOutputStream());
             oos.flush();
             if (password != null) {
-                System.out.println("Envío password: " + password);
+                //System.out.println("Envío password: " + password);
                 String mensaje = MensajesAlumno.password(password);
-                System.out.println(mensaje);
+                //System.out.println(mensaje);
                 oos.writeObject(mensaje);
                 ois = new ObjectInputStream(socketSR.getInputStream());
                 if ((Boolean) ois.readObject()){
@@ -151,26 +151,31 @@ public class ManejadorAlumnoSR implements Runnable {
         }
     }
 
-    private void pedirArchivo(String nombreArchivo) {
-        String mensaje;
-        mensaje = MensajesAlumno.pedirArchivo(nombreArchivo);
-        if (!socketSR.isClosed()) {
-            try {
-                oos.writeObject(mensaje);
-                oos.flush();
-                //Leo el archivo
-                Archivo elArchivo = (Archivo) ois.readObject();
-                //Escribo el archivo a disco.
-                escribirArchivo(elArchivo);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
+    private void pedirArchivo(File elArchivo, File guardarPath) {
+        try {
+            String mensaje;
+            int puertoConexion = GenTools.findFreePort();
+            new Thread(new ManejadorRecvFiles(puertoConexion, guardarPath)).start();
+            mensaje = MensajesAlumno.pedirArchivo(puertoConexion);
+            if (!socketSR.isClosed()) {
+                try {
+                    oos.writeObject(mensaje);
+                    //Pido el archivo
+                    oos.writeObject(elArchivo);
+                    System.out.println("Guardo el archivo en " + guardarPath);
+                    //Escribo el archivo a disco.
+                    //escribirArchivo(elArchivo);
+                    oos.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void escribirArchivo(Archivo unArchivo) {
+    private void escribirArchivo(File unArchivo) {
         //Escribo el archivo a disco.
     }
 

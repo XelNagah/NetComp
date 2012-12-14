@@ -4,9 +4,12 @@
  */
 package Mensajes;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import netcomp.Alumno;
 import netcomp.GenTools;
-import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -38,24 +41,28 @@ public class MensajesAlumno {
         return mensaje;
     }
 
-    public static String pedirArchivo(String nombreArchivo) {
+    public static String pedirArchivo(int elPuerto) {
         String mensaje;
         mensaje = GenTools.XMLGenerator("tipo", "pedirArchivo");
-        mensaje = GenTools.XMLAppend("nombre", nombreArchivo, mensaje);
+        mensaje = GenTools.XMLAppend("puerto", Integer.toString(elPuerto), mensaje);
         mensaje = GenTools.XMLWrapper("msg", mensaje);
         return mensaje;
     }
 
     public static String password(String elPassword) {
-
-        //Encodeo en BASE64
-        BASE64Encoder encoder = new BASE64Encoder();
-        String passEncoded = encoder.encodeBuffer(elPassword.getBytes());
-        
-        String mensaje;
-        mensaje = GenTools.XMLGenerator("tipo", "password");
-        mensaje = GenTools.XMLAppend("password", passEncoded, mensaje);
-        mensaje = GenTools.XMLWrapper("msg", mensaje);
-        return mensaje;
+        MessageDigest messageDigest;
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(elPassword.getBytes());
+            String encryptedString = new String(messageDigest.digest());
+            String mensaje;
+            mensaje = GenTools.XMLGenerator("tipo", "password");
+            mensaje = GenTools.XMLAppend("password", encryptedString, mensaje);
+            mensaje = GenTools.XMLWrapper("msg", mensaje);
+            return mensaje;
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(MensajesAlumno.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 }

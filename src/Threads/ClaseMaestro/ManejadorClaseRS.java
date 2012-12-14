@@ -4,21 +4,21 @@
  */
 package Threads.ClaseMaestro;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.Alumno;
-import netcomp.Archivo;
 import netcomp.Clase;
 import netcomp.ConexionClase;
 import netcomp.GUI.VtnClaseMaestro;
 import netcomp.GUI.acciones.AccionCrearClaseMaestro;
 import netcomp.GenTools;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -58,14 +58,15 @@ public class ManejadorClaseRS implements Runnable {
                 Thread.sleep(periodo);
                 String linea;
                 while (!"bye.".equals(linea = ois.readObject().toString())) {
-                    System.out.println(linea);
+                    //System.out.println(linea);
                     manejarMensaje(linea);
                 }
                 socketRS.close();
                 corriendo = false;
             } catch (IOException ex) {
-                Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
                 corriendo = false;
+                manejarDesconectar();
                 break;
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
@@ -127,14 +128,19 @@ public class ManejadorClaseRS implements Runnable {
         clase.addAlumno(elAlumno);
         clase.getManejadorDeConexiones().addConexion(conexion);
         clase.actualizarListaAlumnos();
+        clase.actualizarListaArchivos(elAlumno);
     }
 
     private void manejarPedidoArchivo(String elMensaje) {
         try {
-            String nombreArchivo = GenTools.XMLParser("nombre", elMensaje);
-            Archivo elArchivo = clase.getArchivos(nombreArchivo);
-            oos.writeObject(elArchivo);
-            oos.flush();
+            int puerto = Integer.parseInt(GenTools.XMLParser("puerto", elMensaje));
+            System.out.println("Recibí puerto de conexión " + puerto);
+            File elArchivo;
+            elArchivo = (File) ois.readObject();
+            System.out.println("Envío el archivo " + elArchivo);
+            new Thread(new ManejadorSendFiles(socketRS.getInetAddress(), puerto, elArchivo)).start();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -149,28 +155,32 @@ public class ManejadorClaseRS implements Runnable {
     }
 
     private void manejarPassword(String elMensaje) {
-        String laContrasenia = GenTools.XMLParser("password", elMensaje);
-        System.out.println(laContrasenia);
-
-        //Encodeo en BASE64
-        BASE64Encoder encoder = new BASE64Encoder();
-        String passEncoded = encoder.encodeBuffer(clase.getContrasenia().getBytes());
-        if (passEncoded.equals(laContrasenia)) {
-            try {
-                oos.writeObject(true);
-                oos.flush();
-            } catch (IOException ex) {
-                Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            String laContrasenia = GenTools.XMLParser("password", elMensaje);
+            //System.out.println(laContrasenia);
+            MessageDigest messageDigest;
+            messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(clase.getContrasenia().getBytes());
+            String encryptedString = new String(messageDigest.digest());
+            if (encryptedString.equals(laContrasenia)) {
+                try {
+                    oos.writeObject(true);
+                    oos.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                try {
+                    oos.writeObject(false);
+                    oos.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                clase.delConexion(conexion);
+                corriendo = false;
             }
-        } else {
-            try {
-                oos.writeObject(false);
-                oos.flush();
-            } catch (IOException ex) {
-                Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            clase.delConexion(conexion);
-            corriendo = false;
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

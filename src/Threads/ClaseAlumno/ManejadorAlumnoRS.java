@@ -4,6 +4,7 @@
  */
 package Threads.ClaseAlumno;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -92,8 +93,10 @@ public class ManejadorAlumnoRS implements Runnable {
             manejarConexion(elMensaje);
         } else if ("desconexion".equals(tipo)) {
             manejarDesconexion(elMensaje);
-        } else if ("listUpdate".equals(tipo)) {
-            manejarListUpdate(elMensaje);
+        } else if ("listaAlumnosUpdate".equals(tipo)) {
+            manejarListaAlumnosUpdate(elMensaje);
+        } else if ("listaArchivosUpdate".equals(tipo)) {
+            manejarListaArchivosUpdate(elMensaje);
         } else {
             System.out.println(elMensaje);
         }
@@ -102,13 +105,27 @@ public class ManejadorAlumnoRS implements Runnable {
     private void manejarConexion(String elMensaje) {
         conexion.confirmarConexion();
     }
-    
-    private void manejarListUpdate(String elMensaje){
+
+    private void manejarListaAlumnosUpdate(String elMensaje) {
         try {
             ArrayList<Alumno> losAlumnos;
             try {
                 losAlumnos = (ArrayList<Alumno>) ois.readObject();
                 conexion.actualizarListaAlumnos(losAlumnos);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void manejarListaArchivosUpdate(String elMensaje) {
+        try {
+            ArrayList<File> losArchivos;
+            try {
+                losArchivos = (ArrayList<File>) ois.readObject();
+                conexion.actualizarListaArchivos(losArchivos);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
             }

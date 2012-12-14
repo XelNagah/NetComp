@@ -93,16 +93,8 @@ public class ManejadorConexiones implements Runnable {
         conexiones.remove(laConexion);
     }
 
-    public void actualizarListaAlumnos() {
-        for (Iterator<ConexionClase> it = this.conexiones.iterator(); it.hasNext();) {
-            ConexionClase laConexion = it.next();
-            TipoEventosGUI elEvento = new TipoEventosGUI(TipoEventosGUI.listUpdate);
-            laConexion.agregarEventoGUI(elEvento);
-        }
-    }
-
     /**
-     * Utilizar agregarEventoGUI
+     * Utilizar enviarEventoGUI
      *
      */
     @Deprecated
@@ -114,22 +106,36 @@ public class ManejadorConexiones implements Runnable {
         }
     }
 
-    public void agregarEventoGUI(TipoEventosGUI evt) {
-        //Broadcast -.-
-        for (Iterator<ConexionClase> it = conexiones.iterator(); it.hasNext();) {
+    public void enviarEventoGeneral(TipoEventosGUI elEvento) {
+        for (Iterator<ConexionClase> it = this.conexiones.iterator(); it.hasNext();) {
             ConexionClase laConexion = it.next();
-            laConexion.agregarEventoGUI(evt);
+            laConexion.enviarEvento(elEvento);
         }
     }
 
-    public void agregarEventoGUI(TipoEventosGUI evt, Alumno elAlumno) {
+    public void enviarEvento(TipoEventosGUI evt, Alumno elAlumno) {
         //Dirigido
         for (Iterator<ConexionClase> it = conexiones.iterator(); it.hasNext();) {
             ConexionClase laConexion = it.next();
             if (laConexion.getAlumno().equals(elAlumno)) {
-                laConexion.agregarEventoGUI(evt);
+                laConexion.enviarEvento(evt);
             }
         }
+    }
+
+    public void actualizarListaAlumnos() {
+        TipoEventosGUI eventoActualizarListaGeneral = new TipoEventosGUI(TipoEventosGUI.listaAlumnosUpdate);
+        enviarEventoGeneral(eventoActualizarListaGeneral);
+    }
+
+    public void actualizarListaArchivos() {
+        TipoEventosGUI eventoActualizarArchivosGeneral = new TipoEventosGUI(TipoEventosGUI.listaArchivosUpdate);
+        enviarEventoGeneral(eventoActualizarArchivosGeneral);
+    }
+
+    public void actualizarListaArchivos(Alumno elAlumno) {
+        TipoEventosGUI eventoActualizarArchivosGeneral = new TipoEventosGUI(TipoEventosGUI.listaArchivosUpdate);
+        enviarEvento(eventoActualizarArchivosGeneral, elAlumno);
     }
 
     @Override

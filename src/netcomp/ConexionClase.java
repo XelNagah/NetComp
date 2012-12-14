@@ -56,11 +56,11 @@ public class ConexionClase {
         manejadorClaseSRThread.start();
     }
 
-    public void listUpdate(ArrayList<Alumno> losAlumnos) {
-            manejadorClaseSR.listUpdate(losAlumnos);
+    public void listaAlumnosUpdate(ArrayList<Alumno> losAlumnos) {
+            manejadorClaseSR.listaAlumnosUpdate(losAlumnos);
     }
 
-    public void agregarEventoGUI(TipoEventosGUI evt) {
+    public void enviarEvento(TipoEventosGUI evt) {
         manejadorClaseSR.getQueue().offer(evt);
     }
     

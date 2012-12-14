@@ -4,10 +4,21 @@
  */
 package netcomp.GUI;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import netcomp.Alumno;
 import netcomp.ConexionAlumno;
 import netcomp.GUI.acciones.AccionAbout;
+import netcomp.GUI.acciones.AccionCrearVtnArchivosAlumno;
 import netcomp.InfoClase;
 import netcomp.NetComp;
 
@@ -20,13 +31,21 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
     private Alumno alumno;
     private ConexionAlumno conexionAlumno;
     private InfoClase clase;
-    private String password;
     private CustomListModelAlumno listModel;
+    private Image scaledImage;
+    private VtnArchivosAlumno vtnArchivosAlumno;
 
     /**
      * Creates new form VtnClase
      */
     public VtnClaseAlumno() {
+        /*try {
+            BufferedImage imagenEscritorio = ImageIO.read(new File("./Escritorio.png"));
+            //scaledImage = imagenEscritorio.getScaledInstance(551, 288, Image.SCALE_SMOOTH);
+            scaledImage = (BufferedImage) imagenEscritorio;
+        } catch (IOException ex) {
+            Logger.getLogger(VtnClaseMaestro.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
         initComponents();
     }
 
@@ -44,18 +63,16 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
 
     public void setConexionAlumno(ConexionAlumno conexionAlumno) {
         this.conexionAlumno = conexionAlumno;
+        vtnArchivosAlumno = new VtnArchivosAlumno(conexionAlumno);
+        conexionAlumno.setVentanaArchivos(vtnArchivosAlumno);
     }
 
     public CustomListModelAlumno getListModel() {
         return listModel;
     }
 
-    public void actualizarVista() {
+    public void actualizarVistaAlumnos() {
         listModel.fireContentsChanged(listModel, 0, conexionAlumno.getAlumnos().size());
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void conectar() {
@@ -74,6 +91,7 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
+        jLabel1 = new javax.swing.JLabel(/*new ImageIcon(scaledImage)*/);
         menuBar = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -83,7 +101,6 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
         pasteMenuItem = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
@@ -133,10 +150,12 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
         jMenu1.setText("Opciones");
 
         jMenuItem1.setText("Ver archivos compartidos");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
-
-        jMenuItem2.setText("Ver encuestas");
-        jMenu1.add(jMenuItem2);
 
         menuBar.add(jMenu1);
 
@@ -157,15 +176,19 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(564, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -183,6 +206,11 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
         dispose();
         NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        vtnArchivosAlumno.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     public void desconectar() {
         dispose();
@@ -231,11 +259,11 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
     private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JList jList1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuBar menuBar;

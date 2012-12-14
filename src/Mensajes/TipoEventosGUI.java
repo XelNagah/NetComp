@@ -15,8 +15,9 @@ public class TipoEventosGUI {
     //Eventos maestro GUI
     public final static int actualizarListaArchivos = 1;
     public final static int desconectarse = 2;
-    public final static int listUpdate = 3;
-    public final static int enviarArchivo = 4;
+    public final static int listaAlumnosUpdate = 3;
+    public final static int listaArchivosUpdate = 4;
+    public final static int enviarArchivo = 5;
     
     //Eventos alumno GUI
     public final static int pedirArchivo = 10;

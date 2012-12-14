@@ -78,8 +78,11 @@ public class Escuchador implements Runnable {
             //e interrumpo el manejador de clases.
             elManejadorThread.interrupt();
         } catch (SocketException e) {
+            //Logger.getLogger(Escuchador.class.getName()).log(Level.SEVERE, null, e);
         } catch (UnknownHostException e) {
+            //Logger.getLogger(Escuchador.class.getName()).log(Level.SEVERE, null, e);
         } catch (IOException e) {
+            //Logger.getLogger(Escuchador.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -109,7 +112,7 @@ public class Escuchador implements Runnable {
         //Verifico que sea un paquete de mensaje
         if ((GenTools.XMLParser("msg", elPaquete)) != null) {
         }
-        //Verifico que sea de tupo anuncio
+        //Verifico que sea de tipo anuncio
         if ("anuncio".equals(GenTools.XMLParser("tipo", elPaquete))) {
             return true;
         } else {

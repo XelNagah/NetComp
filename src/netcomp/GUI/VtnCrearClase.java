@@ -7,6 +7,7 @@ package netcomp.GUI;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import netcomp.Configuracion;
 import netcomp.GUI.acciones.AccionCrearClaseMaestro;
 import netcomp.NetComp;
 
@@ -36,7 +37,9 @@ public class VtnCrearClase extends javax.swing.JFrame {
      * Creates new form crearClase
      */
     public VtnCrearClase() {
+        Configuracion.inicializar();
         initComponents();
+        inicializarCampos();
         setTitle("Crear una clase - Parámetros");
         setResizable(false);
     }
@@ -106,8 +109,6 @@ public class VtnCrearClase extends javax.swing.JFrame {
         crearClaseLabelProfesor.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         crearClaseLabelProfesor.setText("Profesor");
 
-        crearClaseProfesor.setText("Su nombre");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -174,7 +175,8 @@ public class VtnCrearClase extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelarCrearClaseBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarCrearClaseBotonActionPerformed
-        setVisible(false);
+        //setVisible(false);
+        inicializarCampos();
         this.dispose();
         NetComp.vtnPrincipal.setVisible(true);
         initComponents();
@@ -182,9 +184,10 @@ public class VtnCrearClase extends javax.swing.JFrame {
 
     private void accionCerrarVentana(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_accionCerrarVentana
         setVisible(false);
+        inicializarCampos();
         this.dispose();
         NetComp.vtnPrincipal.setVisible(true);
-        //initComponents();
+        initComponents();
     }//GEN-LAST:event_accionCerrarVentana
 
     /**
@@ -236,4 +239,9 @@ public class VtnCrearClase extends javax.swing.JFrame {
     private javax.swing.JLabel crearClaseTituloVentana;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    private void inicializarCampos() {
+        String elProfesor = Configuracion.getNombre() + " " + Configuracion.getApellido();
+        crearClaseProfesor.setText(elProfesor);
+    }
 }

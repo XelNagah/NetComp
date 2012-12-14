@@ -7,6 +7,7 @@ package netcomp;
 import Mensajes.TipoEventosGUI;
 import Threads.ClaseMaestro.Anunciador;
 import Threads.ClaseMaestro.ManejadorConexiones;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.SocketException;
@@ -39,7 +40,7 @@ public class Clase implements Serializable {
     private ManejadorConexiones manejadorDeConexiones;
     private Thread manejadorDeConexionesThread;
     private List<Alumno> alumnos;
-    private ArrayList<Archivo> archivos;
+    private ArrayList<File> archivos;
 
     //Constructor
     public Clase(String nombre, String contrasenia, String profesor, String descripcion, VtnClaseMaestro laVentana) {
@@ -65,8 +66,10 @@ public class Clase implements Serializable {
         this.anunciador = new Anunciador(ip, puerto, nombre, pass, profesor, descripcion);
         //Seteo el manejador de conexiones
         this.manejadorDeConexiones = new ManejadorConexiones(puerto, this);
+        //Configuro la ventana de la clase
         ventana = laVentana;
-        archivos = new ArrayList<Archivo>();
+        //Creo lista de archivos
+        archivos = new ArrayList<File>();
     }
 
     //Métodos
@@ -113,7 +116,6 @@ public class Clase implements Serializable {
     public void addAlumno(Alumno elAlumno) {
         this.alumnos.add(elAlumno);
         sortAlumnos();
-
     }
 
     public void delAlumno(Alumno elAlumno) {
@@ -134,20 +136,45 @@ public class Clase implements Serializable {
         manejadorDeConexiones.actualizarListaAlumnos();
     }
 
-    public ArrayList<Archivo> getArchivos() {
+    public void actualizarListaArchivos() {
+        manejadorDeConexiones.actualizarListaArchivos();
+    }
+    
+    public void actualizarListaArchivos(Alumno elAlumno) {
+        manejadorDeConexiones.actualizarListaArchivos(elAlumno);
+    }
+
+    public ArrayList<File> getArchivos() {
         return archivos;
     }
 
-    public Archivo getArchivos(String nombreArchivo) {
-        Archivo elArchivo = null;
-        Archivo unArchivo;
-        for (Iterator it = archivos.iterator(); it.hasNext(); ){
-            unArchivo = (Archivo) it.next();
-            if (unArchivo.getNombreArchivo().equals(nombreArchivo)){
+    public File getArchivos(File elArchivo) {
+        File unArchivo;
+        for (Iterator it = archivos.iterator(); it.hasNext();) {
+            unArchivo = (File) it.next();
+            if (unArchivo.getName().equals(elArchivo.getName())) {
                 elArchivo = unArchivo;
             }
         }
         return elArchivo;
+    }
+
+    public File getArchivos(int i) {
+        return archivos.get(i);
+    }
+
+    public void addArchivo(File elArchivo) {
+        if (!archivos.contains(elArchivo)) {
+            archivos.add(elArchivo);
+        }
+    }
+
+    public void delArchivo(File elArchivo) {
+        archivos.remove(elArchivo);
+    }
+
+    public void delArchivo(int i) {
+        archivos.remove(i);
     }
 
     public ArrayList<Alumno> getAlumnos() {
@@ -206,7 +233,7 @@ public class Clase implements Serializable {
         anunciadorThread.interrupt();
         //manejadorDeConexiones.cerrarConexiones();
         TipoEventosGUI elEvento = new TipoEventosGUI(TipoEventosGUI.desconectarse);
-        manejadorDeConexiones.agregarEventoGUI(elEvento);
+        manejadorDeConexiones.enviarEventoGeneral(elEvento);
         manejadorDeConexionesThread.interrupt();
     }
 
