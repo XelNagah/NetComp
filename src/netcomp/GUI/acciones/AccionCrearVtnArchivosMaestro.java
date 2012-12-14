@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import netcomp.Clase;
 import netcomp.GUI.VtnArchivosMaestro;
+import netcomp.GUI.VtnClaseMaestro;
 
 /**
  *
@@ -17,8 +18,11 @@ public class AccionCrearVtnArchivosMaestro extends AbstractAction {
     
     static VtnArchivosMaestro vtnArchivosMaestro;
 
-    public AccionCrearVtnArchivosMaestro(Clase laClase) {
+    public AccionCrearVtnArchivosMaestro(Clase laClase, VtnClaseMaestro parent) {
         vtnArchivosMaestro = new VtnArchivosMaestro(laClase);
+        vtnArchivosMaestro.setResizable(false);
+        vtnArchivosMaestro.setTitle("Compartir Archivos");
+        parent.setVtnArchivos(vtnArchivosMaestro);
     }
     
     @Override

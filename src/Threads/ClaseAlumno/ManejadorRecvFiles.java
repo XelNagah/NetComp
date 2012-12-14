@@ -20,13 +20,13 @@ import java.util.logging.Logger;
  * @author zerg
  */
 public class ManejadorRecvFiles implements Runnable{
-private int puerto;
+private ServerSocket serverSocket;
 private File pathLocal;
 private static int bufferSize=1000000; //1M
 private ObjectInputStream ois;
 
-    public ManejadorRecvFiles(int elPuerto, File pathLocal) {
-        puerto = elPuerto;
+    public ManejadorRecvFiles(ServerSocket elServerSocket, File pathLocal) {
+        serverSocket = elServerSocket;
         this.pathLocal=pathLocal;
     }
 
@@ -34,9 +34,7 @@ private ObjectInputStream ois;
     public void run() {
         try {
             int count;
-            ServerSocket socketListen = new ServerSocket(puerto);
-            System.out.println("Escucho archivo en el puerto " + puerto);
-            Socket socket = socketListen.accept();
+            Socket socket = serverSocket.accept();
             System.out.println("Recibo conexión");
             ois=new ObjectInputStream(socket.getInputStream());
             byte[] buffer=new byte[bufferSize];

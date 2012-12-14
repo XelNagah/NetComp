@@ -19,7 +19,8 @@ public class AccionCrearVtnArchivosAlumno extends AbstractAction {
 
     public AccionCrearVtnArchivosAlumno(ConexionAlumno laConexion) {
         vtnArchivosAlumno = new VtnArchivosAlumno(laConexion);
-        //laConexion.setVentanaArchivos(vtnArchivosAlumno);
+        vtnArchivosAlumno.setResizable(false);
+        vtnArchivosAlumno.setTitle("Ver Archivos Compartidos");
     }
     
     

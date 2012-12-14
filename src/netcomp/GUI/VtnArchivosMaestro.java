@@ -45,7 +45,6 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
         jListArchivosMaestro = new javax.swing.JList();
         acceptButton = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
-        cancelButton = new javax.swing.JButton();
         delButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -60,7 +59,7 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
         jListArchivosMaestro.setModel(listModel = new CustomListModelArchivosMaestro());
         jScrollPane1.setViewportView(jListArchivosMaestro);
 
-        acceptButton.setText("Aceptar");
+        acceptButton.setText("Volver");
         acceptButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 acceptButtonActionPerformed(evt);
@@ -71,13 +70,6 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed(evt);
-            }
-        });
-
-        cancelButton.setText("Cancelar");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
             }
         });
 
@@ -93,19 +85,19 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(delButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(acceptButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(delButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(acceptButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(155, 155, 155)
+                        .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(125, 125, 125))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,9 +112,7 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(delButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(acceptButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cancelButton)))
+                        .addComponent(acceptButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -133,11 +123,6 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_acceptButtonActionPerformed
-
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-        dispose();
-    }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
@@ -162,9 +147,12 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
     private void delButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delButtonActionPerformed
         // TODO add your handling code here:
         //dispose();
-        clase.delArchivo(jListArchivosMaestro.getSelectedIndex());
-        actualizarListaArchivos();
-        clase.actualizarListaArchivos();
+        int i = jListArchivosMaestro.getSelectedIndex();
+        if (i >= 0) {
+            clase.delArchivo(i);
+            actualizarListaArchivos();
+            clase.actualizarListaArchivos();
+        }
     }//GEN-LAST:event_delButtonActionPerformed
 
     /**
@@ -204,7 +192,6 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton acceptButton;
     private javax.swing.JButton addButton;
-    private javax.swing.JButton cancelButton;
     private javax.swing.JButton delButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JList jListArchivosMaestro;

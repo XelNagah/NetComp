@@ -31,6 +31,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     Clase clase;
     CustomListModelMaestro listModel;
     Image scaledImage;
+    VtnArchivosMaestro vtnArchivos;
 
     public VtnClaseMaestro() {
         /*try {
@@ -58,6 +59,10 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
 
     public JList getjList() {
         return jList1;
+    }
+
+    public void setVtnArchivos(VtnArchivosMaestro vtnArchivos) {
+        this.vtnArchivos = vtnArchivos;
     }
 
     public void iniciar() {
@@ -148,7 +153,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
 
         jMenu1.setText("Opciones");
 
-        jMenuItem1.setAction(new AccionCrearVtnArchivosMaestro(clase));
+        jMenuItem1.setAction(new AccionCrearVtnArchivosMaestro(clase,this));
         jMenuItem1.setText("Compartir Archivos");
         jMenu1.add(jMenuItem1);
 
@@ -199,6 +204,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
+        
         dispose();
         detener();
         NetComp.vtnPrincipal.setVisible(true);

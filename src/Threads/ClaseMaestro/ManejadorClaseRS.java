@@ -8,9 +8,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+//import java.security.MessageDigest;
+//import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.Alumno;
@@ -19,6 +20,7 @@ import netcomp.ConexionClase;
 import netcomp.GUI.VtnClaseMaestro;
 import netcomp.GUI.acciones.AccionCrearClaseMaestro;
 import netcomp.GenTools;
+//import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -155,32 +157,29 @@ public class ManejadorClaseRS implements Runnable {
     }
 
     private void manejarPassword(String elMensaje) {
-        try {
-            String laContrasenia = GenTools.XMLParser("password", elMensaje);
-            //System.out.println(laContrasenia);
-            MessageDigest messageDigest;
-            messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(clase.getContrasenia().getBytes());
-            String encryptedString = new String(messageDigest.digest());
-            if (encryptedString.equals(laContrasenia)) {
-                try {
-                    oos.writeObject(true);
-                    oos.flush();
-                } catch (IOException ex) {
-                    Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                try {
-                    oos.writeObject(false);
-                    oos.flush();
-                } catch (IOException ex) {
-                    Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                clase.delConexion(conexion);
-                corriendo = false;
+        String laContrasenia = GenTools.XMLParser("password", elMensaje);
+
+        //BASE64Encoder encoder = new BASE64Encoder();
+        String passPlain = clase.getContrasenia();
+        //String passEncoded = encoder.encodeBuffer(passPlain.getBytes("UTF-8"));
+
+        if (passPlain.equals(laContrasenia)) {
+            try {
+                oos.writeObject(true);
+                oos.flush();
+            } catch (IOException ex) {
+                Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            try {
+                oos.writeObject(false);
+                oos.flush();
+            } catch (IOException ex) {
+                Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            clase.delConexion(conexion);
+            corriendo = false;
         }
+
     }
 }

@@ -29,22 +29,21 @@ public class ManejadorAlumnoRS implements Runnable {
     long periodo = 300;
     VtnClaseAlumno ventana = AccionCrearClaseAlumno.vtnClaseAlumno;
     Alumno alumno;
-    ServerSocket socketEscucha;
     Socket socketRS;
     int puerto;
+    ServerSocket socketEscucha;
     ConexionAlumno conexion;
     ObjectInputStream ois;
     ObjectOutputStream oos;
 
-    public ManejadorAlumnoRS(Alumno elAlumno, int elPuerto, ConexionAlumno laConexion) {
+    public ManejadorAlumnoRS(Alumno elAlumno, ServerSocket socketEscucha, ConexionAlumno laConexion) {
         alumno = elAlumno;
-        puerto = elPuerto;
+        this.socketEscucha = socketEscucha;
         conexion = laConexion;
     }
 
     private void manejar() {
         try {
-            socketEscucha = new ServerSocket(puerto);
             socketRS = socketEscucha.accept();
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);

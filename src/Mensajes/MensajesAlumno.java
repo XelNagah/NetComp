@@ -4,10 +4,6 @@
  */
 package Mensajes;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import netcomp.Alumno;
 import netcomp.GenTools;
 
@@ -50,19 +46,19 @@ public class MensajesAlumno {
     }
 
     public static String password(String elPassword) {
-        MessageDigest messageDigest;
-        try {
-            messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(elPassword.getBytes());
-            String encryptedString = new String(messageDigest.digest());
+        //try {
+            //BASE64Encoder encoder = new BASE64Encoder();
+            //String passEncoded = encoder.encodeBuffer(elPassword.getBytes("UTF-8"));
+
             String mensaje;
             mensaje = GenTools.XMLGenerator("tipo", "password");
-            mensaje = GenTools.XMLAppend("password", encryptedString, mensaje);
+            mensaje = GenTools.XMLAppend("password", elPassword, mensaje);
             mensaje = GenTools.XMLWrapper("msg", mensaje);
             return mensaje;
-        } catch (NoSuchAlgorithmException ex) {
+        /*} catch (UnsupportedEncodingException ex) {
             Logger.getLogger(MensajesAlumno.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }
+        }*/
+
     }
 }

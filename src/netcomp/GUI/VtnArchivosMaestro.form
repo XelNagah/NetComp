@@ -26,21 +26,23 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="279" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="delButton" max="32767" attributes="0"/>
-                  <Component id="cancelButton" max="32767" attributes="0"/>
-                  <Component id="acceptButton" alignment="0" max="32767" attributes="0"/>
-                  <Component id="addButton" alignment="0" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="352" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="delButton" max="32767" attributes="0"/>
+                          <Component id="acceptButton" alignment="0" max="32767" attributes="0"/>
+                          <Component id="addButton" alignment="0" pref="96" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="155" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -58,8 +60,6 @@
                       <Component id="delButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="acceptButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -91,7 +91,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="acceptButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Aceptar"/>
+        <Property name="text" type="java.lang.String" value="Volver"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="acceptButtonActionPerformed"/>
@@ -103,14 +103,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="cancelButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Cancelar"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="delButton">

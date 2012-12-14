@@ -51,6 +51,7 @@ public class ConexionAlumno {
         clase = laClase;
         ventana = AccionCrearClaseAlumno.vtnClaseAlumno;
         alumnos = new ArrayList<Alumno>();
+        archivos = new ArrayList<File>();
         conectar(elPassword);
     }
 

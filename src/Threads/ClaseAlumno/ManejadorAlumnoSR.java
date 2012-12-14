@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -90,7 +91,7 @@ public class ManejadorAlumnoSR implements Runnable {
 
                 switch (tipoMsg) {
                     case TipoEventosGUI.pedirArchivo:
-                        pedirArchivo((File) elEvento.getParams().get(0),(File) elEvento.getParams().get(1));
+                        pedirArchivo((File) elEvento.getParams().get(0), (File) elEvento.getParams().get(1));
                         break;
                 }
             } catch (InterruptedException ex) {
@@ -109,7 +110,7 @@ public class ManejadorAlumnoSR implements Runnable {
                 //System.out.println(mensaje);
                 oos.writeObject(mensaje);
                 ois = new ObjectInputStream(socketSR.getInputStream());
-                if ((Boolean) ois.readObject()){
+                if ((Boolean) ois.readObject()) {
                     establecerConexion();
                 } else {
                     oos.writeObject("bye.");
@@ -155,7 +156,8 @@ public class ManejadorAlumnoSR implements Runnable {
         try {
             String mensaje;
             int puertoConexion = GenTools.findFreePort();
-            new Thread(new ManejadorRecvFiles(puertoConexion, guardarPath)).start();
+            ServerSocket serverSocket = new ServerSocket(puertoConexion);
+            new Thread(new ManejadorRecvFiles(serverSocket, guardarPath)).start();
             mensaje = MensajesAlumno.pedirArchivo(puertoConexion);
             if (!socketSR.isClosed()) {
                 try {
@@ -188,9 +190,11 @@ public class ManejadorAlumnoSR implements Runnable {
     private void establecerConexion() throws IOException {
         //Genero el mensaje de conexión
         String mensaje = MensajesAlumno.conectar(alumno, puertoRS);
-        //Creo el manejador RS de alumno, en el puerto que envío a la clase para que se conecte.
-        ManejadorAlumnoRS unManejador = new ManejadorAlumnoRS(alumno, puertoRS, conexion);
-        //Asigno el manejador a la conexión alumno.
+        //Creo el ServerSocket RS de alumno, en el puerto que envío a la clase para que se conecte.
+        ServerSocket serverSocket = new ServerSocket(puertoRS);
+        //Creo el Manejador
+        ManejadorAlumnoRS unManejador = new ManejadorAlumnoRS(alumno, serverSocket, conexion);
+        //Asigno el manejador a la conexión alumno y lo inicio
         conexion.setManejadorRS(unManejador);
         //Envío el mensaje de conexión a la clase.
         oos.writeObject(mensaje);
