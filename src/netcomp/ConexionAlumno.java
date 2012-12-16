@@ -7,6 +7,7 @@ package netcomp;
 import Mensajes.TipoEventosGUI;
 import Threads.ClaseAlumno.ManejadorAlumnoRS;
 import Threads.ClaseAlumno.ManejadorAlumnoSR;
+import Threads.ClaseAlumno.ManejadorRecvScreen;
 import java.io.File;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ import netcomp.GUI.acciones.AccionCrearClaseAlumno;
  */
 public class ConexionAlumno {
 
-    Boolean conectado = false;
+    boolean conectado = false;
+    boolean compartePantalla = false;
     Alumno alumno;
     InfoClase clase;
     Socket socketRS;
@@ -36,6 +38,8 @@ public class ConexionAlumno {
     private VtnClaseAlumno ventana;
     private ArrayList<Alumno> alumnos;
     private ArrayList<File> archivos;
+    ManejadorRecvScreen manejadorRecvScreen;
+    Thread manejadorRecvScreenThread;
 
     public ConexionAlumno(Alumno elAlumno, InfoClase laClase) {
         alumno = elAlumno;
@@ -81,6 +85,22 @@ public class ConexionAlumno {
 
     public Boolean getConectado() {
         return conectado;
+    }
+
+    public void setManejadorRecvScreen(ManejadorRecvScreen manejadorRecvScreen) {
+        this.manejadorRecvScreen = manejadorRecvScreen;
+    }
+
+    public void setManejadorRecvScreenThread(Thread manejadorRecvScreenThread) {
+        this.manejadorRecvScreenThread = manejadorRecvScreenThread;
+    }
+
+    public void setCompartePantalla(Boolean b) {
+        this.compartePantalla = b;
+    }
+
+    public boolean compartePantalla() {
+        return compartePantalla;
     }
 
     public void setConectado(Boolean conectado) {
@@ -132,6 +152,7 @@ public class ConexionAlumno {
     }
 
     public void desconectar() {
+        stopCompartirPantalla();
         manejadorSR.desconectar();
     }
 
@@ -150,5 +171,18 @@ public class ConexionAlumno {
         params.add(guardarPath);
         TipoEventosGUI evento = new TipoEventosGUI(TipoEventosGUI.pedirArchivo, params);
         enviarEvento(evento);
+    }
+
+    public void verPantalla() {
+        TipoEventosGUI evento = new TipoEventosGUI(TipoEventosGUI.verPantalla);
+        enviarEvento(evento);
+    }
+
+    public void stopCompartirPantalla() {
+        if (manejadorRecvScreenThread != null) {
+            manejadorRecvScreenThread.interrupt();
+            manejadorRecvScreen.kill();
+            compartePantalla = false;
+        }
     }
 }

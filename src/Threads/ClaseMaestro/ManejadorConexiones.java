@@ -93,23 +93,19 @@ public class ManejadorConexiones implements Runnable {
         conexiones.remove(laConexion);
     }
 
-    /**
-     * Utilizar enviarEventoGUI
-     *
-     */
-    @Deprecated
-    public void cerrarConexiones() {
-        for (Iterator<ConexionClase> it = conexiones.iterator(); it.hasNext();) {
-            ConexionClase laConexion = it.next();
-            it.remove();
-            laConexion.desconectar();
-        }
-    }
-
     public void enviarEventoGeneral(TipoEventosGUI elEvento) {
         for (Iterator<ConexionClase> it = this.conexiones.iterator(); it.hasNext();) {
             ConexionClase laConexion = it.next();
             laConexion.enviarEvento(elEvento);
+        }
+    }
+    
+    public void enviarPantalla(TipoEventosGUI elEvento) {
+        for (Iterator<ConexionClase> it = this.conexiones.iterator(); it.hasNext();) {
+            ConexionClase laConexion = it.next();
+            if (laConexion.getRecibePantalla()){
+                laConexion.enviarPantalla(elEvento);
+            }
         }
     }
 

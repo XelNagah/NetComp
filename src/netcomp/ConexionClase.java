@@ -7,6 +7,8 @@ package netcomp;
 import Mensajes.TipoEventosGUI;
 import Threads.ClaseMaestro.ManejadorClaseRS;
 import Threads.ClaseMaestro.ManejadorClaseSR;
+import Threads.ClaseMaestro.ManejadorSendScreen;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -24,6 +26,8 @@ public class ConexionClase {
     Thread manejadorClaseRSThread;
     ManejadorClaseSR manejadorClaseSR;
     Thread manejadorClaseSRThread;
+    boolean recibePantalla;
+    ManejadorSendScreen manejadorSendScreen;
 
     public ConexionClase(Socket elSocketRS, Clase laClase) {
         //Establezco mi socket Receive-Send
@@ -34,7 +38,16 @@ public class ConexionClase {
         manejadorClaseRS = new ManejadorClaseRS(socketRS, clase, this);
         //Creo el hilo del manejador Receive-Send
         manejadorClaseRSThread = new Thread(manejadorClaseRS);
+        recibePantalla = false;
         comenzarThreads();
+    }
+
+    public boolean getRecibePantalla() {
+        return recibePantalla;
+    }
+
+    public void setRecibePantalla(boolean recibePantalla) {
+        this.recibePantalla = recibePantalla;
     }
 
     public Alumno getAlumno() {
@@ -56,14 +69,25 @@ public class ConexionClase {
         manejadorClaseSRThread.start();
     }
 
+    public void comenzarEnviarPantalla(ServerSocket elServerSocket) {
+        manejadorSendScreen = new ManejadorSendScreen(elServerSocket, this);
+        new Thread(manejadorSendScreen).start();
+    }
+
+    public void enviarPantalla(TipoEventosGUI elEvento) {
+        manejadorSendScreen.getQueue().offer(elEvento);
+    }
+
     public void listaAlumnosUpdate(ArrayList<Alumno> losAlumnos) {
-            manejadorClaseSR.listaAlumnosUpdate(losAlumnos);
+        manejadorClaseSR.listaAlumnosUpdate(losAlumnos);
     }
 
     public void enviarEvento(TipoEventosGUI evt) {
-        manejadorClaseSR.getQueue().offer(evt);
+        if (manejadorClaseRS != null) {
+            manejadorClaseSR.getQueue().offer(evt);
+        }
     }
-    
+
     public void desconectar() {
         manejadorClaseSR.desconectar();
     }

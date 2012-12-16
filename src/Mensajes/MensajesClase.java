@@ -39,4 +39,11 @@ public class MensajesClase {
         mensaje = GenTools.XMLWrapper("msg", mensaje);
         return mensaje;
     }
+    
+    public static String stopCompartirPantalla() {
+        String mensaje;
+        mensaje = GenTools.XMLGenerator("tipo", "stopCompartirPantalla");
+        mensaje = GenTools.XMLWrapper("msg", mensaje);
+        return mensaje;
+    }
 }

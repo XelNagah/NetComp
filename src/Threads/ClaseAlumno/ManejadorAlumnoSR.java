@@ -47,6 +47,9 @@ public class ManejadorAlumnoSR implements Runnable {
             String ip = laClase.getIp();
             int puerto = laClase.getPuerto();
             socketSR = new Socket(ip, puerto);
+            oos = new ObjectOutputStream(socketSR.getOutputStream());
+            ois = new ObjectInputStream(socketSR.getInputStream());
+            oos.flush();
             conexion = laConexion;
             puertoRS = GenTools.findFreePort();
             queue = new ArrayBlockingQueue<TipoEventosGUI>(50);
@@ -63,6 +66,9 @@ public class ManejadorAlumnoSR implements Runnable {
             String ip = laClase.getIp();
             int puerto = laClase.getPuerto();
             socketSR = new Socket(ip, puerto);
+            oos = new ObjectOutputStream(socketSR.getOutputStream());
+            ois = new ObjectInputStream(socketSR.getInputStream());
+            oos.flush();
             conexion = laConexion;
             puertoRS = GenTools.findFreePort();
             queue = new ArrayBlockingQueue<TipoEventosGUI>(50);
@@ -93,6 +99,9 @@ public class ManejadorAlumnoSR implements Runnable {
                     case TipoEventosGUI.pedirArchivo:
                         pedirArchivo((File) elEvento.getParams().get(0), (File) elEvento.getParams().get(1));
                         break;
+                    case TipoEventosGUI.verPantalla:
+                        verPantalla();
+                        break;
                 }
             } catch (InterruptedException ex) {
                 Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
@@ -102,14 +111,11 @@ public class ManejadorAlumnoSR implements Runnable {
 
     private void conectar() {
         try {
-            oos = new ObjectOutputStream(socketSR.getOutputStream());
-            oos.flush();
             if (password != null) {
                 //System.out.println("Envío password: " + password);
                 String mensaje = MensajesAlumno.password(password);
                 //System.out.println(mensaje);
                 oos.writeObject(mensaje);
-                ois = new ObjectInputStream(socketSR.getInputStream());
                 if ((Boolean) ois.readObject()) {
                     establecerConexion();
                 } else {
@@ -176,9 +182,24 @@ public class ManejadorAlumnoSR implements Runnable {
             Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    private void escribirArchivo(File unArchivo) {
-        //Escribo el archivo a disco.
+    
+    private void verPantalla() {
+        try {
+            String mensaje = MensajesAlumno.verPantalla();
+            oos.writeObject(mensaje);
+            int elPuerto = new Integer(ois.readObject().toString());
+            System.out.println("Recibo puerto: " + elPuerto);
+            ManejadorRecvScreen manejador = new ManejadorRecvScreen(socketSR.getInetAddress(), elPuerto,ventana);
+            Thread manejadorThread = new Thread(manejador);
+            conexion.setManejadorRecvScreen(manejador);;
+            conexion.setManejadorRecvScreenThread(manejadorThread);
+            manejadorThread.start();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

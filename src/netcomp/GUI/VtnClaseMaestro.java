@@ -5,18 +5,12 @@
 package netcomp.GUI;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import netcomp.Clase;
 import netcomp.GUI.acciones.AccionAbout;
-import netcomp.GUI.acciones.AccionCrearVtnArchivosMaestro;
+import netcomp.GenTools;
 import netcomp.NetComp;
 
 /**
@@ -32,20 +26,26 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     CustomListModelMaestro listModel;
     Image scaledImage;
     VtnArchivosMaestro vtnArchivos;
+    VtnCompartirPantalla vtnCompartirPantalla;
+    private ImageIcon iconPantalla;
+    private ImageIcon iconArchivos;
 
     public VtnClaseMaestro() {
-        /*try {
-            BufferedImage imagenEscritorio = ImageIO.read(new File("./Escritorio.png"));
-            scaledImage = imagenEscritorio.getScaledInstance(551, 288, Image.SCALE_SMOOTH);
-            scaledImage = (BufferedImage) imagenEscritorio;
-        } catch (IOException ex) {
-            Logger.getLogger(VtnClaseMaestro.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        iconPantalla = GenTools.createImageIcon("images/pantalla.png",
+                "Compartir Pantalla");
+        iconArchivos = GenTools.createImageIcon("images/archivo.png",
+                "Compartir Archivos");
+        vtnCompartirPantalla = new VtnCompartirPantalla(clase, this);
         initComponents();
     }
     
     public VtnClaseMaestro(Clase laClase) {
         clase = laClase;
+        iconPantalla = GenTools.createImageIcon("images/pantalla.png",
+                "Compartir Pantalla");
+        iconArchivos = GenTools.createImageIcon("images/archivo.png",
+                "Compartir Archivos");
+        vtnCompartirPantalla = new VtnCompartirPantalla(clase, this);
         initComponents();
     }
 
@@ -78,6 +78,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     }
 
     public void detener() {
+        
         clase.detener();
     }
 
@@ -93,7 +94,10 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
-        JLabelPantallaImage = new javax.swing.JLabel(/*new ImageIcon( scaledImage )*/);
+        jLabelArchivos = new javax.swing.JLabel(iconArchivos);
+        jButton1 = new javax.swing.JButton();
+        JLabelPantalla = new javax.swing.JLabel(iconPantalla);
+        jButton2 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -101,9 +105,6 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         cutMenuItem = new javax.swing.JMenuItem();
         copyMenuItem = new javax.swing.JMenuItem();
         pasteMenuItem = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -117,6 +118,24 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
 
         jList1.setModel(listModel = new CustomListModelMaestro());
         jScrollPane1.setViewportView(jList1);
+
+        jLabelArchivos.setText("");
+
+        jButton1.setText("Archivos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        JLabelPantalla.setText("");
+
+        jButton2.setText("Pantalla");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jMenu2.setText("Archivo");
 
@@ -151,17 +170,6 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
 
         menuBar.add(editMenu);
 
-        jMenu1.setText("Opciones");
-
-        jMenuItem1.setAction(new AccionCrearVtnArchivosMaestro(clase,this));
-        jMenuItem1.setText("Compartir Archivos");
-        jMenu1.add(jMenuItem1);
-
-        jMenuItem3.setText("Compartir escritorio");
-        jMenu1.add(jMenuItem3);
-
-        menuBar.add(jMenu1);
-
         helpMenu.setMnemonic('h');
         helpMenu.setText("Help");
 
@@ -182,20 +190,32 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JLabelPantallaImage, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(JLabelPantalla, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelArchivos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-                    .addComponent(JLabelPantallaImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelArchivos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(JLabelPantalla)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -204,17 +224,33 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
-        
         dispose();
         detener();
+        clase.pararCompartirPantalla();
         NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void accionCerrarVentana(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_accionCerrarVentana
         dispose();
         detener();
+        clase.pararCompartirPantalla();
         NetComp.vtnPrincipal.setVisible(true);
     }//GEN-LAST:event_accionCerrarVentana
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        vtnArchivos = new VtnArchivosMaestro(clase);
+        vtnArchivos.setResizable(false);
+        vtnArchivos.setTitle("Compartir Archivos");
+        vtnArchivos.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        vtnCompartirPantalla.setResizable(false);
+        vtnCompartirPantalla.setTitle("Compartir Pantalla");
+        vtnCompartirPantalla.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,7 +287,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel JLabelPantallaImage;
+    private javax.swing.JLabel JLabelPantalla;
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JMenuItem contentsMenuItem;
@@ -259,11 +295,11 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabelArchivos;
     private javax.swing.JList jList1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuBar menuBar;

@@ -4,6 +4,7 @@
  */
 package netcomp;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -13,6 +14,9 @@ import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -102,5 +106,21 @@ public class GenTools {
 
     public static UUID uniqueId(String[] args) {
         return UUID.randomUUID();
+    }
+    
+    public static ImageIcon createImageIcon(String path,
+            String description) {
+        File archivo = new File(path);
+        if (archivo != null) {
+            try {
+                return new ImageIcon(archivo.getCanonicalPath(), description);
+            } catch (IOException ex) {
+                Logger.getLogger(GenTools.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+        return null;
     }
 }

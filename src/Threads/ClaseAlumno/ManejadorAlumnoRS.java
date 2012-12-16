@@ -66,8 +66,12 @@ public class ManejadorAlumnoRS implements Runnable {
                 corriendo = false;
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
+                corriendo = false;
+                break;
             } catch (IOException ex) {
                 Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
+                corriendo = false;
+                break;
             } catch (InterruptedException ex) {
                 corriendo = false;
                 break;
@@ -77,6 +81,7 @@ public class ManejadorAlumnoRS implements Runnable {
             socketRS.close();
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
+            corriendo = false;
         }
     }
 
@@ -96,7 +101,9 @@ public class ManejadorAlumnoRS implements Runnable {
             manejarListaAlumnosUpdate(elMensaje);
         } else if ("listaArchivosUpdate".equals(tipo)) {
             manejarListaArchivosUpdate(elMensaje);
-        } else {
+        } else if ("stopCompartirPantalla".equals(tipo)) {
+            manejarStopCompartirPantalla(elMensaje);
+        }  else {
             System.out.println(elMensaje);
         }
     }
@@ -131,6 +138,10 @@ public class ManejadorAlumnoRS implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void manejarStopCompartirPantalla(String elMensaje) {
+        conexion.stopCompartirPantalla();
     }
 
     private void manejarDesconexion(String elMensaje) {

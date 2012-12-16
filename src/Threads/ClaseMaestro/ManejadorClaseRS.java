@@ -8,10 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.UnsupportedEncodingException;
+import java.net.ServerSocket;
 import java.net.Socket;
-//import java.security.MessageDigest;
-//import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import netcomp.Alumno;
@@ -97,6 +95,8 @@ public class ManejadorClaseRS implements Runnable {
             manejarPassword(elMensaje);
         } else if ("pedirArchivo".equals(tipo)) {
             manejarPedidoArchivo(elMensaje);
+        } else if ("verPantalla".equals(tipo)) {
+            manejarVerPantalla(elMensaje);
         } else if ("desconexion".equals(tipo)) {
             manejarDesconectar();
         } else {
@@ -181,5 +181,17 @@ public class ManejadorClaseRS implements Runnable {
             corriendo = false;
         }
 
+    }
+
+    private void manejarVerPantalla(String elMensaje) {
+        try {
+            int puerto = GenTools.findFreePort();
+            ServerSocket serverSocketPantalla = new ServerSocket(puerto);
+            conexion.comenzarEnviarPantalla(serverSocketPantalla);
+            oos.writeObject(String.valueOf(puerto));
+            System.out.println("Envio puerto: " + puerto);
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -84,6 +84,11 @@ public class ManejadorClaseSR implements Runnable {
                             //método
                             listaArchivosUpdate(clase.getArchivos());
                             break;
+                        case TipoEventosGUI.stopCompartirPantalla:
+                            //System.out.println("Envío un listaAlumnosUpdate");
+                            //método
+                            stopCompartirPantalla();
+                            break;
                     }
 
                 } catch (InterruptedException ex) {
@@ -185,6 +190,20 @@ public class ManejadorClaseSR implements Runnable {
             if (!socketSR.isClosed()) {
                 oos.writeObject(mensaje);
                 oos.writeUnshared(losArchivos);
+                oos.flush();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void stopCompartirPantalla() {
+
+        try {
+            String mensaje;
+            mensaje = MensajesClase.stopCompartirPantalla();
+            if (!socketSR.isClosed()) {
+                oos.writeObject(mensaje);
                 oos.flush();
             }
         } catch (IOException ex) {

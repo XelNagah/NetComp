@@ -7,6 +7,7 @@ package netcomp;
 import Mensajes.TipoEventosGUI;
 import Threads.ClaseMaestro.Anunciador;
 import Threads.ClaseMaestro.ManejadorConexiones;
+import Threads.ClaseMaestro.GeneradorPantalla;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -41,6 +42,9 @@ public class Clase implements Serializable {
     private Thread manejadorDeConexionesThread;
     private List<Alumno> alumnos;
     private ArrayList<File> archivos;
+    private GeneradorPantalla generadorPantalla;
+    private Thread generadorPantallaThread;
+    private boolean compartiendoPantalla;
 
     //Constructor
     public Clase(String nombre, String contrasenia, String profesor, String descripcion, VtnClaseMaestro laVentana) {
@@ -70,6 +74,7 @@ public class Clase implements Serializable {
         ventana = laVentana;
         //Creo lista de archivos
         archivos = new ArrayList<File>();
+        compartiendoPantalla = false;
     }
 
     //Métodos
@@ -79,6 +84,14 @@ public class Clase implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    
+    public void setCompartiendoPantalla(boolean b){
+        compartiendoPantalla = b;
+    }
+    
+    public boolean getCompartiendoPantalla(){
+        return compartiendoPantalla;
     }
 
     public String getDescripcion() {
@@ -139,7 +152,7 @@ public class Clase implements Serializable {
     public void actualizarListaArchivos() {
         manejadorDeConexiones.actualizarListaArchivos();
     }
-    
+
     public void actualizarListaArchivos(Alumno elAlumno) {
         manejadorDeConexiones.actualizarListaArchivos(elAlumno);
     }
@@ -245,5 +258,21 @@ public class Clase implements Serializable {
                         (t1.getNombre() + t1.getApellido()));
             }
         });
+    }
+
+    public void compartirPantalla() {
+        generadorPantalla = new GeneradorPantalla(manejadorDeConexiones);
+        generadorPantallaThread = new Thread(generadorPantalla);
+        generadorPantallaThread.start();
+        compartiendoPantalla = true;
+    }
+
+    public void pararCompartirPantalla() {
+        if (generadorPantallaThread != null) {
+            TipoEventosGUI elEvento = new TipoEventosGUI(TipoEventosGUI.stopCompartirPantalla);
+            compartiendoPantalla = false;
+            manejadorDeConexiones.enviarEventoGeneral(elEvento);
+            generadorPantallaThread.interrupt();
+        }
     }
 }

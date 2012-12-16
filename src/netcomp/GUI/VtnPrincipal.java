@@ -4,9 +4,12 @@
  */
 package netcomp.GUI;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import netcomp.GUI.acciones.AccionAbout;
 import netcomp.GUI.acciones.AccionConfiguracion;
 import netcomp.GUI.acciones.AccionVtnBuscarClase;
+import netcomp.GenTools;
 
 /**
  *
@@ -14,10 +17,20 @@ import netcomp.GUI.acciones.AccionVtnBuscarClase;
  */
 public class VtnPrincipal extends javax.swing.JFrame {
 
+    ImageIcon iconNetComp;
+    ImageIcon iconClase;
+    ImageIcon iconBuscarClase;
+
     /**
      * Creates new form mainWindow
      */
     public VtnPrincipal() {
+        iconNetComp = GenTools.createImageIcon("images/netcomp.png",
+                "NetComp");
+        iconClase = GenTools.createImageIcon("images/clase.png",
+                "Crear Clase");
+        iconBuscarClase = GenTools.createImageIcon("images/lupa.png",
+                "Buscar Clase");
         initComponents();
         setTitle("NetComp");
     }
@@ -38,6 +51,9 @@ public class VtnPrincipal extends javax.swing.JFrame {
         mainLabelCrearClase = new javax.swing.JLabel();
         mainLabelBuscarClase = new javax.swing.JLabel();
         mainBotonBuscarClase = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel("",iconClase,JLabel.CENTER);
+        jLabel2 = new javax.swing.JLabel(iconBuscarClase);
+        jLabel3 = new javax.swing.JLabel(iconNetComp);
         menuBar = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
         abrirMenuItem = new javax.swing.JMenuItem();
@@ -60,6 +76,7 @@ public class VtnPrincipal extends javax.swing.JFrame {
 
         mainLabelCrearClase.setText("Crear una clase");
 
+        mainLabelBuscarClase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mainLabelBuscarClase.setText("Buscar Clases");
 
         mainBotonBuscarClase.setAction(new AccionVtnBuscarClase());
@@ -69,6 +86,12 @@ public class VtnPrincipal extends javax.swing.JFrame {
                 mainBotonBuscarClaseActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("");
+
+        jLabel2.setText("");
+
+        jLabel3.setText("");
 
         archivoMenu.setMnemonic('f');
         archivoMenu.setText("Archivo");
@@ -149,26 +172,39 @@ public class VtnPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mainLabelCrearClase)
-                    .addComponent(mainLabelBuscarClase))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(mainBotonBuscarClase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(mainBotonCrearClase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(483, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(mainLabelCrearClase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(mainBotonCrearClase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(mainBotonBuscarClase, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(mainLabelBuscarClase, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(mainLabelCrearClase)
-                    .addComponent(mainBotonCrearClase))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(mainLabelCrearClase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mainLabelBuscarClase))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(mainLabelBuscarClase)
-                    .addComponent(mainBotonBuscarClase))
-                .addContainerGap(168, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mainBotonBuscarClase, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mainBotonCrearClase))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -237,6 +273,9 @@ public class VtnPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem guardarComoMenuItem;
     private javax.swing.JMenuItem guardarMenuItem;
     private javax.swing.JMenu herramientasMenu;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JButton mainBotonBuscarClase;
     private javax.swing.JButton mainBotonCrearClase;
     private javax.swing.JLabel mainLabelBuscarClase;
@@ -245,4 +284,8 @@ public class VtnPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem pegarMenuItem;
     private javax.swing.JMenuItem salirMenuItem;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Returns an ImageIcon, or null if the path was invalid.
+     */
 }

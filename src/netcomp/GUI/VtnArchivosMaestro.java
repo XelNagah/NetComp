@@ -6,8 +6,10 @@ package netcomp.GUI;
 
 import java.io.File;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import netcomp.Clase;
+import netcomp.GenTools;
 
 /**
  *
@@ -18,12 +20,18 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
     JFileChooser chooser = new JFileChooser();
     CustomListModelArchivosMaestro listModel;
     Clase clase;
+    ImageIcon iconAgregar;
+    ImageIcon iconEliminar;
+    ImageIcon iconVolver;
 
     /**
      * Creates new form VtnArchivosMaestro
      */
     public VtnArchivosMaestro(Clase laClase) {
         clase = laClase;
+        iconAgregar = GenTools.createImageIcon("images/mas.png", "Agregar Archivo");
+        iconEliminar = GenTools.createImageIcon("images/menos.png", "Eliminar Archivo");
+        iconVolver = GenTools.createImageIcon("images/volver.png", "Volver");
         initComponents();
     }
 
@@ -46,6 +54,9 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
         acceptButton = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
         delButton = new javax.swing.JButton();
+        jLabelAgregar = new javax.swing.JLabel(iconAgregar);
+        jLabelEliminar = new javax.swing.JLabel(iconEliminar);
+        jLabelVolver = new javax.swing.JLabel(iconVolver);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -80,6 +91,12 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
             }
         });
 
+        jLabelAgregar.setText("");
+
+        jLabelEliminar.setText("");
+
+        jLabelVolver.setText("");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,10 +107,13 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(delButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(acceptButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabelVolver, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(delButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelEliminar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(addButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelAgregar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(acceptButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(155, 155, 155)
                         .addComponent(jLabel1)))
@@ -105,14 +125,20 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelAgregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(addButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(delButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(acceptButton)))
+                        .addComponent(jLabelVolver)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(acceptButton))
+                    .addComponent(jScrollPane1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -194,6 +220,9 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
     private javax.swing.JButton addButton;
     private javax.swing.JButton delButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelAgregar;
+    private javax.swing.JLabel jLabelEliminar;
+    private javax.swing.JLabel jLabelVolver;
     private javax.swing.JList jListArchivosMaestro;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

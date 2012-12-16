@@ -44,6 +44,13 @@ public class MensajesAlumno {
         mensaje = GenTools.XMLWrapper("msg", mensaje);
         return mensaje;
     }
+    
+    public static String verPantalla() {
+        String mensaje;
+        mensaje = GenTools.XMLGenerator("tipo", "verPantalla");
+        mensaje = GenTools.XMLWrapper("msg", mensaje);
+        return mensaje;
+    }
 
     public static String password(String elPassword) {
         //try {
