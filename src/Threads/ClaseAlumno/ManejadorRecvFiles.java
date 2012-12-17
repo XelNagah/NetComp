@@ -58,7 +58,6 @@ public class ManejadorRecvFiles implements Runnable {
             if (!socket.isClosed()) {
                 socket.close();
             }
-            JOptionPane.showMessageDialog(new JFrame(), "Finalizó recepción de " + fileName);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ManejadorRecvFiles.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
@@ -67,5 +66,6 @@ public class ManejadorRecvFiles implements Runnable {
             Logger.getLogger(ManejadorSendFiles.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(new JFrame(), "Fallo al recibir " + fileName);
         }
+        JOptionPane.showMessageDialog(new JFrame(), "Finalizó recepción de " + fileName);
     }
 }
