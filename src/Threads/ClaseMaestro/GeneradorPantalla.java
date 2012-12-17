@@ -6,7 +6,6 @@ package Threads.ClaseMaestro;
 
 import Mensajes.TipoEventosGUI;
 import java.awt.AWTException;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -49,11 +48,11 @@ public class GeneradorPantalla implements Runnable {
             try {
                 Thread.sleep(400);
                 //Preparo el evento
-                TipoEventosGUI elEvento = null;
+                TipoEventosGUI elEvento;
                 //Capturo pantalla
                 image = robot.createScreenCapture(screenRect);
                 //Si la imagen no es nula
-                if (image != null) {
+                if (image != null && manejador.enviarPantalla()) {
                     //Convierto la imagen a un Array de Bytes.
                     ImageIO.write(image, "JPEG", out);
                     //Creo un arreglo de parámetros para el evento
@@ -65,12 +64,18 @@ public class GeneradorPantalla implements Runnable {
                     //Y finalmente envío la pantalla al manejador de conexiones
                     //para que la envíe a los alumnos que esperan recibirla.
                     manejador.enviarPantalla(elEvento);
+                    out.flush();
                 }
             } catch (IOException ex) {
                 Logger.getLogger(GeneradorPantalla.class.getName()).log(Level.SEVERE, null, ex);
-                corriendo = false;
+                //corriendo = false;
             } catch (InterruptedException ex) {
-                //Logger.getLogger(GeneradorPantalla.class.getName()).log(Level.SEVERE, null, ex);
+                try {
+                    //Logger.getLogger(GeneradorPantalla.class.getName()).log(Level.SEVERE, null, ex);
+                    out.close();
+                } catch (IOException ex1) {
+                    Logger.getLogger(GeneradorPantalla.class.getName()).log(Level.SEVERE, null, ex1);
+                }
                 corriendo = false;
             }
         }

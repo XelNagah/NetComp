@@ -5,9 +5,6 @@
 package netcomp.GUI.acciones;
 
 import java.awt.event.ActionEvent;
-import java.io.UnsupportedEncodingException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import netcomp.Clase;
 import netcomp.GUI.VtnClaseMaestro;
@@ -31,21 +28,10 @@ public class AccionCrearClaseMaestro extends AbstractAction {
     }
 
     private void prepararDatos() {
-        //try {
         this.nombre = vtnCrearClase.getCrearClaseNombre().getText();
-        /*char[] chars = vtnCrearClase.getCrearClaseContrasenia().getPassword();
-         byte[] bytes = new byte[chars.length];
-         for (int i = 0; i < chars.length; i++) {
-         bytes[i] = (byte) chars[i];
-         //bytes[i * 2 + 1] = (byte) chars[i];
-         }
-         this.contrasenia = new String(bytes,"UTF-8");*/
         this.contrasenia = new String(vtnCrearClase.getCrearClaseContrasenia().getPassword());
         this.descripcion = vtnCrearClase.getCrearClaseDescripcion().getText();
         this.profesor = vtnCrearClase.getCrearClaseProfesor().getText();
-        /*} catch (UnsupportedEncodingException ex) {
-         Logger.getLogger(AccionCrearClaseMaestro.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
     }
 
     @Override
@@ -63,6 +49,7 @@ public class AccionCrearClaseMaestro extends AbstractAction {
         //vtnClaseMaestro.setClase(clase);
         //Configuro el título de la ventana
         vtnClaseMaestro.setTitle("Clase - " + clase.getNombre());
+        vtnClaseMaestro.setResizable(false);
         //Muestro la ventana "Clase Maestro"
         vtnClaseMaestro.setVisible(true);
         //Inicio el anunciador de la clase

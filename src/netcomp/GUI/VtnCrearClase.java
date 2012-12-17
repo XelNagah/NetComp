@@ -240,7 +240,7 @@ public class VtnCrearClase extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
-    private void inicializarCampos() {
+    public void inicializarCampos() {
         String elProfesor = Configuracion.getNombre() + " " + Configuracion.getApellido();
         crearClaseProfesor.setText(elProfesor);
     }

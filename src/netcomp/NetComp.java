@@ -4,6 +4,7 @@
  */
 package netcomp;
 
+import javax.swing.JOptionPane;
 import netcomp.GUI.VtnPrincipal;
 import netcomp.GUI.acciones.AccionConfiguracion;
 
@@ -19,12 +20,15 @@ public class NetComp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        System.setProperty("java.net.preferIPv4Stack" , "true");
         // TODO code application logic here
         // Ventanas del programa
         vtnPrincipal = new VtnPrincipal();
+        vtnPrincipal.setResizable(false);
         vtnPrincipal.setVisible(true);
+        Configuracion.configFileExists();
         if ("1".equals(Configuracion.primeraVez())) {
-            System.out.println("me ejecuto");
+            System.out.println("Primera vez");
             AccionConfiguracion accionConfiguracion = new AccionConfiguracion();
             accionConfiguracion.actionPerformed(null);
             (AccionConfiguracion.vtnConfiguracion).toFront();

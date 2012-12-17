@@ -68,4 +68,11 @@ public class MensajesAlumno {
         }*/
 
     }
+
+    public static String noVerPantalla() {
+        String mensaje;
+        mensaje = GenTools.XMLGenerator("tipo", "noVerPantalla");
+        mensaje = GenTools.XMLWrapper("msg", mensaje);
+        return mensaje;
+    }
 }

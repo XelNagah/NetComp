@@ -13,6 +13,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import netcomp.Alumno;
 import netcomp.ConexionAlumno;
 import netcomp.GUI.VtnClaseAlumno;
@@ -103,7 +105,7 @@ public class ManejadorAlumnoRS implements Runnable {
             manejarListaArchivosUpdate(elMensaje);
         } else if ("stopCompartirPantalla".equals(tipo)) {
             manejarStopCompartirPantalla(elMensaje);
-        }  else {
+        } else {
             System.out.println(elMensaje);
         }
     }
@@ -139,16 +141,19 @@ public class ManejadorAlumnoRS implements Runnable {
             Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void manejarStopCompartirPantalla(String elMensaje) {
-        conexion.stopCompartirPantalla();
+        if (conexion.compartePantalla()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Se ha perdido la conexión.");
+            conexion.stopCompartirPantalla();
+        }
     }
 
     private void manejarDesconexion(String elMensaje) {
         try {
             conexion.desconectar();
             socketEscucha.close();
-            //System.out.println("La clase se ha cerrado.");
+            JOptionPane.showMessageDialog(new JFrame(), "La clase se ha cerrado.");
             ventana.desconectar();
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoRS.class.getName()).log(Level.SEVERE, null, ex);

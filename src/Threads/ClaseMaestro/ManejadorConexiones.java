@@ -139,4 +139,16 @@ public class ManejadorConexiones implements Runnable {
         corriendo = true;
         manejarConexiones();
     }
+
+    public boolean enviarPantalla() {
+        boolean enviarPantalla = false;
+        for (Iterator<ConexionClase> it = conexiones.iterator(); it.hasNext();) {
+            ConexionClase laConexion = it.next();
+            if (laConexion.getRecibePantalla() == true) {
+                enviarPantalla =true;
+                break;
+            }
+        }
+        return enviarPantalla;
+    }
 }

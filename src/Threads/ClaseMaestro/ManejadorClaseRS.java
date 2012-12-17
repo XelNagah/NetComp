@@ -97,7 +97,9 @@ public class ManejadorClaseRS implements Runnable {
             manejarPedidoArchivo(elMensaje);
         } else if ("verPantalla".equals(tipo)) {
             manejarVerPantalla(elMensaje);
-        } else if ("desconexion".equals(tipo)) {
+        } else if ("noVerPantalla".equals(tipo)) {
+            manejarNoVerPantalla(elMensaje);
+        }  else if ("desconexion".equals(tipo)) {
             manejarDesconectar();
         } else {
             System.out.println(elMensaje);
@@ -136,10 +138,8 @@ public class ManejadorClaseRS implements Runnable {
     private void manejarPedidoArchivo(String elMensaje) {
         try {
             int puerto = Integer.parseInt(GenTools.XMLParser("puerto", elMensaje));
-            System.out.println("Recibí puerto de conexión " + puerto);
             File elArchivo;
             elArchivo = (File) ois.readObject();
-            System.out.println("Envío el archivo " + elArchivo);
             new Thread(new ManejadorSendFiles(socketRS.getInetAddress(), puerto, elArchivo)).start();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
@@ -185,13 +185,21 @@ public class ManejadorClaseRS implements Runnable {
 
     private void manejarVerPantalla(String elMensaje) {
         try {
-            int puerto = GenTools.findFreePort();
-            ServerSocket serverSocketPantalla = new ServerSocket(puerto);
-            conexion.comenzarEnviarPantalla(serverSocketPantalla);
-            oos.writeObject(String.valueOf(puerto));
-            System.out.println("Envio puerto: " + puerto);
+            if (clase.getCompartiendoPantalla()) {
+                oos.writeObject(true);
+                int puerto = GenTools.findFreePort();
+                ServerSocket serverSocketPantalla = new ServerSocket(puerto);
+                conexion.comenzarEnviarPantalla(serverSocketPantalla);
+                oos.writeObject(String.valueOf(puerto));
+            } else {
+                oos.writeObject(false);
+            }
         } catch (IOException ex) {
             Logger.getLogger(ManejadorClaseRS.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void manejarNoVerPantalla(String elMensaje) {
+        conexion.setRecibePantalla(false);
     }
 }

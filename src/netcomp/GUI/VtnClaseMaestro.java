@@ -31,21 +31,18 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     private ImageIcon iconArchivos;
 
     public VtnClaseMaestro() {
-        iconPantalla = GenTools.createImageIcon("images/pantalla.png",
-                "Compartir Pantalla");
-        iconArchivos = GenTools.createImageIcon("images/archivo.png",
-                "Compartir Archivos");
-        vtnCompartirPantalla = new VtnCompartirPantalla(clase, this);
+        //iconPantalla = GenTools.createImageIcon("images/pantalla.png",
+        //        "Compartir Pantalla");
+        //iconArchivos = GenTools.createImageIcon("images/archivo.png",
+        //        "Compartir Archivos");
+        //vtnCompartirPantalla = new VtnCompartirPantalla(clase, this);
         initComponents();
     }
-    
+
     public VtnClaseMaestro(Clase laClase) {
         clase = laClase;
-        iconPantalla = GenTools.createImageIcon("images/pantalla.png",
-                "Compartir Pantalla");
-        iconArchivos = GenTools.createImageIcon("images/archivo.png",
-                "Compartir Archivos");
-        vtnCompartirPantalla = new VtnCompartirPantalla(clase, this);
+        crearIconos();
+        crearVentanas();
         initComponents();
     }
 
@@ -78,7 +75,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     }
 
     public void detener() {
-        
+
         clase.detener();
     }
 
@@ -225,6 +222,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
         dispose();
+        cerrarVentanas();
         detener();
         clase.pararCompartirPantalla();
         NetComp.vtnPrincipal.setVisible(true);
@@ -232,6 +230,7 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
 
     private void accionCerrarVentana(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_accionCerrarVentana
         dispose();
+        cerrarVentanas();
         detener();
         clase.pararCompartirPantalla();
         NetComp.vtnPrincipal.setVisible(true);
@@ -239,17 +238,16 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        vtnArchivos = new VtnArchivosMaestro(clase);
-        vtnArchivos.setResizable(false);
-        vtnArchivos.setTitle("Compartir Archivos");
-        vtnArchivos.setVisible(true);
+        if (!vtnArchivos.isShowing() || !vtnCompartirPantalla.isFocused()) {
+            vtnArchivos.setVisible(true);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        vtnCompartirPantalla.setResizable(false);
-        vtnCompartirPantalla.setTitle("Compartir Pantalla");
-        vtnCompartirPantalla.setVisible(true);
+        if (!vtnCompartirPantalla.isShowing() || !vtnCompartirPantalla.isFocused()) {
+            vtnCompartirPantalla.setVisible(true);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -305,6 +303,27 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables
+
+    public final void crearIconos() {
+        iconPantalla = GenTools.createImageIcon("pantalla.png",
+                "Compartir Pantalla");
+        iconArchivos = GenTools.createImageIcon("archivo.png",
+                "Compartir Archivos");
+    }
+
+    public final void crearVentanas() {
+        vtnCompartirPantalla = new VtnCompartirPantalla(clase, this);
+        vtnCompartirPantalla.setResizable(false);
+        vtnCompartirPantalla.setTitle("Compartir Pantalla");
+        vtnArchivos = new VtnArchivosMaestro(clase);
+        vtnArchivos.setResizable(false);
+        vtnArchivos.setTitle("Compartir Archivos");
+    }
+    
+    public void cerrarVentanas() {
+        vtnCompartirPantalla.dispose();
+        vtnArchivos.dispose();
+    }
 
     class CustomListModelMaestro extends DefaultListModel {
 

@@ -29,9 +29,9 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
      */
     public VtnArchivosMaestro(Clase laClase) {
         clase = laClase;
-        iconAgregar = GenTools.createImageIcon("images/mas.png", "Agregar Archivo");
-        iconEliminar = GenTools.createImageIcon("images/menos.png", "Eliminar Archivo");
-        iconVolver = GenTools.createImageIcon("images/volver.png", "Volver");
+        iconAgregar = GenTools.createImageIcon("mas.png", "Agregar Archivo");
+        iconEliminar = GenTools.createImageIcon("menos.png", "Eliminar Archivo");
+        iconVolver = GenTools.createImageIcon("volver.png", "Volver");
         initComponents();
     }
 

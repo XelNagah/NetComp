@@ -25,10 +25,12 @@ public class AccionVtnCrearClase extends AbstractAction {
     public void actionPerformed(ActionEvent ae) {
         NetComp.vtnPrincipal.setVisible(false);
         if (vtnCrearClase.isShowing() == false) {
+            vtnCrearClase.inicializarCampos();
             vtnCrearClase.setVisible(true);
             vtnCrearClase.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         }
         else {
+            vtnCrearClase.inicializarCampos();
             vtnCrearClase.toFront();
         }
     }

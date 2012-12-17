@@ -26,21 +26,12 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
     private VtnArchivosAlumno vtnArchivosAlumno;
     private ImageIcon iconPantalla;
     private ImageIcon iconArchivos;
+
     /**
      * Creates new form VtnClase
      */
     public VtnClaseAlumno() {
-        iconPantalla = GenTools.createImageIcon("images/pantalla.png",
-                "Compartir Pantalla");
-        iconArchivos = GenTools.createImageIcon("images/archivo.png",
-                "Compartir Archivos");
-        /*try {
-         BufferedImage imagenEscritorio = ImageIO.read(new File("./Escritorio.png"));
-         //scaledImage = imagenEscritorio.getScaledInstance(551, 288, Image.SCALE_SMOOTH);
-         scaledImage = (BufferedImage) imagenEscritorio;
-         } catch (IOException ex) {
-         Logger.getLogger(VtnClaseMaestro.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
+        crearIconos();
         initComponents();
     }
 
@@ -237,7 +228,7 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (!conexionAlumno.compartePantalla()) {
+        if (!conexionAlumno.viendoPantalla()) {
             conexionAlumno.verPantalla();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -301,6 +292,13 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables
+
+    public final void crearIconos() {
+        iconPantalla = GenTools.createImageIcon("pantalla.png",
+                "Compartir Pantalla");
+        iconArchivos = GenTools.createImageIcon("archivo.png",
+                "Compartir Archivos");
+    }
 
     class CustomListModelAlumno extends DefaultListModel {
 

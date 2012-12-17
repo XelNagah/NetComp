@@ -51,26 +51,31 @@ public class ManejadorSendScreen implements Runnable {
             inicializarVariables();
             while (corriendo == true) {
                 TipoEventosGUI elEvento = queue.take();
-                out = (ByteArrayOutputStream) elEvento.getParams().get(0);
+                if (out.size() == 0) {
+                    out = (ByteArrayOutputStream) elEvento.getParams().get(0);
+                }
                 if (objSocket.isConnected()) {
                     try {
                         enviarImagen(objOut, out);
                     } catch (Exception e) {
                         e.printStackTrace();
                         corriendo = false;
+                        conexion.setRecibePantalla(false);
                     }
                 }
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(ManejadorSendScreen.class.getName()).log(Level.SEVERE, null, ex);
             corriendo = false;
+            conexion.setRecibePantalla(false);
         } catch (IOException ex) {
             Logger.getLogger(ManejadorSendScreen.class.getName()).log(Level.SEVERE, null, ex);
-            //corriendo = false;
-            System.out.println("Escribió mal.");
+            corriendo = false;
+            conexion.setRecibePantalla(false);
         } catch (AWTException ex) {
             Logger.getLogger(ManejadorSendScreen.class.getName()).log(Level.SEVERE, null, ex);
             corriendo = false;
+            conexion.setRecibePantalla(false);
         }
     }
 
@@ -79,14 +84,11 @@ public class ManejadorSendScreen implements Runnable {
     }
 
     public void enviarImagen(OutputStream objOut, ByteArrayOutputStream out) throws IOException {
-        try {
-        objOut.write(new byte[]{
-                    (byte) (out.size() >> 24), (byte) (out.size() >> 16), (byte) (out.size() >> 8), (byte) out.size()
-                });        
-        objOut.write(out.toByteArray());
-        } catch (IOException e) {
-            Logger.getLogger(ManejadorSendScreen.class.getName()).log(Level.SEVERE, null, e);
-            System.out.println("Escribió mal.");
+        if (out.size() > 0) {
+            objOut.write(new byte[]{
+                        (byte) (out.size() >> 24), (byte) (out.size() >> 16), (byte) (out.size() >> 8), (byte) out.size()
+                    });
+            objOut.write(out.toByteArray());
         }
         out.reset();
         objOut.flush();

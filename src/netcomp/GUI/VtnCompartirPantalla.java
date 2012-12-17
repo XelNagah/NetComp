@@ -29,7 +29,7 @@ public class VtnCompartirPantalla extends javax.swing.JFrame {
     public VtnCompartirPantalla(Clase laClase, VtnClaseMaestro vtnClaseMaestro) {
         clase = laClase;
         parent = vtnClaseMaestro;
-        iconPantalla = GenTools.createImageIcon("images/pantalla.png",
+        iconPantalla = GenTools.createImageIcon("pantalla.png",
                 "Compartir Pantalla");
         initComponents();
     }
@@ -120,7 +120,7 @@ public class VtnCompartirPantalla extends javax.swing.JFrame {
         } else {
             if (clase.getCompartiendoPantalla()) {
                 clase.pararCompartirPantalla();
-            }            
+            }
             jButton1.setText("Compartir");
         }
     }//GEN-LAST:event_jButton1ActionPerformed

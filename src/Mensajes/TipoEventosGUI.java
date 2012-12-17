@@ -18,13 +18,13 @@ public class TipoEventosGUI {
     public final static int listaAlumnosUpdate = 3;
     public final static int listaArchivosUpdate = 4;
     public final static int enviarArchivo = 5;
-    public final static int stopCompartirPantalla = 6;
     
     //Eventos alumno GUI
     public final static int pedirArchivo = 10;
     public final static int verPantalla = 11;
     
     //General
+    public final static int stopCompartirPantalla = 998;
     public final static int imagenPantalla = 999;
     
     private int eventId;

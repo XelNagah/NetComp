@@ -179,10 +179,21 @@ public class ConexionAlumno {
     }
 
     public void stopCompartirPantalla() {
-        if (manejadorRecvScreenThread != null) {
+        if (manejadorRecvScreenThread != null && !manejadorRecvScreenThread.isInterrupted()) {
+            manejadorRecvScreen.killSelf();
             manejadorRecvScreenThread.interrupt();
-            manejadorRecvScreen.kill();
             compartePantalla = false;
+            manejadorRecvScreenThread = null;
+            TipoEventosGUI stopCompartirPantalla = new TipoEventosGUI(TipoEventosGUI.stopCompartirPantalla);
+            enviarEvento(stopCompartirPantalla);
+        }
+    }
+
+    public boolean viendoPantalla() {
+        if (manejadorRecvScreenThread != null && !manejadorRecvScreenThread.isInterrupted()) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

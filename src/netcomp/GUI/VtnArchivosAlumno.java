@@ -28,8 +28,8 @@ public class VtnArchivosAlumno extends javax.swing.JFrame {
      */
     public VtnArchivosAlumno(ConexionAlumno laConexion) {
         conexionAlumno = laConexion;
-        iconBajar = GenTools.createImageIcon("images/bajar.png", "Bajar Archivo");
-        iconVolver = GenTools.createImageIcon("images/volver.png", "Volver a pantalla anterior");
+        iconBajar = GenTools.createImageIcon("bajar.png", "Bajar Archivo");
+        iconVolver = GenTools.createImageIcon("volver.png", "Volver a pantalla anterior");
         initComponents();
     }
 

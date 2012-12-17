@@ -16,6 +16,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import netcomp.Alumno;
 import netcomp.ConexionAlumno;
 import netcomp.GUI.VtnClaseAlumno;
@@ -102,6 +104,9 @@ public class ManejadorAlumnoSR implements Runnable {
                     case TipoEventosGUI.verPantalla:
                         verPantalla();
                         break;
+                    case TipoEventosGUI.stopCompartirPantalla:
+                        noVerPantalla();
+                        break;
                 }
             } catch (InterruptedException ex) {
                 Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
@@ -112,9 +117,7 @@ public class ManejadorAlumnoSR implements Runnable {
     private void conectar() {
         try {
             if (password != null) {
-                //System.out.println("Envío password: " + password);
                 String mensaje = MensajesAlumno.password(password);
-                //System.out.println(mensaje);
                 oos.writeObject(mensaje);
                 if ((Boolean) ois.readObject()) {
                     establecerConexion();
@@ -170,9 +173,6 @@ public class ManejadorAlumnoSR implements Runnable {
                     oos.writeObject(mensaje);
                     //Pido el archivo
                     oos.writeObject(elArchivo);
-                    System.out.println("Guardo el archivo en " + guardarPath);
-                    //Escribo el archivo a disco.
-                    //escribirArchivo(elArchivo);
                     oos.flush();
                 } catch (IOException ex) {
                     Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
@@ -182,22 +182,33 @@ public class ManejadorAlumnoSR implements Runnable {
             Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void verPantalla() {
         try {
             String mensaje = MensajesAlumno.verPantalla();
             oos.writeObject(mensaje);
-            int elPuerto = new Integer(ois.readObject().toString());
-            System.out.println("Recibo puerto: " + elPuerto);
-            ManejadorRecvScreen manejador = new ManejadorRecvScreen(socketSR.getInetAddress(), elPuerto,ventana);
-            Thread manejadorThread = new Thread(manejador);
-            conexion.setManejadorRecvScreen(manejador);;
-            conexion.setManejadorRecvScreenThread(manejadorThread);
-            manejadorThread.start();
-            
+            if ((Boolean) ois.readObject()) {
+                int elPuerto = new Integer(ois.readObject().toString());
+                ManejadorRecvScreen manejador = new ManejadorRecvScreen(socketSR.getInetAddress(), elPuerto, ventana);
+                Thread manejadorThread = new Thread(manejador);
+                conexion.setManejadorRecvScreen(manejador);
+                conexion.setManejadorRecvScreenThread(manejadorThread);
+                manejadorThread.start();
+            } else {
+                JOptionPane.showMessageDialog(new JFrame(), "La pantalla no está compartida.");
+            }
         } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void noVerPantalla() {
+        try {
+            String mensaje = MensajesAlumno.noVerPantalla();
+            oos.writeObject(mensaje);
+        } catch (IOException ex) {
             Logger.getLogger(ManejadorAlumnoSR.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -217,6 +228,7 @@ public class ManejadorAlumnoSR implements Runnable {
         ManejadorAlumnoRS unManejador = new ManejadorAlumnoRS(alumno, serverSocket, conexion);
         //Asigno el manejador a la conexión alumno y lo inicio
         conexion.setManejadorRS(unManejador);
+        ventana.setConexionAlumno(conexion);
         //Envío el mensaje de conexión a la clase.
         oos.writeObject(mensaje);
         oos.flush();

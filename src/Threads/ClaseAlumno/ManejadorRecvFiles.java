@@ -14,20 +14,24 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author zerg
  */
-public class ManejadorRecvFiles implements Runnable{
-private ServerSocket serverSocket;
-private File pathLocal;
-private static int bufferSize=1000000; //1M
-private ObjectInputStream ois;
+public class ManejadorRecvFiles implements Runnable {
+
+    private ServerSocket serverSocket;
+    private File pathLocal;
+    private static int bufferSize = 1000000; //1M
+    private ObjectInputStream ois;
+    private String fileName;
 
     public ManejadorRecvFiles(ServerSocket elServerSocket, File pathLocal) {
         serverSocket = elServerSocket;
-        this.pathLocal=pathLocal;
+        this.pathLocal = pathLocal;
     }
 
     @Override
@@ -35,22 +39,18 @@ private ObjectInputStream ois;
         try {
             int count;
             Socket socket = serverSocket.accept();
-            System.out.println("Recibo conexión");
-            ois=new ObjectInputStream(socket.getInputStream());
-            byte[] buffer=new byte[bufferSize];
+            ois = new ObjectInputStream(socket.getInputStream());
+            byte[] buffer = new byte[bufferSize];
             //Obtengo el archivo remoto
-            File pathRemoto =( File )ois.readObject();
-            System.out.println("Recibo " + pathRemoto);
+            File pathRemoto = (File) ois.readObject();
             //Extraigo el nombre
-            String fileName = pathRemoto.getName();
-            System.out.println("El nombre del archivos es " + fileName);
+            fileName = pathRemoto.getName();
             //El archivo se escribe en "pathLocal/fileName"
             String file = pathLocal.getPath() + "/" + fileName;
-            System.out.println("Escribo archivo en: " + file);
             //Abro el archivo en disco
-            FileOutputStream fos=new FileOutputStream(file);
+            FileOutputStream fos = new FileOutputStream(file);
             //Recibo el archivo y escribo en disco
-            while( !socket.isClosed() && (count = ois.read(buffer)) > 0 ){
+            while (!socket.isClosed() && (count = ois.read(buffer)) > 0) {
                 fos.write(buffer, 0, count);
             }
             ois.close();
@@ -58,12 +58,14 @@ private ObjectInputStream ois;
             if (!socket.isClosed()) {
                 socket.close();
             }
+            JOptionPane.showMessageDialog(new JFrame(), "Finalizó recepción de " + fileName);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ManejadorRecvFiles.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ManejadorSendFiles.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ManejadorSendFiles.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(new JFrame(), "Fallo al recibir " + fileName);
         }
     }
 }

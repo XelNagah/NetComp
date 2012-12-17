@@ -30,12 +30,14 @@ public class AccionCrearClaseAlumno extends AbstractAction {
 
     public AccionCrearClaseAlumno(VtnBuscarClase parent) {
         vtnClaseAlumno = new VtnClaseAlumno();
+        vtnClaseAlumno.setResizable(false);
         vtnBuscarClase = parent;
         this.index = -1;
     }
 
     public AccionCrearClaseAlumno(VtnBuscarClase parent, int row) {
         vtnClaseAlumno = new VtnClaseAlumno();
+        vtnClaseAlumno.setResizable(false);
         vtnBuscarClase = parent;
         this.index = row;
     }
@@ -99,11 +101,11 @@ public class AccionCrearClaseAlumno extends AbstractAction {
         conexion = new ConexionAlumno(elAlumno, laClase, elPassword);
         //Configuro el alumno a la ventana de clase de alumno
         //if (conexion.getConectado()) {
-            vtnClaseAlumno.setAlumno(elAlumno);
-            vtnClaseAlumno.setConexionAlumno(conexion);
-            vtnClaseAlumno.setVisible(true);
-            vtnClaseAlumno.setTitle(elAlumno.getNombre() + " " + elAlumno.getApellido() + " @ " + laClase.getNombre());
-            vtnClaseAlumno.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        vtnClaseAlumno.setAlumno(elAlumno);
+        //vtnClaseAlumno.setConexionAlumno(conexion);
+        vtnClaseAlumno.setVisible(true);
+        vtnClaseAlumno.setTitle(elAlumno.getNombre() + " " + elAlumno.getApellido() + " @ " + laClase.getNombre());
+        vtnClaseAlumno.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         //} else {
         //    JOptionPane.showMessageDialog(null,"Contraseña incorrecta.","Inane error",JOptionPane.ERROR_MESSAGE);
         //}

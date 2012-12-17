@@ -268,7 +268,7 @@ public class Clase implements Serializable {
     }
 
     public void pararCompartirPantalla() {
-        if (generadorPantallaThread != null) {
+        if (generadorPantallaThread != null && !generadorPantallaThread.isInterrupted()) {
             TipoEventosGUI elEvento = new TipoEventosGUI(TipoEventosGUI.stopCompartirPantalla);
             compartiendoPantalla = false;
             manejadorDeConexiones.enviarEventoGeneral(elEvento);

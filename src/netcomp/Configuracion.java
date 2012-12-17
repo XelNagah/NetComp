@@ -5,7 +5,11 @@
 package netcomp;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.ini4j.Wini;
@@ -23,14 +27,7 @@ public class Configuracion {
     private final static String SECCION = "configuracion";
 
     public Configuracion() {
-        File f = new File("./" + FILENAME);
-        if (!f.exists()) {
-            try {
-                f.createNewFile();
-            } catch (IOException ex) {
-                Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        configFileExists();
         try {
             nombre = leer(FILENAME, SECCION, "nombre");
             apellido = leer(FILENAME, SECCION, "apellido");
@@ -83,6 +80,25 @@ public class Configuracion {
         }
     }
 
+    public static void guardarFileNotThere() throws IOException {
+        //File archivoIn = new File(ClassLoader.getSystemResource("config.ini").getFile());
+        InputStream is = ClassLoader.getSystemResourceAsStream("config.ini");
+        InputStreamReader isr = new InputStreamReader(is);
+        File archivoOut = new File(FILENAME);
+        FileWriter out = new FileWriter(archivoOut);
+        //FileReader in = new FileReader(ClassLoader.getSystemResource("config.ini").getFile());
+
+        int c;
+
+        while ((c = isr.read()) != -1) {
+            out.write(c);
+        }
+        out.close();
+        isr.close();
+        is.close();
+        //in.close();
+    }
+
     public static void guardar() throws IOException {
         Wini ini = new Wini(new File(FILENAME));
 
@@ -96,12 +112,13 @@ public class Configuracion {
     static String leer(String filename, String seccion, String campo) throws IOException {
         File f = new File("./" + FILENAME);
         if (!f.exists()) {
-            try {
-                f.createNewFile();
-                return Integer.toString(1);
-            } catch (IOException ex) {
-                Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            /*try {
+             f.createNewFile();
+             return Integer.toString(1);
+             } catch (IOException ex) {
+             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
+             }*/
+            return Integer.toString(1);
         }
         Wini ini = new Wini(new File(filename));
         return ini.get(seccion, campo, String.class);
@@ -112,5 +129,16 @@ public class Configuracion {
 
         ini.put(seccion, campo, valor);
         ini.store();
+    }
+
+    public static void configFileExists() {
+        File f = new File(System.getProperty("user.dir") + "/" + FILENAME);
+        if (!f.exists()) {
+            try {
+                guardarFileNotThere();
+            } catch (IOException ex) {
+                Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

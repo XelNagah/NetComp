@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.UUID;
@@ -49,8 +50,10 @@ public class Anunciador implements Runnable {
         //Establezco que el hilo está corriendo
         DatagramSocket socket;
         try {
+            InterfaceAddress interfaz = GenTools.getIf(corriendo, false);
             //Creo el socket
             socket = new DatagramSocket(GenTools.findFreePort(), InetAddress.getByName("0.0.0.0"));
+            //socket = new DatagramSocket(GenTools.findFreePort(), interfaz.getAddress());
             //Establezco la capacidad de enviar broadcasts
             socket.setBroadcast(true);
             //configuro tamaño del buffer
@@ -59,6 +62,8 @@ public class Anunciador implements Runnable {
             DatagramPacket sendPacket = new DatagramPacket(buf, buf.length);
             //Configuro la dirección de broadcast
             sendPacket.setAddress(InetAddress.getByName("255.255.255.255"));
+            //sendPacket.setAddress(interfaz.getBroadcast());
+            System.out.println(interfaz.getBroadcast());
             //Configuro el puerto
             sendPacket.setPort(5008);
             //Armo el paquete

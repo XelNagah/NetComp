@@ -28,6 +28,7 @@ public class AccionConfiguracion extends AbstractAction {
             vtnConfiguracion.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         }
         else {
+            vtnConfiguracion.init();
             vtnConfiguracion.toFront();
         }
     }
