@@ -20,6 +20,17 @@ public class VtnCrearClase extends javax.swing.JFrame {
     //Creación de ventanas del programa
     //Ventana Clase Maestro
     VtnClaseMaestro vtnClaseMaestro = new VtnClaseMaestro();
+
+    /**
+     * Creates new form crearClase
+     */
+    public VtnCrearClase() {
+        Configuracion.inicializar();
+        initComponents();
+        inicializarCampos();
+        setTitle("Crear una clase - Parámetros");
+        setResizable(false);
+    }
     
     public JPasswordField getCrearClaseContrasenia() {
         return crearClaseContrasenia;
@@ -35,17 +46,6 @@ public class VtnCrearClase extends javax.swing.JFrame {
 
     public JTextField getCrearClaseProfesor() {
         return crearClaseProfesor;
-    }
-
-    /**
-     * Creates new form crearClase
-     */
-    public VtnCrearClase() {
-        Configuracion.inicializar();
-        initComponents();
-        inicializarCampos();
-        setTitle("Crear una clase - Parámetros");
-        setResizable(false);
     }
 
     /**

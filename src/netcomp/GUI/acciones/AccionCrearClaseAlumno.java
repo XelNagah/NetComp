@@ -30,6 +30,7 @@ public class AccionCrearClaseAlumno extends AbstractAction {
 
     public AccionCrearClaseAlumno(VtnBuscarClase parent) {
         vtnClaseAlumno = new VtnClaseAlumno();
+        vtnClaseAlumno.setLocationRelativeTo(null);
         vtnClaseAlumno.setResizable(false);
         vtnBuscarClase = parent;
         this.index = -1;
@@ -37,6 +38,7 @@ public class AccionCrearClaseAlumno extends AbstractAction {
 
     public AccionCrearClaseAlumno(VtnBuscarClase parent, int row) {
         vtnClaseAlumno = new VtnClaseAlumno();
+        vtnClaseAlumno.setLocationRelativeTo(null);
         vtnClaseAlumno.setResizable(false);
         vtnBuscarClase = parent;
         this.index = row;

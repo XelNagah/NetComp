@@ -27,6 +27,8 @@ public class VtnBuscarClase extends JFrame {
     private Thread escuchadorThread;
     private CustomDataModel modeloDatos;
     private ArrayList<InfoClase> clases;
+    //Creación de ventana del programa
+    VtnClaseAlumno vtnClaseAlumno = new VtnClaseAlumno();
 
     /**
      * Creates new form buscarClaseVtn
@@ -61,9 +63,6 @@ public class VtnBuscarClase extends JFrame {
     public void dejarDeEscuchar() {
         escuchadorThread.interrupt();
     }
-    //Creación de ventanas del programa
-    //Ventana Crear Clase
-    VtnClaseAlumno vtnClaseAlumno = new VtnClaseAlumno();
 
     /**
      * This method is called from within the constructor to initialize the form.

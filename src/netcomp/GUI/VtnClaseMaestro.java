@@ -311,9 +311,11 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
 
     public final void crearVentanas() {
         vtnCompartirPantalla = new VtnCompartirPantalla(clase, this);
+        vtnCompartirPantalla.setLocationRelativeTo(null);
         vtnCompartirPantalla.setResizable(false);
         vtnCompartirPantalla.setTitle("Compartir Pantalla");
         vtnArchivos = new VtnArchivosMaestro(clase);
+        vtnArchivos.setLocationRelativeTo(null);
         vtnArchivos.setResizable(false);
         vtnArchivos.setTitle("Compartir Archivos");
     }

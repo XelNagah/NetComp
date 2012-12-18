@@ -23,6 +23,7 @@ public class NetComp {
         // TODO code application logic here
         // Ventanas del programa
         vtnPrincipal = new VtnPrincipal();
+        vtnPrincipal.setLocationRelativeTo(null);
         vtnPrincipal.setResizable(false);
         vtnPrincipal.setVisible(true);
         Configuracion.configFileExists();

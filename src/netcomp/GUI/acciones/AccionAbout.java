@@ -19,6 +19,7 @@ public class AccionAbout extends AbstractAction {
     public AccionAbout()
     {
         acercaDe = new VtnAcercaDe();
+        acercaDe.setLocationRelativeTo(null);
     }
     
     @Override

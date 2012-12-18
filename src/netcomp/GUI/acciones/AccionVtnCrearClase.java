@@ -19,6 +19,7 @@ public class AccionVtnCrearClase extends AbstractAction {
     
     public AccionVtnCrearClase() {
         vtnCrearClase = new VtnCrearClase();
+        vtnCrearClase.setLocationRelativeTo(null);
     }
     
     @Override

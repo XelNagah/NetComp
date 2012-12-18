@@ -18,12 +18,14 @@ public class AccionConfiguracion extends AbstractAction {
     
     public AccionConfiguracion(){
         vtnConfiguracion = new VtnConfiguracion();
+        vtnConfiguracion.setLocationRelativeTo(null);
     }
     
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (vtnConfiguracion.isShowing() == false) {
             vtnConfiguracion.init();
+            vtnConfiguracion.setLocationRelativeTo(null);
             vtnConfiguracion.setVisible(true);
             vtnConfiguracion.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         }

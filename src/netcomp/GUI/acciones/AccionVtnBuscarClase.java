@@ -24,6 +24,7 @@ public class AccionVtnBuscarClase extends AbstractAction {
     public void actionPerformed(ActionEvent ae) {
         NetComp.vtnPrincipal.setVisible(false);
         vtnBuscarClase = new VtnBuscarClase();
+        vtnBuscarClase.setLocationRelativeTo(null);
         if (!vtnBuscarClase.isShowing()) {
             vtnBuscarClase.setVisible(true);
             vtnBuscarClase.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);

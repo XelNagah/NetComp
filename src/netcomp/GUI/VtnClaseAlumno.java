@@ -50,6 +50,7 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
     public void setConexionAlumno(ConexionAlumno conexionAlumno) {
         this.conexionAlumno = conexionAlumno;
         vtnArchivosAlumno = new VtnArchivosAlumno(conexionAlumno);
+        vtnArchivosAlumno.setLocationRelativeTo(null);
         vtnArchivosAlumno.setTitle("Archivos Compartidos");
         vtnArchivosAlumno.setResizable(false);
         conexionAlumno.setVentanaArchivos(vtnArchivosAlumno);

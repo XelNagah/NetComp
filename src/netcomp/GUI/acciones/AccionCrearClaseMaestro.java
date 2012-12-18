@@ -44,6 +44,7 @@ public class AccionCrearClaseMaestro extends AbstractAction {
         Clase clase = new Clase(nombre, contrasenia, profesor, descripcion, vtnClaseMaestro);
         System.out.println("Puerto de escucha: " + clase.getPuerto());
         vtnClaseMaestro = new VtnClaseMaestro(clase);
+        vtnClaseMaestro.setLocationRelativeTo(null);
         //Paso el objeto Clase a la ventana "Clase Maestro"
         clase.setVentana(vtnClaseMaestro);
         //vtnClaseMaestro.setClase(clase);
