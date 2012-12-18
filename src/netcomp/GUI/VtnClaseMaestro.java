@@ -4,7 +4,6 @@
  */
 package netcomp.GUI;
 
-import java.awt.Image;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
@@ -24,7 +23,6 @@ public class VtnClaseMaestro extends javax.swing.JFrame {
      */
     Clase clase;
     CustomListModelMaestro listModel;
-    Image scaledImage;
     VtnArchivosMaestro vtnArchivos;
     VtnCompartirPantalla vtnCompartirPantalla;
     private ImageIcon iconPantalla;

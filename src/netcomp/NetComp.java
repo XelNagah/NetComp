@@ -4,7 +4,6 @@
  */
 package netcomp;
 
-import javax.swing.JOptionPane;
 import netcomp.GUI.VtnPrincipal;
 import netcomp.GUI.acciones.AccionConfiguracion;
 

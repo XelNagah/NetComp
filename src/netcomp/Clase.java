@@ -6,8 +6,8 @@ package netcomp;
 
 import Mensajes.TipoEventosGUI;
 import Threads.ClaseMaestro.Anunciador;
-import Threads.ClaseMaestro.ManejadorConexiones;
 import Threads.ClaseMaestro.GeneradorPantalla;
+import Threads.ClaseMaestro.ManejadorConexiones;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -85,12 +85,12 @@ public class Clase implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    public void setCompartiendoPantalla(boolean b){
+
+    public void setCompartiendoPantalla(boolean b) {
         compartiendoPantalla = b;
     }
-    
-    public boolean getCompartiendoPantalla(){
+
+    public boolean getCompartiendoPantalla() {
         return compartiendoPantalla;
     }
 
@@ -136,17 +136,28 @@ public class Clase implements Serializable {
         sortAlumnos();
     }
 
-    public void addConexion(ConexionClase laConexion) {
-        manejadorDeConexiones.addConexion(laConexion);
-    }
-
-    public void delConexion(ConexionClase laConexion) {
-        manejadorDeConexiones.delConexion(laConexion);
-    }
-
     public void actualizarListaAlumnos() {
         ventana.actualizarVista(0, alumnos.size());
         manejadorDeConexiones.actualizarListaAlumnos();
+    }
+    
+    public ArrayList<Alumno> getAlumnos() {
+        return new ArrayList<Alumno>(alumnos);
+    }
+
+    public Alumno getAlumnos(int pos) {
+        ArrayList<Alumno> a = new ArrayList<Alumno>(alumnos);
+        return a.get(pos);
+    }
+    
+    private void sortAlumnos() {
+        Collections.sort(alumnos, new Comparator<Alumno>() {
+            @Override
+            public int compare(Alumno t, Alumno t1) {
+                return (t.getNombre() + t.getApellido()).compareToIgnoreCase(
+                        (t1.getNombre() + t1.getApellido()));
+            }
+        });
     }
 
     public void actualizarListaArchivos() {
@@ -190,15 +201,6 @@ public class Clase implements Serializable {
         archivos.remove(i);
     }
 
-    public ArrayList<Alumno> getAlumnos() {
-        return new ArrayList<Alumno>(alumnos);
-    }
-
-    public Alumno getAlumnos(int pos) {
-        ArrayList<Alumno> a = new ArrayList<Alumno>(alumnos);
-        return a.get(pos);
-    }
-
     public VtnClaseMaestro getVentana() {
         return ventana;
     }
@@ -227,10 +229,34 @@ public class Clase implements Serializable {
         return laIp;
     }
 
+    public void addConexion(ConexionClase laConexion) {
+        manejadorDeConexiones.addConexion(laConexion);
+    }
+
+    public void delConexion(ConexionClase laConexion) {
+        manejadorDeConexiones.delConexion(laConexion);
+    }
+
     public ManejadorConexiones getManejadorDeConexiones() {
         return manejadorDeConexiones;
     }
 
+    public void compartirPantalla() {
+        generadorPantalla = new GeneradorPantalla(manejadorDeConexiones);
+        generadorPantallaThread = new Thread(generadorPantalla);
+        generadorPantallaThread.start();
+        compartiendoPantalla = true;
+    }
+
+    public void pararCompartirPantalla() {
+        if (generadorPantallaThread != null && !generadorPantallaThread.isInterrupted()) {
+            TipoEventosGUI elEvento = new TipoEventosGUI(TipoEventosGUI.stopCompartirPantalla);
+            compartiendoPantalla = false;
+            manejadorDeConexiones.enviarEventoGeneral(elEvento);
+            generadorPantallaThread.interrupt();
+        }
+    }
+    
     public void iniciar() {
 
         if (anunciadorThread != null && !anunciadorThread.isInterrupted()) {
@@ -248,31 +274,5 @@ public class Clase implements Serializable {
         TipoEventosGUI elEvento = new TipoEventosGUI(TipoEventosGUI.desconectarse);
         manejadorDeConexiones.enviarEventoGeneral(elEvento);
         manejadorDeConexionesThread.interrupt();
-    }
-
-    private void sortAlumnos() {
-        Collections.sort(alumnos, new Comparator<Alumno>() {
-            @Override
-            public int compare(Alumno t, Alumno t1) {
-                return (t.getNombre() + t.getApellido()).compareToIgnoreCase(
-                        (t1.getNombre() + t1.getApellido()));
-            }
-        });
-    }
-
-    public void compartirPantalla() {
-        generadorPantalla = new GeneradorPantalla(manejadorDeConexiones);
-        generadorPantallaThread = new Thread(generadorPantalla);
-        generadorPantallaThread.start();
-        compartiendoPantalla = true;
-    }
-
-    public void pararCompartirPantalla() {
-        if (generadorPantallaThread != null && !generadorPantallaThread.isInterrupted()) {
-            TipoEventosGUI elEvento = new TipoEventosGUI(TipoEventosGUI.stopCompartirPantalla);
-            compartiendoPantalla = false;
-            manejadorDeConexiones.enviarEventoGeneral(elEvento);
-            generadorPantallaThread.interrupt();
-        }
     }
 }

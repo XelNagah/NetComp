@@ -89,19 +89,4 @@ public class InfoClase {
     public int getPuerto() {
         return puerto;
     }
-    
-    
-
-    public void imprimeInfo() {
-        System.out.println("Ip: " + ip);
-        System.out.println("Puerto: " + puerto);
-        System.out.println("Nombre: " + nombre);
-        if (tieneContrasenia) {
-            System.out.println("Contraseña: Sí.");
-        } else {
-            System.out.println("Contraseña: No.");
-        }
-        System.out.println("Descripcion: " + descripcion);
-        System.out.println("UUID: " + hash.toString());
-    }
 }

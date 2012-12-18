@@ -17,7 +17,7 @@ import netcomp.GenTools;
  */
 public class VtnArchivosMaestro extends javax.swing.JFrame {
 
-    JFileChooser chooser = new JFileChooser();
+    JFileChooser fileChooser = new JFileChooser();
     CustomListModelArchivosMaestro listModel;
     Clase clase;
     ImageIcon iconAgregar;
@@ -152,12 +152,12 @@ public class VtnArchivosMaestro extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        int showSaveDialog = chooser.showOpenDialog(null);
+        int showSaveDialog = fileChooser.showOpenDialog(null);
 
         //chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         if (showSaveDialog != JFileChooser.APPROVE_OPTION) {
         } else {
-            File selectedPfile = chooser.getSelectedFile();
+            File selectedPfile = fileChooser.getSelectedFile();
             System.out.println(selectedPfile);
             clase.addArchivo(selectedPfile);
             actualizarListaArchivos();

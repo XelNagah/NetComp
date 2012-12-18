@@ -74,8 +74,8 @@ public class ConexionClase {
         new Thread(manejadorSendScreen).start();
     }
 
-    public void enviarPantalla(TipoEventosGUI elEvento) {
-        manejadorSendScreen.getQueue().offer(elEvento);
+    public void enviarPantalla(TipoEventosGUI evt) {
+        manejadorSendScreen.getQueue().offer(evt);
     }
 
     public void listaAlumnosUpdate(ArrayList<Alumno> losAlumnos) {

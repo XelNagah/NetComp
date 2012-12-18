@@ -67,8 +67,21 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
         listModel.fireContentsChanged(listModel, 0, conexionAlumno.getAlumnos().size());
     }
 
+    public final void crearIconos() {
+        iconPantalla = GenTools.createImageIcon("pantalla.png",
+                "Compartir Pantalla");
+        iconArchivos = GenTools.createImageIcon("archivo.png",
+                "Compartir Archivos");
+    }
+    
     public void conectar() {
         conexionAlumno = new ConexionAlumno(alumno, clase);
+    }
+    
+    public void desconectar() {
+        dispose();
+        conexionAlumno.desconectar();
+        NetComp.vtnPrincipal.setVisible(true);
     }
 
     /**
@@ -233,12 +246,6 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    public void desconectar() {
-        dispose();
-        conexionAlumno.desconectar();
-        NetComp.vtnPrincipal.setVisible(true);
-    }
-
     /**
      * @param args the command line arguments
      */
@@ -292,13 +299,6 @@ public class VtnClaseAlumno extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables
-
-    public final void crearIconos() {
-        iconPantalla = GenTools.createImageIcon("pantalla.png",
-                "Compartir Pantalla");
-        iconArchivos = GenTools.createImageIcon("archivo.png",
-                "Compartir Archivos");
-    }
 
     class CustomListModelAlumno extends DefaultListModel {
 

@@ -169,20 +169,6 @@ public class ManejadorClaseSR implements Runnable {
         }
     }
 
-    private void enviarArchivo(File unArchivo) {
-        try {
-            String mensaje;
-            mensaje = MensajesClase.listaArchivosUpdate();
-            if (!socketSR.isClosed()) {
-                oos.writeObject(mensaje);
-                oos.writeUnshared(unArchivo);
-                oos.flush();
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     private void listaArchivosUpdate(ArrayList<File> losArchivos) {
         try {
             String mensaje;

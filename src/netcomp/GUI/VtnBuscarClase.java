@@ -49,10 +49,6 @@ public class VtnBuscarClase extends JFrame {
     public JTable getTabla() {
         return buscarClasesTabla;
     }
-    
-    private void refreshTable() {
-        buscarClasesTabla.repaint();
-    }
 
     public void escuchar() {
         if (escuchadorThread != null && !escuchadorThread.isInterrupted()) {

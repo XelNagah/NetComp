@@ -17,7 +17,7 @@ import netcomp.GenTools;
  */
 public class VtnArchivosAlumno extends javax.swing.JFrame {
 
-    JFileChooser chooser = new JFileChooser();
+    JFileChooser fileChooser = new JFileChooser();
     CustomListModelArchivosAlumno listModel;
     private ConexionAlumno conexionAlumno;
     ImageIcon iconBajar;
@@ -31,6 +31,10 @@ public class VtnArchivosAlumno extends javax.swing.JFrame {
         iconBajar = GenTools.createImageIcon("bajar.png", "Bajar Archivo");
         iconVolver = GenTools.createImageIcon("volver.png", "Volver a pantalla anterior");
         initComponents();
+    }
+    
+    public void actualizarVistaArchivos() {
+        listModel.fireContentsChanged(listModel, 0, conexionAlumno.getArchivos().size());
     }
 
     /**
@@ -128,13 +132,13 @@ public class VtnArchivosAlumno extends javax.swing.JFrame {
     private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
         // TODO add your handling code here:
         if (jListArchivosAlumno.getSelectedIndex() >= 0) {
-            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            chooser.setDialogTitle("Guardar archivo en");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            fileChooser.setDialogTitle("Guardar archivo en");
             //chooser.setApproveButtonText("Guardar");
-            int showSaveDialog = chooser.showSaveDialog(null);
+            int showSaveDialog = fileChooser.showSaveDialog(null);
             if (showSaveDialog != JFileChooser.APPROVE_OPTION) {
             } else {
-                File guardarPath = chooser.getSelectedFile();
+                File guardarPath = fileChooser.getSelectedFile();
                 File archivoPedido = conexionAlumno.getArchivos(jListArchivosAlumno.getSelectedIndex());
                 conexionAlumno.pedirArchivo(archivoPedido,guardarPath);
             }
@@ -194,10 +198,6 @@ public class VtnArchivosAlumno extends javax.swing.JFrame {
     private javax.swing.JList jListArchivosAlumno;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-
-    public void actualizarVistaArchivos() {
-        listModel.fireContentsChanged(listModel, 0, conexionAlumno.getArchivos().size());
-    }
 
     class CustomListModelArchivosAlumno extends DefaultListModel {
 

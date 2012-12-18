@@ -179,8 +179,4 @@ public class VtnCompartirPantalla extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
-
-    void detener() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 }

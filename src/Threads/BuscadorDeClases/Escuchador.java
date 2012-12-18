@@ -31,13 +31,13 @@ public class Escuchador implements Runnable {
     ManejadorDeClases elManejador = new ManejadorDeClases();
     Thread elManejadorThread = new Thread(elManejador);
 
+    public Escuchador() {
+        elManejador.setLasClases(clases);
+    }
+    
     public void setCustomDataModel(DefaultTableModel elObjeto) {
         elManejador.setCustomDataModel(elObjeto);
         customDataModel = elObjeto;
-    }
-
-    public Escuchador() {
-        elManejador.setLasClases(clases);
     }
 
     synchronized public void escuchar() {
@@ -159,13 +159,5 @@ public class Escuchador implements Runnable {
         customDataModel.fireTableDataChanged();
         //Muestro información de clases para Debug
         //imprimirClases();
-    }
-
-    private void imprimirClases() {
-        //Itero a través de las clases
-        for (Iterator<InfoClase> it = clases.iterator(); it.hasNext();) {
-            //e imprimo la información de la misma.
-            it.next().imprimeInfo();
-        }
     }
 }

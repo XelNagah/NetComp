@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
@@ -78,13 +76,6 @@ public class GenTools {
             }
         }
         return null;
-    }
-
-    public static boolean validarMensaje(String elMensaje,String tipo){
-        if (tipo.equals(XMLParser("tipo", elMensaje))){
-            return true;
-        }
-        return false;
     }
     
     //Verifica si una cadena representa una dirección IP.

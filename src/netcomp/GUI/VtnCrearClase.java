@@ -17,6 +17,10 @@ import netcomp.NetComp;
  */
 public class VtnCrearClase extends javax.swing.JFrame {
 
+    //Creación de ventanas del programa
+    //Ventana Clase Maestro
+    VtnClaseMaestro vtnClaseMaestro = new VtnClaseMaestro();
+    
     public JPasswordField getCrearClaseContrasenia() {
         return crearClaseContrasenia;
     }
@@ -43,9 +47,6 @@ public class VtnCrearClase extends javax.swing.JFrame {
         setTitle("Crear una clase - Parámetros");
         setResizable(false);
     }
-    //Creación de ventanas del programa
-    //Ventana Clase Maestro
-    VtnClaseMaestro vtnClaseMaestro = new VtnClaseMaestro();
 
     /**
      * This method is called from within the constructor to initialize the form.
