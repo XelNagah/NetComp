@@ -2,6 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
+//Bug - Varios monitores - No determina bien la posición de las ventanas al crearse
+//ni el tamaño de la pantalla compartida desde el alumno
+
 package Threads.ClaseAlumno;
 
 import java.awt.Color;
