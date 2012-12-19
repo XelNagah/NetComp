@@ -60,15 +60,6 @@ public class ManejadorClaseSR implements Runnable {
                     Integer tipoMsg = elTipoEVento.getEventId();
 
                     switch (tipoMsg) {
-                        case TipoEventosGUI.actualizarListaArchivos:
-                            System.out.println("Actualizo lista de archivos");
-                            //método
-                            break;
-                        case TipoEventosGUI.enviarArchivo:
-                            System.out.println("Envío archivo");
-                            //método
-                            enviarArchivo();
-                            break;
                         case TipoEventosGUI.desconectarse:
                             //System.out.println("Me desconecto");
                             //método
@@ -80,12 +71,12 @@ public class ManejadorClaseSR implements Runnable {
                             listaAlumnosUpdate(clase.getAlumnos());
                             break;
                         case TipoEventosGUI.listaArchivosUpdate:
-                            //System.out.println("Envío un listaAlumnosUpdate");
+                            //System.out.println("Envío un listaArchivosUpdate");
                             //método
                             listaArchivosUpdate(clase.getArchivos());
                             break;
                         case TipoEventosGUI.stopCompartirPantalla:
-                            //System.out.println("Envío un listaAlumnosUpdate");
+                            //System.out.println("Dejo de compartir pantalla");
                             //método
                             stopCompartirPantalla();
                             break;
@@ -153,20 +144,6 @@ public class ManejadorClaseSR implements Runnable {
     public void run() {
         corriendo = true;
         manejar();
-    }
-
-    private void enviarArchivo() {
-        try {
-            String mensaje;
-            mensaje = MensajesClase.listaArchivosUpdate();
-            if (!socketSR.isClosed()) {
-                oos.writeObject(mensaje);
-                oos.writeUnshared(clase);
-                oos.flush();
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(ManejadorClaseSR.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     private void listaArchivosUpdate(ArrayList<File> losArchivos) {
